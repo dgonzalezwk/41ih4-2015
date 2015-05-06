@@ -65,4 +65,9 @@ class RolSearch extends Rol
 
         return $dataProvider;
     }
+
+    public static function searchAll()
+    {
+        return Rol::find()->where(['estado'=>1])->all();
+    }
 }

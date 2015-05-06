@@ -6,6 +6,7 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use yii\helpers\Url;
 
+
 /* @var $this \yii\web\View */
 /* @var $content string */
 
@@ -36,11 +37,11 @@ AppAsset::register($this);
                 </div>
                 <nav class="top-nav">
                     <ul class="top-nav nav_list">
-                        <li><a href="?controlador=Index">Inicio</a></li>
-                        <li><a href="?controlador=Nosotros">Nosotros</a></li>
-                        <li class="logo"><a title="inicio" href="?controlador=Index"><img src="<?= Url::base()?>/img/logo.png" alt="" class="responsive logo"/></a></li>
-                        <li><a href="?controlador=Productos">Productos</a></li>
-                        <li><a href="?controlador=Contactenos">Contactenos</a></li>
+                        <li><a href="<?=Yii::$app->getHomeUrl()?>">Inicio</a></li>
+                        <li><a href="<?=Yii::$app->urlManager->createUrl(['nosotros/index'])?>">Nosotros</a></li>
+                        <li class="logo"><a title="inicio" href="<?=Yii::$app->getHomeUrl()?>"><img src="<?= Url::base()?>/img/logo.png" alt="" class="responsive logo"/></a></li>
+                        <li><a href="<?=Yii::$app->urlManager->createUrl(['producto/index'])?>">Productos</a></li>
+                        <li><a href="<?=Yii::$app->urlManager->createUrl(['contactenos/index'])?>">Contactenos</a></li>
                     </ul>
                     <a href="vista/#" id="pull"><img src="<?= Url::base()?>/img/nav-icon.png" title="menu" /></a>
                 </nav>
@@ -52,7 +53,6 @@ AppAsset::register($this);
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?= $content ?>
-       
         <div class="footer1_bg">
             <img id="img_foother" src="<?= Url::base()?>/img/img_foother2.png">
             <p id="p_foother">Vestidos Para La Mujer Elegante.</p>
@@ -64,8 +64,8 @@ AppAsset::register($this);
                 <li><a href="http://www.googleplus.com/" target="_blank" class="icon-googleplus"></a></li>
             </ul>
         </div>
-    <script type="text/javascript" src="<?= Url::base()?>/js/main.js"></script>
 <?php $this->endBody() ?>
+<script type="text/javascript" src="<?= Url::base()?>/js/main.js"></script>
 </body>
 </html>
 <?php $this->endPage() ?>

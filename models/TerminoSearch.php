@@ -68,4 +68,18 @@ class TerminoSearch extends Termino
 
         return $dataProvider;
     }
+
+    public static function searchCategories()
+    {
+        return Termino::find()->select('categoria')->where(['estado'=>1])->distinct(true)->all();
+    }
+
+    public static function searchSexos()
+    {
+        return Termino::find()->where(['categoria'=>'sexo','estado'=>1])->all();
+    }
+    public static function searchEstadosUsuario()
+    {
+        return Termino::find()->where(['categoria'=>'Estados De Usuario','estado'=>1])->all();
+    }
 }

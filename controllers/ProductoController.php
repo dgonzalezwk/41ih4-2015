@@ -14,6 +14,8 @@ use yii\filters\VerbFilter;
  */
 class ProductoController extends Controller
 {
+    public $layout = 'pagina_web';
+    
     public function behaviors()
     {
         return [

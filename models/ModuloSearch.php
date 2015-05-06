@@ -63,7 +63,7 @@ class ModuloSearch extends Modulo
 
         $query->andFilterWhere(['like', 'modulo', $this->modulo])
             ->andFilterWhere(['like', 'controladores', $this->controladores]);
-
+        
         return $dataProvider;
     }
 }

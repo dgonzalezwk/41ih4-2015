@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Rol;
 use app\models\RolSearch;
+use app\models\Modulo;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -14,6 +15,7 @@ use yii\filters\VerbFilter;
  */
 class RolController extends Controller
 {
+    public $layout = "administracion";
     public function behaviors()
     {
         return [
@@ -26,15 +28,27 @@ class RolController extends Controller
         ];
     }
 
+    public function beforeAction($action) 
+    {
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
+    }
+
     /**
      * Lists all Rol models.
      * @return mixed
      */
     public function actionIndex()
     {
+        #este es el key de la accion aque se resaliazara a continuacion 
+        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
+        
+        $modelModulo = new Modulo();
+        $modulo = $modelModulo->find()->where(['modulo'=>'Usuarios'])->one();
+        $keyAction = $modulo['codigo']."-Rol-view-*";
+
         $searchModel = new RolSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -48,6 +62,13 @@ class RolController extends Controller
      */
     public function actionView($id)
     {
+        #este es el key de la accion aque se resaliazara a continuacion 
+        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
+        
+        $modelModulo = new Modulo();
+        $modulo = $modelModulo->find()->where(['modulo'=>'Usuarios'])->one();
+        $keyAction = $modulo['codigo']."-Rol-view-*";
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -60,6 +81,13 @@ class RolController extends Controller
      */
     public function actionCreate()
     {
+        #este es el key de la accion aque se resaliazara a continuacion 
+        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
+        
+        $modelModulo = new Modulo();
+        $modulo = $modelModulo->find()->where(['modulo'=>'Usuarios'])->one();
+        $keyAction = $modulo['codigo']."-Rol-create-*";
+
         $model = new Rol();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -79,6 +107,13 @@ class RolController extends Controller
      */
     public function actionUpdate($id)
     {
+        #este es el key de la accion aque se resaliazara a continuacion 
+        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
+        
+        $modelModulo = new Modulo();
+        $modulo = $modelModulo->find()->where(['modulo'=>'Usuarios'])->one();
+        $keyAction = $modulo['codigo']."-Rol-update-*";
+
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -98,6 +133,13 @@ class RolController extends Controller
      */
     public function actionDelete($id)
     {
+        #este es el key de la accion aque se resaliazara a continuacion 
+        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
+        
+        $modelModulo = new Modulo();
+        $modulo = $modelModulo->find()->where(['modulo'=>'Usuarios'])->one();
+        $keyAction = $modulo['codigo']."-Rol-delete-*";
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

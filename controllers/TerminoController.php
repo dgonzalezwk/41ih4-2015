@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Termino;
 use app\models\TerminoSearch;
+use app\models\Modulo;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -14,6 +15,8 @@ use yii\filters\VerbFilter;
  */
 class TerminoController extends Controller
 {
+    public $layout = 'administracion';
+    
     public function behaviors()
     {
         return [
@@ -26,12 +29,25 @@ class TerminoController extends Controller
         ];
     }
 
+    public function beforeAction($action) 
+    {
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
+    }
+
     /**
      * Lists all Termino models.
      * @return mixed
      */
     public function actionIndex()
     {
+        #este es el key de la accion aque se resaliazara a continuacion 
+        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
+        
+        $modelModulo = new Modulo();
+        $modulo = $modelModulo->find()->where(['modulo'=>'Categorias'])->one();
+        $keyAction = $modulo['codigo']."-Termino-view-*";
+
         $searchModel = new TerminoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -48,6 +64,13 @@ class TerminoController extends Controller
      */
     public function actionView($id)
     {
+        #este es el key de la accion aque se resaliazara a continuacion 
+        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
+        
+        $modelModulo = new Modulo();
+        $modulo = $modelModulo->find()->where(['modulo'=>'Categorias'])->one();
+        $keyAction = $modulo['codigo']."-Termino-view-*";
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -60,6 +83,13 @@ class TerminoController extends Controller
      */
     public function actionCreate()
     {
+        #este es el key de la accion aque se resaliazara a continuacion 
+        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
+        
+        $modelModulo = new Modulo();
+        $modulo = $modelModulo->find()->where(['modulo'=>'Categorias'])->one();
+        $keyAction = $modulo['codigo']."-Termino-create-*";
+
         $model = new Termino();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -79,6 +109,13 @@ class TerminoController extends Controller
      */
     public function actionUpdate($id)
     {
+        #este es el key de la accion aque se resaliazara a continuacion 
+        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
+        
+        $modelModulo = new Modulo();
+        $modulo = $modelModulo->find()->where(['modulo'=>'Categorias'])->one();
+        $keyAction = $modulo['codigo']."-Termino-update-*";
+
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -98,6 +135,13 @@ class TerminoController extends Controller
      */
     public function actionDelete($id)
     {
+        #este es el key de la accion aque se resaliazara a continuacion 
+        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
+        
+        $modelModulo = new Modulo();
+        $modulo = $modelModulo->find()->where(['modulo'=>'Categorias'])->one();
+        $keyAction = $modulo['codigo']."-Termino-delete-*";
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

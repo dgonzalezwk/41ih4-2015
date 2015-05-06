@@ -419,9 +419,9 @@ div.button p.texto{
 		transition:all 500ms ease; /* Establecemos una transición a todas las propiedades */
 	}
  
-	.social ul li .icon-facebook {background:#3b5998;content:url('../images/Facebook.png');} /* Establecemos los colores de cada red social, aprovechando su class */
-	.social ul li .icon-twitter {background: #00abf0;content:url('../images/Twitter.png');}
-	.social ul li .icon-googleplus {background: #d95232;content:url('../images/GooglePlus.png');}
+	.social ul li .icon-facebook {background:#3b5998;content:url('../../img/Facebook.png');} /* Establecemos los colores de cada red social, aprovechando su class */
+	.social ul li .icon-twitter {background: #00abf0;content:url('../../img/Twitter.png');}
+	.social ul li .icon-googleplus {background: #d95232;content:url('../../img/GooglePlus.png');}
  
 	.social ul li a:hover {
 		background: #000; /* Cambiamos el fondo cuando el usuario pase el mouse */

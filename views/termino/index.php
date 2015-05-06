@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\TerminoSearch */
@@ -10,30 +11,28 @@ use yii\grid\GridView;
 $this->title = 'Terminos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="termino-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Create Termino', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'codigo',
-            'termino',
-            'key',
-            'categoria',
-            'descripcion',
-            // 'estado:boolean',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-
+<div class="container">
+    <div class="termino-index">
+        <h1><?= Html::encode($this->title) ?></h1>
+        <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+        <p>
+            <?= Html::a('Crear Termino', ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
+        <?php Pjax::begin(['timeout' => 10000,]); ?>
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    'codigo',
+                    'termino',
+                    'key',
+                    'categoria',
+                    'descripcion',
+                    // 'estado:boolean',
+                    ['class' => 'yii\grid\ActionColumn'],
+                ],
+            ]); ?>
+        <?php Pjax::end(); ?>
+    </div>
 </div>

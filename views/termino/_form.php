@@ -1,7 +1,9 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
+use app\models\TerminoSearch;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Termino */
@@ -13,13 +15,9 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'termino')->textInput(['maxlength' => 30]) ?>
-
     <?= $form->field($model, 'key')->textInput() ?>
-
     <?= $form->field($model, 'categoria')->textInput(['maxlength' => 30]) ?>
-
     <?= $form->field($model, 'descripcion')->textInput(['maxlength' => 250]) ?>
-
     <?= $form->field($model, 'estado')->checkbox() ?>
 
     <div class="form-group">

@@ -7,30 +7,28 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\RolSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Rols';
+$this->title = 'Roles';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="rol-index">
+<div class="container">
+    <div class="rol-index">
+        <h1><?= Html::encode($this->title) ?></h1>
+        <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+        <p>
+            <?= Html::a('Crear rol', ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+                'codigo',
+                'nombre',
+                'estado:boolean',
 
-    <p>
-        <?= Html::a('Create Rol', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'codigo',
-            'nombre',
-            'estado:boolean',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-
+                ['class' => 'yii\grid\ActionColumn'],
+            ],
+        ]); ?>
+    </div>
 </div>

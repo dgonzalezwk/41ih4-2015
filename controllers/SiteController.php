@@ -11,6 +11,8 @@ use app\models\ContactForm;
 
 class SiteController extends Controller
 {
+    public $layout = 'pagina_web';
+    
     public function behaviors()
     {
         return [
@@ -49,7 +51,6 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        $this->layout = 'pagina_web';
         return $this->render('index');
     }
 

@@ -12,6 +12,8 @@ use app\models\ContactForm;
 
 class ContactenosController extends \yii\web\Controller
 {
+    public $layout = 'pagina_web';
+    
     public function actionIndex()
     {
         $model = new ContactForm();

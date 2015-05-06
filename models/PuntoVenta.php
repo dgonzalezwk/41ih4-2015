@@ -10,15 +10,18 @@ use Yii;
  * @property integer $codigo
  * @property string $telefono
  * @property string $extension
+ * @property string $pais
  * @property string $ciudad
  * @property string $barrio
  * @property string $direccion
+ * @property string $lugar
  * @property string $local
+ * @property boolean $estado
  *
  * @property Factura[] $facturas
- * @property Gastos[] $gastos
+ * @property Gasto[] $gastos
  * @property Horario[] $horarios
- * @property Ingresos[] $ingresos
+ * @property Ingreso[] $ingresos
  * @property Lote[] $lotes
  */
 class PuntoVenta extends \yii\db\ActiveRecord
@@ -37,11 +40,14 @@ class PuntoVenta extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['telefono', 'extension', 'ciudad', 'barrio', 'direccion', 'local'], 'required'],
+            [['telefono', 'pais', 'ciudad', 'barrio', 'direccion'], 'required'],
+            [['estado'], 'boolean'],
+            [['Whatsapp'], 'integer'],
             [['telefono'], 'string', 'max' => 21],
             [['extension'], 'string', 'max' => 20],
+            [['pais'], 'string', 'max' => 15],
             [['ciudad'], 'string', 'max' => 15],
-            [['barrio', 'direccion'], 'string', 'max' => 25],
+            [['barrio', 'direccion','lugar'], 'string', 'max' => 25],
             [['local'], 'string', 'max' => 5]
         ];
     }
@@ -53,12 +59,15 @@ class PuntoVenta extends \yii\db\ActiveRecord
     {
         return [
             'codigo' => 'Codigo',
+            'Whatsapp' => 'Whatsapp',
             'telefono' => 'Telefono',
             'extension' => 'Extension',
+            'pais' => 'Pais',
             'ciudad' => 'Ciudad',
             'barrio' => 'Barrio',
             'direccion' => 'Direccion',
             'local' => 'Local',
+            'estado' => 'Estado',
         ];
     }
 
@@ -75,7 +84,7 @@ class PuntoVenta extends \yii\db\ActiveRecord
      */
     public function getGastos()
     {
-        return $this->hasMany(Gastos::className(), ['punto_venta' => 'codigo']);
+        return $this->hasMany(Gasto::className(), ['punto_venta' => 'codigo']);
     }
 
     /**
@@ -91,7 +100,7 @@ class PuntoVenta extends \yii\db\ActiveRecord
      */
     public function getIngresos()
     {
-        return $this->hasMany(Ingresos::className(), ['destino' => 'codigo']);
+        return $this->hasMany(Ingreso::className(), ['destino' => 'codigo']);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Usuario;
 use app\models\UsuarioSearch;
+use app\models\Modulo;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -14,6 +15,8 @@ use yii\filters\VerbFilter;
  */
 class UsuarioController extends Controller
 {
+    public $layout = 'administracion';
+    
     public function behaviors()
     {
         return [
@@ -26,18 +29,34 @@ class UsuarioController extends Controller
         ];
     }
 
+    public function beforeAction($action) 
+    {
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
+    }
+
     /**
      * Lists all Usuario models.
      * @return mixed
      */
     public function actionIndex()
     {
+        #este es el key de la accion aque se resaliazara a continuacion 
+        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
+        
+        $modelModulo = new Modulo();
+        $modulo = $modelModulo->find()->where(['modulo'=>'Usuarios'])->one();
+        $keyAction = $modulo['codigo']."-Usuario-view-*";
+
         $searchModel = new UsuarioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $model = new Usuario();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'model' => $model,
         ]);
     }
 
@@ -62,8 +81,19 @@ class UsuarioController extends Controller
     {
         $model = new Usuario();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->codigo]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->contrasena = base64_encode($model->contrasena);
+            if ($model->save())
+            {
+                return $this->redirect(['view', 'id' => $model->codigo]);
+            }
+            else
+            {
+                $model->contrasena = base64_decode($model->contrasena);
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
         } else {
             return $this->render('create', [
                 'model' => $model,

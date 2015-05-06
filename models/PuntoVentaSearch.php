@@ -18,8 +18,9 @@ class PuntoVentaSearch extends PuntoVenta
     public function rules()
     {
         return [
-            [['codigo'], 'integer'],
-            [['telefono', 'extension', 'ciudad', 'barrio', 'direccion', 'local'], 'safe'],
+            [['codigo', 'Whatsapp'], 'integer'],
+            [['telefono', 'extension', 'pais', 'ciudad', 'barrio', 'direccion', 'lugar', 'local'], 'safe'],
+            [['estado'], 'boolean'],
         ];
     }
 
@@ -57,13 +58,16 @@ class PuntoVentaSearch extends PuntoVenta
 
         $query->andFilterWhere([
             'codigo' => $this->codigo,
+            'estado' => $this->estado,
         ]);
 
         $query->andFilterWhere(['like', 'telefono', $this->telefono])
             ->andFilterWhere(['like', 'extension', $this->extension])
+            ->andFilterWhere(['like', 'pais', $this->pais])
             ->andFilterWhere(['like', 'ciudad', $this->ciudad])
             ->andFilterWhere(['like', 'barrio', $this->barrio])
             ->andFilterWhere(['like', 'direccion', $this->direccion])
+            ->andFilterWhere(['like', 'lugar', $this->direccion])
             ->andFilterWhere(['like', 'local', $this->local]);
 
         return $dataProvider;

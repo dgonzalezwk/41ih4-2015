@@ -67,7 +67,7 @@ class Usuario extends \yii\db\ActiveRecord
             'fecha_nacimiento' => 'Fecha Nacimiento',
             'sexo' => 'Sexo',
             'usuario' => 'Usuario',
-            'contrasena' => 'Contrasena',
+            'contrasena' => 'Contraseña',
             'rol' => 'Rol',
             'estado' => 'Estado',
         ];
