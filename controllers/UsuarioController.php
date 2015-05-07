@@ -3,13 +3,14 @@
 namespace app\controllers;
 
 use Yii;
+use app\assets\AppDate;
+use yii\filters\VerbFilter;
 use app\models\Usuario;
 use app\models\UsuarioSearch;
 use app\models\Modulo;
 use app\models\LoginForm;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * UsuarioController implements the CRUD actions for Usuario model.
@@ -83,18 +84,23 @@ class UsuarioController extends Controller
         $model = new Usuario();
 
         if ($model->load(Yii::$app->request->post())) {
+
+            $stringDate = $model->fecha_nacimiento;
             $model->contrasena = base64_encode($model->contrasena);
-            if ($model->save())
-            {
-                return $this->redirect(['view', 'id' => $model->codigo]);
-            }
-            else
-            {
-                $model->contrasena = base64_decode($model->contrasena);
+            $model->fecha_nacimiento = AppDate::stringToDate($model->fecha_nacimiento);
+            print_r($model->fecha_nacimiento);
+            // if ($model->save())
+            // {
+            //     return $this->redirect(['view', 'id' => $model->codigo]);
+            // }
+            // else
+            // {
+            //     $model->fecha_nacimiento = $stringDate;
+            //     $model->contrasena = base64_decode($model->contrasena);
                 return $this->render('create', [
                     'model' => $model,
                 ]);
-            }
+            // }
         } else {
             return $this->render('create', [
                 'model' => $model,
