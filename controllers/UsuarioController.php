@@ -6,6 +6,7 @@ use Yii;
 use app\models\Usuario;
 use app\models\UsuarioSearch;
 use app\models\Modulo;
+use app\models\LoginForm;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -110,9 +111,16 @@ class UsuarioController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->codigo]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->contrasena = base64_encode($model->contrasena);
+            if ($model->save())
+            {
+                return $this->redirect(['view', 'id' => $model->codigo]);
+            }
+            else{
+                $model->contrasena = base64_decode($model->contrasena);
+                return $this->render('create', ['model' => $model,]);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -132,6 +140,30 @@ class UsuarioController extends Controller
 
         return $this->redirect(['index']);
     }
+
+    public function actionLogin()
+    {
+        if (!\Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->goBack();
+        } else {
+            return $this->render('login', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
+
+        return $this->goHome();
+    }
+
 
     /**
      * Finds the Usuario model based on its primary key value.

@@ -33,6 +33,18 @@ class LoginForm extends Model
     }
 
     /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'username' => 'Nombre de usuario',
+            'password' => 'Contraseña',
+            'rememberMe' => 'Recordarme',
+        ];
+    }
+
+    /**
      * Validates the password.
      * This method serves as the inline validation for password.
      *
@@ -71,7 +83,7 @@ class LoginForm extends Model
     public function getUser()
     {
         if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->username);
+            $this->_user = Usuario::findByUsername($this->username);
         }
 
         return $this->_user;

@@ -25,11 +25,12 @@ use Yii;
  * @property Gasto[] $gastos
  * @property Ingreso[] $ingresos
  * @property Inventario[] $inventarios
+ * @property Producto[] $productos
  * @property Rol $rol0
  * @property Termino $sexo0
  * @property Termino $estado0
  */
-class Usuario extends \yii\db\ActiveRecord
+class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     /**
      * @inheritdoc
@@ -67,7 +68,7 @@ class Usuario extends \yii\db\ActiveRecord
             'fecha_nacimiento' => 'Fecha Nacimiento',
             'sexo' => 'Sexo',
             'usuario' => 'Usuario',
-            'contrasena' => 'Contraseña',
+            'contrasena' => 'Contrasena',
             'rol' => 'Rol',
             'estado' => 'Estado',
         ];
@@ -116,6 +117,14 @@ class Usuario extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getProductos()
+    {
+        return $this->hasMany(Producto::className(), ['usuariomod' => 'codigo']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getRol0()
     {
         return $this->hasOne(Rol::className(), ['codigo' => 'rol']);
@@ -136,4 +145,72 @@ class Usuario extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Termino::className(), ['codigo' => 'estado']);
     }
+
+     /**
+     * @inheritdoc
+     */
+    public static function findIdentity($id)
+    {
+        return static::findOne($id);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        foreach (self::$users as $user) {
+            if ($user['accessToken'] === $token) {
+                return new static($user);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Finds user by username
+     *
+     * @param  string      $username
+     * @return static|null
+     */
+    public static function findByUsername($username)
+    {
+        return static::findOne(['usuario' => $username]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getId()
+    {
+        return $this->codigo;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAuthKey()
+    {
+        return $this->contrasena;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->authKey === $authKey;
+    }
+
+    /**
+     * Validates password
+     *
+     * @param  string  $password password to validate
+     * @return boolean if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+        return $this->contrasena === base64_encode($password);
+    }    
 }
