@@ -48,8 +48,8 @@ AppAsset::register($this);
                     Yii::$app->user->isGuest ? ['label' => '']: ['label' => 'Horarios', 'url' => ['/horario']],
                     ['label' => 'Contactenos', 'url' => ['/contactenos']],
                     Yii::$app->user->isGuest ?
-                        ['label' => 'Login', 'url' => ['/site/login']] :
-                        ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+                        ['label' => 'Iniciar Sesión', 'url' => ['/site/login']] :
+                        ['label' => 'Cerrar Sesión (' . Yii::$app->user->identity->nombre. " " . Yii::$app->user->identity->apellido . ')',
                             'url' => ['/site/logout'],
                             'linkOptions' => ['data-method' => 'post']],
                 ],

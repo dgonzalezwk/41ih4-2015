@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model app\models\PuntoVenta */
 
 $this->title = 'Crear punto de venta';
-$this->params['breadcrumbs'][] = ['label' => 'Punto Venta', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Punto Ventas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="container">
