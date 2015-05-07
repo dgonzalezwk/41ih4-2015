@@ -19,6 +19,7 @@ use Yii;
  * @property FacturaGanadora[] $facturaGanadoras
  * @property Gasto[] $gastos
  * @property Lote[] $lotes
+ * @property Producto[] $productos 
  * @property Usuario[] $usuarios
  */
 class Termino extends \yii\db\ActiveRecord
@@ -97,7 +98,15 @@ class Termino extends \yii\db\ActiveRecord
      */
     public function getLotes()
     {
-        return $this->hasMany(Lote::className(), ['estado' => 'codigo']);
+        return $this->hasMany(Lote::className(), ['talla' => 'codigo']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProductos()
+    {
+        return $this->hasMany(Producto::className(), ['categoria' => 'codigo']);
     }
 
     /**

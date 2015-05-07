@@ -146,7 +146,7 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return $this->hasOne(Termino::className(), ['codigo' => 'estado']);
     }
 
-     /**
+    /**
      * @inheritdoc
      */
     public static function findIdentity($id)
