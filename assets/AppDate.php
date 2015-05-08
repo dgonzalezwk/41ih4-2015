@@ -18,10 +18,14 @@ class AppDate
     /**
      * @return string
      */
-    public static function stringToDate( $stringDate )
+    public static function stringToDate( $stringDate , $formatDate )
     {
+        $format = Yii::$app->params['formatDbDate'];
+        if ( $formatDate != null ) {
+            $format = $formatDate;
+        }   
         if ($stringDate!=null && trim($stringDate)!='') {
-            return date( Yii::$app->params['formatDbDate'] , strtotime($stringDate) );
+            return date( $format , strtotime($stringDate) );
         }else{
             return null;
         }

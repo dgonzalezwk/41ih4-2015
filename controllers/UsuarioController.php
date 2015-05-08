@@ -69,8 +69,10 @@ class UsuarioController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $model->fecha_nacimiento = AppDate::stringToDate($model->fecha_nacimiento , Yii::$app->params['formatViewDate'] );
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model ,
         ]);
     }
 
@@ -84,23 +86,19 @@ class UsuarioController extends Controller
         $model = new Usuario();
 
         if ($model->load(Yii::$app->request->post())) {
-
             $stringDate = $model->fecha_nacimiento;
             $model->contrasena = base64_encode($model->contrasena);
-            $model->fecha_nacimiento = AppDate::stringToDate($model->fecha_nacimiento);
-            print_r($model->fecha_nacimiento);
-            // if ($model->save())
-            // {
-            //     return $this->redirect(['view', 'id' => $model->codigo]);
-            // }
-            // else
-            // {
-            //     $model->fecha_nacimiento = $stringDate;
-            //     $model->contrasena = base64_decode($model->contrasena);
+            $model->fecha_nacimiento = AppDate::stringToDate($model->fecha_nacimiento , null );
+            if ($model->save())
+            {
+                return $this->redirect(['view', 'id' => $model->codigo]);
+            } else {
+                $model->fecha_nacimiento = $stringDate;
+                $model->contrasena = base64_decode($model->contrasena);
                 return $this->render('create', [
                     'model' => $model,
                 ]);
-            // }
+            }
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -118,16 +116,19 @@ class UsuarioController extends Controller
     {
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
+            $stringDate = $model->fecha_nacimiento;
             $model->contrasena = base64_encode($model->contrasena);
+            $model->fecha_nacimiento = AppDate::stringToDate($model->fecha_nacimiento , null );
             if ($model->save())
             {
                 return $this->redirect(['view', 'id' => $model->codigo]);
-            }
-            else{
+            } else {
+                $model->fecha_nacimiento = $stringDate;
                 $model->contrasena = base64_decode($model->contrasena);
                 return $this->render('create', ['model' => $model,]);
             }
         } else {
+            $model->fecha_nacimiento = AppDate::stringToDate($model->fecha_nacimiento , Yii::$app->params['formatViewDate'] );
             return $this->render('update', [
                 'model' => $model,
             ]);

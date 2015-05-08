@@ -16,18 +16,16 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
-                'codigo',
+                //'codigo',
                 'identificacion',
-                'nombre',
-                'apellido',
-                'telefono',
-                'email:email',
+                ['label' => 'Nombre','value' => $model->nombre . " " .$model->apellido,],
                 'fecha_nacimiento',
-                'sexo.termino',
+                ['label' => 'Sexo','value' => $model->sexo0->termino,],
+                'email:email',
+                'telefono',
                 'usuario',
-                //'contrasena',
-                'rol.nombre',
-                'estado.termino',
+                ['label' => 'rol','value' => $model->rol0->nombre,],
+                ['label' => 'estado','value' => $model->estado0->termino,],
             ],
         ]) ?>
         <p>
