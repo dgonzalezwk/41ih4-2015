@@ -10,7 +10,7 @@ use Yii;
  * @property integer $codigo
  * @property integer $accion
  * @property integer $usuario
- * @property boolean $estado
+ * @property integer $estado
  *
  * @property Accion $accion0
  * @property Usuario $usuario0
@@ -31,9 +31,8 @@ class AccionUsuario extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['accion', 'usuario'], 'required'],
-            [['accion', 'usuario'], 'integer'],
-            [['estado'], 'boolean']
+            [['accion', 'usuario', 'estado'], 'required'],
+            [['accion', 'usuario', 'estado'], 'integer']
         ];
     }
 

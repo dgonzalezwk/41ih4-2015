@@ -10,9 +10,9 @@ use Yii;
  * @property integer $codigo
  * @property string $modulo
  * @property string $controladores
- * @property boolean $estado
+ * @property integer $estado
  *
- * @property Acciones[] $acciones
+ * @property Accion[] $accions
  */
 class Modulo extends \yii\db\ActiveRecord
 {
@@ -30,8 +30,8 @@ class Modulo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['modulo', 'controladores'], 'required'],
-            [['estado'], 'boolean'],
+            [['modulo', 'controladores', 'estado'], 'required'],
+            [['estado'], 'integer'],
             [['modulo'], 'string', 'max' => 30],
             [['controladores'], 'string', 'max' => 255]
         ];
@@ -53,8 +53,8 @@ class Modulo extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAcciones()
+    public function getAccions()
     {
-        return $this->hasMany(Acciones::className(), ['modulo' => 'codigo']);
+        return $this->hasMany(Accion::className(), ['modulo' => 'codigo']);
     }
 }

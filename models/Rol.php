@@ -9,7 +9,7 @@ use Yii;
  *
  * @property integer $codigo
  * @property string $nombre
- * @property boolean $estado
+ * @property integer $estado
  *
  * @property Usuario[] $usuarios
  */
@@ -29,8 +29,8 @@ class Rol extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre'], 'required'],
-            [['estado'], 'boolean'],
+            [['nombre', 'estado'], 'required'],
+            [['estado'], 'integer'],
             [['nombre'], 'string', 'max' => 40]
         ];
     }

@@ -12,14 +12,14 @@ use Yii;
  * @property integer $key
  * @property string $categoria
  * @property string $descripcion
- * @property boolean $estado
+ * @property integer $estado
  *
  * @property Cliente[] $clientes
  * @property Factura[] $facturas
  * @property FacturaGanadora[] $facturaGanadoras
  * @property Gasto[] $gastos
  * @property Lote[] $lotes
- * @property Producto[] $productos 
+ * @property Producto[] $productos
  * @property Usuario[] $usuarios
  */
 class Termino extends \yii\db\ActiveRecord
@@ -38,9 +38,8 @@ class Termino extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['termino', 'key', 'categoria', 'descripcion'], 'required'],
-            [['key'], 'integer'],
-            [['estado'], 'boolean'],
+            [['termino', 'key', 'categoria', 'descripcion', 'estado'], 'required'],
+            [['key', 'estado'], 'integer'],
             [['termino', 'categoria'], 'string', 'max' => 30],
             [['descripcion'], 'string', 'max' => 250]
         ];

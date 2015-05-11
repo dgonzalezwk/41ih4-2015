@@ -18,9 +18,9 @@ use Yii;
  *
  * @property ItemFactura[] $itemFacturas
  * @property Lote[] $lotes
- * @property Usuario $usuariomod0
  * @property Termino $estado0
  * @property Termino $categoria0
+ * @property Usuario $usuariomod0
  */
 class Producto extends \yii\db\ActiveRecord
 {
@@ -81,14 +81,6 @@ class Producto extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUsuariomod0()
-    {
-        return $this->hasOne(Usuario::className(), ['codigo' => 'usuariomod']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getEstado0()
     {
         return $this->hasOne(Termino::className(), ['codigo' => 'estado']);
@@ -100,5 +92,13 @@ class Producto extends \yii\db\ActiveRecord
     public function getCategoria0()
     {
         return $this->hasOne(Termino::className(), ['codigo' => 'categoria']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsuariomod0()
+    {
+        return $this->hasOne(Usuario::className(), ['codigo' => 'usuariomod']);
     }
 }

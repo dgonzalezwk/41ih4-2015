@@ -112,7 +112,7 @@ class UsuarioController extends Controller
                         $modelAccionUsuario->load(  [ 'AccionUsuario' => [
                                 'accion' => $accion,
                                 'usuario' => $model->codigo,
-                                'estado' => true,
+                                'estado' => 1,
                             ],
                         ]);
                         $modelAccionUsuario->save();
@@ -168,7 +168,7 @@ class UsuarioController extends Controller
                             $modelAccionUsuario = AccionUsuarioSearch::accionPorUsuario( $accion , $model );
                             if (  !$modelAccionUsuario->estado ) {
                                 $modelAccionUsuario->load([ 'AccionUsuario' => [
-                                        'estado' => true,
+                                        'estado' => 1,
                                     ],
                                 ]);
                                 $modelAccionUsuario->save();
@@ -178,7 +178,7 @@ class UsuarioController extends Controller
                             $modelAccionUsuario->load([ 'AccionUsuario' => [
                                     'accion' => $accion->codigo,
                                     'usuario' => $model->codigo,
-                                    'estado' => true,
+                                    'estado' => 1,
                                 ],
                             ]);
                             $modelAccionUsuario->save();
@@ -187,7 +187,7 @@ class UsuarioController extends Controller
                         $modelAccionUsuario = AccionUsuarioSearch::accionPorUsuario( $accion , $model );
                         if (  $modelAccionUsuario->estado ) {
                             $modelAccionUsuario->load([ 'AccionUsuario' => [
-                                    'estado' => false,
+                                    'estado' => 0,
                                 ],
                             ]);
                             $modelAccionUsuario->save();
@@ -213,7 +213,7 @@ class UsuarioController extends Controller
                 foreach ( $acciones as $accion ) {
                     if ( AccionUsuarioSearch::isValido( $accion , $model ) ) {
                         $modelAccionUsuario = AccionUsuarioSearch::accionPorUsuario( $accion , $model );
-                        if (  $modelAccionUsuario->estado == true ) {
+                        if (  $modelAccionUsuario->estado == 1 ) {
                             echo "accion:".$modelAccionUsuario->accion." usuario:".$modelAccionUsuario->usuario." estado:".$modelAccionUsuario->estado." \n";
                             array_push( $selected , $accion->codigo );
                         }

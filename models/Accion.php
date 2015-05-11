@@ -11,7 +11,7 @@ use Yii;
  * @property string $accion
  * @property string $descripcion
  * @property integer $modulo
- * @property integer $key
+ * @property string $key
  *
  * @property Modulo $modulo0
  * @property AccionUsuario[] $accionUsuarios
@@ -32,10 +32,10 @@ class Accion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['accion', 'descripcion'], 'required'],
+            [['accion', 'descripcion', 'key'], 'required'],
             [['modulo'], 'integer'],
-            [['descripcion'], 'string','max' => 255],
-            [['accion'], 'string','max' => 100],
+            [['accion'], 'string', 'max' => 100],
+            [['descripcion'], 'string', 'max' => 250],
             [['key'], 'string', 'max' => 30]
         ];
     }
@@ -50,7 +50,7 @@ class Accion extends \yii\db\ActiveRecord
             'accion' => 'Accion',
             'descripcion' => 'Descripcion',
             'modulo' => 'Modulo',
-            'key' => 'key',
+            'key' => 'Key',
         ];
     }
 

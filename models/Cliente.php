@@ -17,11 +17,11 @@ use Yii;
  * @property integer $tipo
  * @property string $usuario
  * @property string $contrasena
- * @property boolean $estado
- * @property boolean $info
+ * @property integer $estado
+ * @property integer $info
  *
  * @property TipoCliente $tipo0
- * @property Terminos $sexo0
+ * @property Termino $sexo0
  * @property Factura[] $facturas
  */
 class Cliente extends \yii\db\ActiveRecord
@@ -40,9 +40,8 @@ class Cliente extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['numero_identificacion', 'tipo', 'usuario', 'contrasena'], 'required'],
-            [['numero_identificacion', 'sexo', 'telefono', 'tipo'], 'integer'],
-            [['estado', 'info'], 'boolean'],
+            [['numero_identificacion', 'tipo', 'usuario', 'contrasena', 'estado', 'info'], 'required'],
+            [['numero_identificacion', 'sexo', 'telefono', 'tipo', 'estado', 'info'], 'integer'],
             [['nombre', 'apellido', 'email', 'usuario'], 'string', 'max' => 30],
             [['contrasena'], 'string', 'max' => 255]
         ];
@@ -82,7 +81,7 @@ class Cliente extends \yii\db\ActiveRecord
      */
     public function getSexo0()
     {
-        return $this->hasOne(Terminos::className(), ['codigo' => 'sexo']);
+        return $this->hasOne(Termino::className(), ['codigo' => 'sexo']);
     }
 
     /**

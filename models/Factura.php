@@ -14,7 +14,7 @@ use Yii;
  * @property string $fecha
  * @property integer $metodo_pago
  *
- * @property Terminos $metodoPago
+ * @property Termino $metodoPago
  * @property PuntoVenta $puntoVenta
  * @property Usuario $usuario0
  * @property Cliente $cliente0
@@ -63,7 +63,7 @@ class Factura extends \yii\db\ActiveRecord
      */
     public function getMetodoPago()
     {
-        return $this->hasOne(Terminos::className(), ['codigo' => 'metodo_pago']);
+        return $this->hasOne(Termino::className(), ['codigo' => 'metodo_pago']);
     }
 
     /**

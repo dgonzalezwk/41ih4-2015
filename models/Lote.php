@@ -24,13 +24,13 @@ use Yii;
  * @property integer $estado
  *
  * @property ItemInventario[] $itemInventarios
- * @property Termino $talla0
  * @property Termino $tipo0
  * @property Termino $estado0
  * @property PuntoVenta $origen0
  * @property PuntoVenta $destino0
  * @property Producto $producto0
  * @property Termino $color0
+ * @property Termino $talla0
  */
 class Lote extends \yii\db\ActiveRecord
 {
@@ -91,14 +91,6 @@ class Lote extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTalla0()
-    {
-        return $this->hasOne(Termino::className(), ['codigo' => 'talla']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getTipo0()
     {
         return $this->hasOne(Termino::className(), ['codigo' => 'tipo']);
@@ -142,5 +134,13 @@ class Lote extends \yii\db\ActiveRecord
     public function getColor0()
     {
         return $this->hasOne(Termino::className(), ['codigo' => 'color']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTalla0()
+    {
+        return $this->hasOne(Termino::className(), ['codigo' => 'talla']);
     }
 }
