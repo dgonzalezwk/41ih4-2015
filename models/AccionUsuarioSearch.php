@@ -62,4 +62,24 @@ class AccionUsuarioSearch extends AccionUsuario
 
         return $dataProvider;
     }
+
+    public static function isValido( $accion , $usuario )
+    {
+        $result = AccionUsuario::find()->where( [ 'accion'=>$accion->codigo , 'usuario'=>$usuario->codigo ] )->all();
+        if ( isset( $result ) && count($result) > 0 ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static function accionPorUsuario( $accion , $usuario )
+    {
+        $result = AccionUsuario::find()->where( [ 'accion'=>$accion->codigo , 'usuario'=>$usuario->codigo ] )->all();
+        if ( isset( $result ) && count($result) > 0 ) {
+            return $result;
+        } else {
+            return false;
+        }
+    }
 }

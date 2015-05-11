@@ -65,4 +65,18 @@ class AccionSearch extends Accion
 
         return $dataProvider;
     }
+
+    public static function accionesPorModulo( $modulo )
+    {
+        return Accion::find()->where(['modulo'=>$modulo->codigo])->all();
+    }
+    
+    public static function accionesPorId( $idAccion )
+    {
+        return Accion::find()->where(['codigo'=>$idAccion])->one();
+    }
+
+    public static function all(){
+        return Accion::find()->all();
+    }
 }

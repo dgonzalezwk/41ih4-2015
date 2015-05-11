@@ -1,8 +1,11 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\models\TerminoSearch;
+use app\models\RolSearch;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UsuarioSearch */
@@ -27,10 +30,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     ['class' => 'yii\grid\SerialColumn'],
                     'identificacion',
                     ['attribute' => 'nombre','value' => 'nombre'],
-                    ['attribute' => 'sexo','value' => 'sexo0.termino'],
                     'usuario',
-                    ['attribute' => 'rol','value' => 'rol0.nombre'],
-                    ['attribute' => 'estado','value' => 'estado0.termino'],
+                    ['attribute' => 'sexo','value' => 'sexo0.termino','format'=>'raw','filter' => ArrayHelper::map(TerminoSearch::searchSexos(), 'codigo', 'termino'),],
+                    ['attribute' => 'rol','value' => 'rol0.nombre','format'=>'raw','filter' => ArrayHelper::map(RolSearch::searchAll(), 'codigo', 'nombre'),],
+                    ['attribute' => 'estado','value' => 'estado0.termino','format'=>'raw','filter' =>ArrayHelper::map(TerminoSearch::searchEstadosUsuario(), 'codigo', 'termino'),],
                     // 'email:email',
                     // 'fecha_nacimiento',
                     // 'contrasena',

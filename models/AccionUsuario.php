@@ -10,8 +10,9 @@ use Yii;
  * @property integer $codigo
  * @property integer $accion
  * @property integer $usuario
+ * @property boolean $estado
  *
- * @property Acciones $accion0
+ * @property Accion $accion0
  * @property Usuario $usuario0
  */
 class AccionUsuario extends \yii\db\ActiveRecord
@@ -31,7 +32,8 @@ class AccionUsuario extends \yii\db\ActiveRecord
     {
         return [
             [['accion', 'usuario'], 'required'],
-            [['accion', 'usuario'], 'integer']
+            [['accion', 'usuario'], 'integer'],
+            [['estado'], 'boolean']
         ];
     }
 
@@ -44,6 +46,7 @@ class AccionUsuario extends \yii\db\ActiveRecord
             'codigo' => 'Codigo',
             'accion' => 'Accion',
             'usuario' => 'Usuario',
+            'estado' => 'Estado',
         ];
     }
 
@@ -52,7 +55,7 @@ class AccionUsuario extends \yii\db\ActiveRecord
      */
     public function getAccion0()
     {
-        return $this->hasOne(Acciones::className(), ['codigo' => 'accion']);
+        return $this->hasOne(Accion::className(), ['codigo' => 'accion']);
     }
 
     /**

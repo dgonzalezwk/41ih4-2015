@@ -5,6 +5,9 @@ namespace app\controllers;
 use Yii;
 use app\assets\AppDate;
 use yii\filters\VerbFilter;
+use app\models\AccionUsuario;
+use app\models\AccionUsuarioSearch;
+use app\models\AccionSearch;
 use app\models\Usuario;
 use app\models\UsuarioSearch;
 use app\models\Modulo;
@@ -69,6 +72,13 @@ class UsuarioController extends Controller
      */
     public function actionView($id)
     {
+        #este es el key de la accion aque se resaliazara a continuacion 
+        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
+        
+        $modelModulo = new Modulo();
+        $modulo = $modelModulo->find()->where(['modulo'=>'Usuarios'])->one();
+        $keyAction = $modulo['codigo']."-Usuario-view-*";
+
         $model = $this->findModel($id);
         $model->fecha_nacimiento = AppDate::stringToDate($model->fecha_nacimiento , Yii::$app->params['formatViewDate'] );
         return $this->render('view', [
@@ -83,26 +93,46 @@ class UsuarioController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Usuario();
+        #este es el key de la accion aque se resaliazara a continuacion 
+        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
+        $modelModulo = new Modulo();
+        $modulo = $modelModulo->find()->where(['modulo'=>'Usuarios'])->one();
+        $keyAction = $modulo['codigo']."-Usuario-create-*";
 
+        $model = new Usuario();
         if ($model->load(Yii::$app->request->post())) {
             $stringDate = $model->fecha_nacimiento;
             $model->contrasena = base64_encode($model->contrasena);
             $model->fecha_nacimiento = AppDate::stringToDate($model->fecha_nacimiento , null );
-            if ($model->save())
-            {
+            if ($model->save()){
+                $permisos = Yii::$app->request->post('permisos');
+                if ( is_array( $permisos ) ) {
+                    foreach ($permisos as $accion) {
+                        $modelAccionUsuario = new AccionUsuario();
+                        $modelAccionUsuario->accion = $accion->codigo;
+                        $modelAccionUsuario->usuario = $model->codigo;
+                        $modelAccionUsuario->estado = true;
+                        $modelAccionUsuario->save();
+                    }
+                }
                 return $this->redirect(['view', 'id' => $model->codigo]);
             } else {
                 $model->fecha_nacimiento = $stringDate;
                 $model->contrasena = base64_decode($model->contrasena);
-                return $this->render('create', [
-                    'model' => $model,
-                ]);
+                return $this->render('create', ['model' => $model,'modulos' => []] );
             }
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            $arrayModulos = [];
+            $modulos = $modelModulo->find()->all();
+            foreach ($modulos as $modulo) {
+                $arrayPermisos = [];
+                $acciones = AccionSearch::accionesPorModulo($modulo);
+                foreach ( $acciones as $accion ) {
+                    array_push( $arrayPermisos , $accion );
+                }
+                $arrayModulos[$modulo->modulo] = [ 'seleccionados' => null , 'permisos' => $arrayPermisos];
+            }
+            return $this->render('create', ['model' => $model, 'modulos' => $arrayModulos] );
         }
     }
 
@@ -114,6 +144,12 @@ class UsuarioController extends Controller
      */
     public function actionUpdate($id)
     {
+        #este es el key de la accion aque se resaliazara a continuacion 
+        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
+        $modelModulo = new Modulo();
+        $modulo = $modelModulo->find()->where(['modulo'=>'Usuarios'])->one();
+        $keyAction = $modulo['codigo']."-Usuario-update-*";
+
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
             $stringDate = $model->fecha_nacimiento;
@@ -121,17 +157,57 @@ class UsuarioController extends Controller
             $model->fecha_nacimiento = AppDate::stringToDate($model->fecha_nacimiento , null );
             if ($model->save())
             {
+                $permisos = Yii::$app->request->post('permisos');
+                $acciones = AccionSearch::all();
+                foreach ( $acciones as $accion ) {
+                    if ( is_array( $permisos ) && in_array( $accion->codigo , $permisos ) ) {
+                        if ( AccionUsuarioSearch::isValido( $accion , $model ) ) {
+                            $modelAccionUsuario = AccionUsuarioSearch::accionPorUsuario( $accion , $model );
+                            if (  !$modelAccionUsuario->estado() ) {
+                                $modelAccionUsuario->estado = true;
+                                $modelAccionUsuario->save();
+                            }
+                        } else {
+                            $modelAccionUsuario = new AccionUsuario();
+                            $modelAccionUsuario->accion = $accion->codigo;
+                            $modelAccionUsuario->usuario = $model->codigo;
+                            $modelAccionUsuario->estado = true;
+                            $modelAccionUsuario->save();
+                        }
+                    } else if ( AccionUsuarioSearch::isValido( $accion , $model ) ) {
+                        if (  $modelAccionUsuario->estado() ) {
+                            $modelAccionUsuario = AccionUsuarioSearch::accionPorUsuario( $accion , $model );
+                            $modelAccionUsuario->estado = false;
+                            $modelAccionUsuario->save();
+                        }
+                    }
+                }
                 return $this->redirect(['view', 'id' => $model->codigo]);
             } else {
                 $model->fecha_nacimiento = $stringDate;
                 $model->contrasena = base64_decode($model->contrasena);
-                return $this->render('create', ['model' => $model,]);
+                return $this->render('update', ['model' => $model, 'modulos' => [] ] );
             }
         } else {
+            
             $model->fecha_nacimiento = AppDate::stringToDate($model->fecha_nacimiento , Yii::$app->params['formatViewDate'] );
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            $arrayModulos = [];
+            $modulos = $modelModulo->find()->all();
+            foreach ($modulos as $modulo) {
+                $arrayPermisos = [];
+                $acciones = AccionSearch::accionesPorModulo($modulo);
+                $index = 0 ;
+                $selected = [];
+                foreach ( $acciones as $accion ) {
+                    if ( AccionUsuarioSearch::isValido( $accion , $model ) ) {
+                        array_push( $selected , $index );
+                    }
+                    array_push( $arrayPermisos , $accion );
+                    $index++;
+                }
+                $arrayModulos[$modulo->modulo] = [ 'seleccionados' => $selected , 'permisos' => $arrayPermisos];
+            }
+            return $this->render('update', ['model' => $model, 'modulos' => $arrayModulos] );
         }
     }
 
@@ -143,6 +219,13 @@ class UsuarioController extends Controller
      */
     public function actionDelete($id)
     {
+        #este es el key de la accion aque se resaliazara a continuacion 
+        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
+        
+        $modelModulo = new Modulo();
+        $modulo = $modelModulo->find()->where(['modulo'=>'Usuarios'])->one();
+        $keyAction = $modulo['codigo']."-Usuario-delete-*";
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
