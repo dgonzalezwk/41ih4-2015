@@ -109,9 +109,12 @@ class UsuarioController extends Controller
                 if ( is_array( $permisos ) ) {
                     foreach ($permisos as $accion) {
                         $modelAccionUsuario = new AccionUsuario();
-                        $modelAccionUsuario->accion = $accion->codigo;
-                        $modelAccionUsuario->usuario = $model->codigo;
-                        $modelAccionUsuario->estado = true;
+                        $modelAccionUsuario->load(  [ 'AccionUsuario' => [
+                                'accion' => $accion,
+                                'usuario' => $model->codigo,
+                                'estado' => true,
+                            ],
+                        ]);
                         $modelAccionUsuario->save();
                     }
                 }
