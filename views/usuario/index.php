@@ -1,16 +1,13 @@
 <?php
-
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use app\models\TerminoSearch;
 use app\models\RolSearch;
-
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UsuarioSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-
 $this->title = 'Usuarios';
 $this->params['breadcrumbs'][] = $this->title;
 ?>

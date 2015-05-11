@@ -75,7 +75,7 @@ class AccionUsuarioSearch extends AccionUsuario
 
     public static function accionPorUsuario( $accion , $usuario )
     {
-        $result = AccionUsuario::find()->where( [ 'accion'=>$accion->codigo , 'usuario'=>$usuario->codigo ] )->all();
+        $result = AccionUsuario::find()->where( [ 'accion'=>$accion->codigo , 'usuario'=>$usuario->codigo ] )->one();
         if ( isset( $result ) && count($result) > 0 ) {
             return $result;
         } else {

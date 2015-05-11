@@ -163,21 +163,30 @@ class UsuarioController extends Controller
                     if ( is_array( $permisos ) && in_array( $accion->codigo , $permisos ) ) {
                         if ( AccionUsuarioSearch::isValido( $accion , $model ) ) {
                             $modelAccionUsuario = AccionUsuarioSearch::accionPorUsuario( $accion , $model );
-                            if (  !$modelAccionUsuario->estado() ) {
-                                $modelAccionUsuario->estado = true;
+                            if (  !$modelAccionUsuario->estado ) {
+                                $modelAccionUsuario->load([ 'AccionUsuario' => [
+                                        'estado' => true,
+                                    ],
+                                ]);
                                 $modelAccionUsuario->save();
                             }
                         } else {
                             $modelAccionUsuario = new AccionUsuario();
-                            $modelAccionUsuario->accion = $accion->codigo;
-                            $modelAccionUsuario->usuario = $model->codigo;
-                            $modelAccionUsuario->estado = true;
+                            $modelAccionUsuario->load([ 'AccionUsuario' => [
+                                    'accion' => $accion->codigo,
+                                    'usuario' => $model->codigo,
+                                    'estado' => true,
+                                ],
+                            ]);
                             $modelAccionUsuario->save();
                         }
                     } else if ( AccionUsuarioSearch::isValido( $accion , $model ) ) {
-                        if (  $modelAccionUsuario->estado() ) {
-                            $modelAccionUsuario = AccionUsuarioSearch::accionPorUsuario( $accion , $model );
-                            $modelAccionUsuario->estado = false;
+                        $modelAccionUsuario = AccionUsuarioSearch::accionPorUsuario( $accion , $model );
+                        if (  $modelAccionUsuario->estado ) {
+                            $modelAccionUsuario->load([ 'AccionUsuario' => [
+                                    'estado' => false,
+                                ],
+                            ]);
                             $modelAccionUsuario->save();
                         }
                     }
@@ -191,19 +200,22 @@ class UsuarioController extends Controller
         } else {
             
             $model->fecha_nacimiento = AppDate::stringToDate($model->fecha_nacimiento , Yii::$app->params['formatViewDate'] );
+            $model->contrasena = base64_decode($model->contrasena);
             $arrayModulos = [];
             $modulos = $modelModulo->find()->all();
             foreach ($modulos as $modulo) {
-                $arrayPermisos = [];
                 $acciones = AccionSearch::accionesPorModulo($modulo);
-                $index = 0 ;
+                $arrayPermisos = [];
                 $selected = [];
                 foreach ( $acciones as $accion ) {
                     if ( AccionUsuarioSearch::isValido( $accion , $model ) ) {
-                        array_push( $selected , $index );
+                        $modelAccionUsuario = AccionUsuarioSearch::accionPorUsuario( $accion , $model );
+                        if (  $modelAccionUsuario->estado == true ) {
+                            echo "accion:".$modelAccionUsuario->accion." usuario:".$modelAccionUsuario->usuario." estado:".$modelAccionUsuario->estado." \n";
+                            array_push( $selected , $accion->codigo );
+                        }
                     }
                     array_push( $arrayPermisos , $accion );
-                    $index++;
                 }
                 $arrayModulos[$modulo->modulo] = [ 'seleccionados' => $selected , 'permisos' => $arrayPermisos];
             }
