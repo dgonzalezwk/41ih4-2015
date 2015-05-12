@@ -4,7 +4,9 @@ namespace app\controllers;
 
 use Yii;
 use app\assets\AppDate;
+use app\assets\AppAccessRule;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 use app\models\AccionUsuario;
 use app\models\AccionUsuarioSearch;
 use app\models\AccionSearch;
@@ -21,15 +23,52 @@ use yii\web\NotFoundHttpException;
 class UsuarioController extends Controller
 {
     public $layout = 'administracion';
-    
+    public $modelModulo;
+
     public function behaviors()
     {
+        $this->modelModulo = new Modulo();
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
                 ],
+            ],
+            'access' => [
+               'class' => AccessControl::className(),
+               'ruleConfig' => [
+                   'class' => AppAccessRule::className(),
+               ],
+               'only' => [ 'index','view','create','update','delete','login','logout' ],
+               'rules' => [
+                   [
+                       'actions' => [ 'login','logout' ],
+                       'allow' => true,
+                       'roles' => ['@'],
+                   ],
+                   [
+                       'actions' => [ 'index','view' ],
+                       'allow' => true,
+                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Usuarios'])->one()->codigo."-Usuario-view-*"],
+                   ],
+                   [
+                       'actions' => [ 'create' ],
+                       'allow' => true,
+                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Usuarios'])->one()->codigo."-Usuario-create-*"],
+                   ],
+                   [
+                       'actions' => [ 'update' ],
+                       'allow' => true,
+                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Usuarios'])->one()->codigo."-Usuario-update-*"],
+                   ],
+                   [
+                       'actions' => [ 'delete' ],
+                       'allow' => true,
+                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Usuarios'])->one()->codigo."-Usuario-delete-*"],
+                   ],
+
+               ],
             ],
         ];
     }
@@ -46,13 +85,9 @@ class UsuarioController extends Controller
      */
     public function actionIndex()
     {
-        #este es el key de la accion aque se resaliazara a continuacion 
-        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
-        
-        $modelModulo = new Modulo();
-        $modulo = $modelModulo->find()->where(['modulo'=>'Usuarios'])->one();
-        $keyAction = $modulo['codigo']."-Usuario-view-*";
-
+        echo "Holas \n";
+        print_r(Yii::$app->user->identity);
+        echo "Holas2 \n";
         $searchModel = new UsuarioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -72,13 +107,6 @@ class UsuarioController extends Controller
      */
     public function actionView($id)
     {
-        #este es el key de la accion aque se resaliazara a continuacion 
-        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
-        
-        $modelModulo = new Modulo();
-        $modulo = $modelModulo->find()->where(['modulo'=>'Usuarios'])->one();
-        $keyAction = $modulo['codigo']."-Usuario-view-*";
-
         $model = $this->findModel($id);
         $model->fecha_nacimiento = AppDate::stringToDate($model->fecha_nacimiento , Yii::$app->params['formatViewDate'] );
         return $this->render('view', [
@@ -93,12 +121,6 @@ class UsuarioController extends Controller
      */
     public function actionCreate()
     {
-        #este es el key de la accion aque se resaliazara a continuacion 
-        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
-        $modelModulo = new Modulo();
-        $modulo = $modelModulo->find()->where(['modulo'=>'Usuarios'])->one();
-        $keyAction = $modulo['codigo']."-Usuario-create-*";
-
         $model = new Usuario();
         if ($model->load(Yii::$app->request->post())) {
             $stringDate = $model->fecha_nacimiento;
@@ -126,7 +148,7 @@ class UsuarioController extends Controller
             }
         } else {
             $arrayModulos = [];
-            $modulos = $modelModulo->find()->all();
+            $modulos = $this->modelModulo->find()->all();
             foreach ($modulos as $modulo) {
                 $arrayPermisos = [];
                 $acciones = AccionSearch::accionesPorModulo($modulo);
@@ -147,12 +169,6 @@ class UsuarioController extends Controller
      */
     public function actionUpdate($id)
     {
-        #este es el key de la accion aque se resaliazara a continuacion 
-        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
-        $modelModulo = new Modulo();
-        $modulo = $modelModulo->find()->where(['modulo'=>'Usuarios'])->one();
-        $keyAction = $modulo['codigo']."-Usuario-update-*";
-
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
             $stringDate = $model->fecha_nacimiento;
@@ -205,7 +221,7 @@ class UsuarioController extends Controller
             $model->fecha_nacimiento = AppDate::stringToDate($model->fecha_nacimiento , Yii::$app->params['formatViewDate'] );
             $model->contrasena = base64_decode($model->contrasena);
             $arrayModulos = [];
-            $modulos = $modelModulo->find()->all();
+            $modulos = $this->modelModulo->find()->all();
             foreach ($modulos as $modulo) {
                 $acciones = AccionSearch::accionesPorModulo($modulo);
                 $arrayPermisos = [];
@@ -234,13 +250,6 @@ class UsuarioController extends Controller
      */
     public function actionDelete($id)
     {
-        #este es el key de la accion aque se resaliazara a continuacion 
-        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
-        
-        $modelModulo = new Modulo();
-        $modulo = $modelModulo->find()->where(['modulo'=>'Usuarios'])->one();
-        $keyAction = $modulo['codigo']."-Usuario-delete-*";
-
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

@@ -18,15 +18,47 @@ class PuntoVentaController extends Controller
 {
     #se define el layout de administracion para mostrar las vistas 
     public $layout = "administracion" ;
-    
+    public $modelModulo;
+
     public function behaviors()
     {
+        $this->modelModulo = new Modulo();
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
                 ],
+            ],
+            'access' => [
+               'class' => AccessControl::className(),
+               'ruleConfig' => [
+                   'class' => AppAccessRule::className(),
+               ],
+               'only' => [ 'index','view','create','update','delete','login','logout' ],
+               'rules' => [
+                   [
+                       'actions' => [ 'index','view' ],
+                       'allow' => true,
+                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Puntos De venta'])->one()->codigo."-PuntoVenta-view-*"],
+                   ],
+                   [
+                       'actions' => [ 'create' ],
+                       'allow' => true,
+                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Puntos De venta'])->one()->codigo."-PuntoVenta-create-*"],
+                   ],
+                   [
+                       'actions' => [ 'update' ],
+                       'allow' => true,
+                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Puntos De venta'])->one()->codigo."-PuntoVenta-update-*"],
+                   ],
+                   [
+                       'actions' => [ 'delete' ],
+                       'allow' => true,
+                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Puntos De venta'])->one()->codigo."-PuntoVenta-delete-*"],
+                   ],
+
+               ],
             ],
         ];
     }
@@ -43,13 +75,6 @@ class PuntoVentaController extends Controller
      */
     public function actionIndex()
     {
-        #este es el key de la accion aque se resaliazara a continuacion 
-        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
-        
-        $modelModulo = new Modulo();
-        $modulo = $modelModulo->find()->where(['modulo'=>'Puntos De venta'])->one();
-        $keyAction = $modulo['codigo']."-PuntoVenta-view-*";
-
         $searchModel = new PuntoVentaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         
@@ -66,13 +91,6 @@ class PuntoVentaController extends Controller
      */
     public function actionView($id)
     {
-        #este es el key de la accion aque se resaliazara a continuacion 
-        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
-        
-        $modelModulo = new Modulo();
-        $modulo = $modelModulo->find()->where(['modulo'=>'Puntos De venta'])->one();
-        $keyAction = $modulo['codigo']."-PuntoVenta-view-*";
-
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -85,13 +103,6 @@ class PuntoVentaController extends Controller
      */
     public function actionCreate()
     {
-        #este es el key de la accion aque se resaliazara a continuacion 
-        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
-        
-        $modelModulo = new Modulo();
-        $modulo = $modelModulo->find()->where(['modulo'=>'Puntos De venta'])->one();
-        $keyAction = $modulo['codigo']."-PuntoVenta-create-*";
-
         #Accion de creaar punto de venta.
         $model = new PuntoVenta();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -117,13 +128,6 @@ class PuntoVentaController extends Controller
      */
     public function actionUpdate($id)
     {
-        #este es el key de la accion aque se resaliazara a continuacion 
-        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
-        
-        $modelModulo = new Modulo();
-        $modulo = $modelModulo->find()->where(['modulo'=>'Puntos De venta'])->one();
-        $keyAction = $modulo['codigo']."-PuntoVenta-update-*";
-
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -143,13 +147,6 @@ class PuntoVentaController extends Controller
      */
     public function actionDelete($id)
     {
-        #este es el key de la accion aque se resaliazara a continuacion 
-        #se debe busca en los permisos del usuario en sesion si el tiene permitido realizar esta accion.
-        
-        $modelModulo = new Modulo();
-        $modulo = $modelModulo->find()->where(['modulo'=>'Puntos De venta'])->one();
-        $keyAction = $modulo['codigo']."-PuntoVenta-delete-*";
-
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
