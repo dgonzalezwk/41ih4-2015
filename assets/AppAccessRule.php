@@ -15,12 +15,12 @@ class AppAccessRule extends \yii\filters\AccessRule {
         }
         foreach ($this->roles as $role) {
             
-            if ($role == '@'){
-                return true;
-            } else if ($role == '?') {
+            if ($role == '?') {
                 if ($user->getIsGuest()) {
                     return true;
                 }
+            } else if ($role == '@') {
+                return true;
             } else {
                 if (!$user->getIsGuest()) {
                     $acciones = $user->identity->accionUsuarios;

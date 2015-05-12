@@ -76,7 +76,11 @@ class UsuarioController extends Controller
     public function beforeAction($action) 
     {
         $this->enableCsrfValidation = false;
-        return parent::beforeAction($action);
+        if (parent::beforeAction($action)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
