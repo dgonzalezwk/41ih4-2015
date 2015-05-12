@@ -38,6 +38,7 @@ class SiteController extends Controller
 
     public function actions()
     {
+        $this->layout = 'error';   
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
