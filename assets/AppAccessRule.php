@@ -22,11 +22,11 @@ class AppAccessRule extends \yii\filters\AccessRule {
                     return true;
                 }
             } else {
-                if ($user->getIsGuest()) {
+                if (!$user->getIsGuest()) {
                     $acciones = $user->identity->accionUsuarios;
                     foreach ($acciones as $accion) {
-                        if ( $role->id == $accion->accion0->key && $accion->estado == 1 ) {
-                            return true;        
+                        if ( $role == $accion->accion0->key && $accion->estado == 1 ) {
+                            return true;
                         }
                     }
                 }

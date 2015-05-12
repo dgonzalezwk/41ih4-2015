@@ -85,9 +85,6 @@ class UsuarioController extends Controller
      */
     public function actionIndex()
     {
-        echo "Holas \n";
-        print_r(Yii::$app->user->identity);
-        echo "Holas2 \n";
         $searchModel = new UsuarioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -230,7 +227,6 @@ class UsuarioController extends Controller
                     if ( AccionUsuarioSearch::isValido( $accion , $model ) ) {
                         $modelAccionUsuario = AccionUsuarioSearch::accionPorUsuario( $accion , $model );
                         if (  $modelAccionUsuario->estado == 1 ) {
-                            echo "accion:".$modelAccionUsuario->accion." usuario:".$modelAccionUsuario->usuario." estado:".$modelAccionUsuario->estado." \n";
                             array_push( $selected , $accion->codigo );
                         }
                     }

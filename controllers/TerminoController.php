@@ -3,11 +3,13 @@
 namespace app\controllers;
 
 use Yii;
+use app\assets\AppAccessRule;
 use app\models\Termino;
 use app\models\TerminoSearch;
 use app\models\Modulo;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 
 /**
