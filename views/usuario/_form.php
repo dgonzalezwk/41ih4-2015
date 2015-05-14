@@ -30,6 +30,8 @@ use yii\widgets\Pjax;
                     'clientOptions' => [
                         'autoclose' => true,
                         'format' => 'dd MM yyyy',
+                        'startDate'=> '-70y',
+                        'endDate' => '-17y',
                         'todayBtn' => true
                     ]
                 ]);?>

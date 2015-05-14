@@ -20,6 +20,8 @@ class AppDate
      */
     public static function stringToDate( $stringDate , $formatDate )
     {
+        date_default_timezone_set('America/Bogota');
+        setlocale ( LC_TIME , 'spanish' );
         $format = Yii::$app->params['formatDbDate'];
         if ( $formatDate != null ) {
             $format = $formatDate;

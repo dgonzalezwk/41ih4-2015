@@ -8,34 +8,32 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Productos';
-$this->params['breadcrumbs'][] = $this->title;
+
 ?>
-<div class="producto-index">
+<div class="container">
+    <div class="producto-index">
+        <h1><?= Html::encode($this->title) ?></h1>
+        <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+        <p>
+            <?= Html::a('Create Producto', ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+                'codigo',
+                'nombre',
+                'descripcion',
+                'estado',
+                'categoria',
+                // 'imagen',
+                // 'fechamod',
+                // 'usuariomod',
 
-    <p>
-        <?= Html::a('Create Producto', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'codigo',
-            'nombre',
-            'descripcion',
-            'estado',
-            'categoria',
-            // 'imagen',
-            // 'fechamod',
-            // 'usuariomod',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-
+                ['class' => 'yii\grid\ActionColumn'],
+            ],
+        ]); ?>
+    </div>
 </div>
