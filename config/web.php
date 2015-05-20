@@ -45,6 +45,12 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
         ],
+        'formatter' => [
+            'dateFormat' => 'dd.MM.yyyy',
+            'decimalSeparator' => ',',
+            'thousandSeparator' => ' ',
+            'currencyCode' => 'EUR',
+       ],
     ],
     'params' => $params,
 ];

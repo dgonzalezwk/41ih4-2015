@@ -13,17 +13,21 @@ use Yii;
  * @property integer $estado
  * @property integer $categoria
  * @property string $imagen
- * @property string $fechamod
- * @property integer $usuariomod
+* @property string $fechaCreate
+* @property string $fechaMod
+* @property integer $usuarioMod
+* @property integer $usuarioCreate
  *
  * @property ItemFactura[] $itemFacturas
  * @property Lote[] $lotes
  * @property Termino $estado0
  * @property Termino $categoria0
- * @property Usuario $usuariomod0
+* @property Usuario $usuariomod
  */
 class Producto extends \yii\db\ActiveRecord
 {
+    public $file;
+
     /**
      * @inheritdoc
      */
@@ -38,9 +42,11 @@ class Producto extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'descripcion', 'estado', 'categoria', 'imagen', 'fechamod', 'usuariomod'], 'required'],
-            [['nombre', 'descripcion', 'estado', 'categoria', 'usuariomod'], 'integer'],
-            [['fechamod'], 'safe'],
+            [['nombre', 'descripcion', 'estado', 'categoria', 'imagen', 'usuarioMod', 'usuarioCreate'], 'required'],
+            [['estado', 'categoria', 'usuarioMod', 'usuarioCreate'], 'integer'],
+            [[ 'nombre'], 'string', 'max' => 50],
+            [[ 'descripcion'], 'string', 'max' => 250],
+            [['fechaCreate', 'fechaMod'], 'safe'],
             [['imagen'], 'string', 'max' => 100]
         ];
     }
@@ -57,8 +63,24 @@ class Producto extends \yii\db\ActiveRecord
             'estado' => 'Estado',
             'categoria' => 'Categoria',
             'imagen' => 'Imagen',
-            'fechamod' => 'Fechamod',
-            'usuariomod' => 'Usuariomod',
+            'file' => 'Imagen',
+            'fechaCreate' => 'Fecha de creacion',
+            'fechaMod' => 'Fecha de modificacion',
+            'usuarioMod' => 'Usuario modificador',
+            'usuarioCreate' => 'Usuario creador',
+            [
+                'file', 'file',
+                'skipOnEmpty' => false,
+                'uploadRequired' => 'No has seleccionado ningún archivo', //Error
+                'maxSize' => 1024*1024*1, //1 MB
+                'tooBig' => 'El tamaño máximo permitido es 1MB', //Error
+                'minSize' => 10, //10 Bytes
+                'tooSmall' => 'El tamaño mínimo permitido son 10 BYTES', //Error
+                'extensions' => 'png, jpeg',
+                'wrongExtension' => 'El archivo {file} no contiene una extensión permitida {extensions}', //Error
+                'maxFiles' => 4,
+                'tooMany' => 'El máximo de archivos permitidos son {limit}', //Error
+            ],
         ];
     }
 
@@ -97,7 +119,7 @@ class Producto extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUsuariomod0()
+    public function getUsuariomod()
     {
         return $this->hasOne(Usuario::className(), ['codigo' => 'usuariomod']);
     }

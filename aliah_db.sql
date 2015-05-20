@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 12, 2015 at 05:01 AM
+-- Generation Time: May 20, 2015 at 05:56 AM
 -- Server version: 5.6.15-log
 -- PHP Version: 5.5.8
 
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `accion_usuario` (
   PRIMARY KEY (`codigo`),
   KEY `accion` (`accion`),
   KEY `usuario` (`usuario`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
 
 --
 -- Dumping data for table `accion_usuario`
@@ -85,7 +85,23 @@ INSERT INTO `accion_usuario` (`codigo`, `accion`, `usuario`, `estado`) VALUES
 (3, 4, 5, 1),
 (4, 13, 5, 1),
 (5, 14, 5, 1),
-(6, 15, 5, 1);
+(6, 15, 5, 1),
+(7, 4, 3, 1),
+(8, 5, 3, 1),
+(9, 6, 3, 1),
+(10, 7, 3, 1),
+(11, 8, 3, 1),
+(12, 9, 3, 1),
+(13, 10, 3, 1),
+(14, 11, 3, 1),
+(15, 12, 3, 1),
+(16, 13, 3, 1),
+(17, 14, 3, 1),
+(18, 15, 3, 1),
+(19, 16, 3, 1),
+(20, 17, 3, 1),
+(21, 18, 3, 1),
+(22, 19, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -340,17 +356,19 @@ INSERT INTO `modulo` (`codigo`, `modulo`, `controladores`, `estado`) VALUES
 
 CREATE TABLE IF NOT EXISTS `producto` (
   `codigo` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` int(50) NOT NULL,
-  `descripcion` int(250) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `descripcion` varchar(250) NOT NULL,
   `estado` int(11) NOT NULL,
   `categoria` int(11) NOT NULL,
   `imagen` varchar(100) NOT NULL,
-  `fechamod` date NOT NULL,
-  `usuariomod` int(11) NOT NULL,
+  `fechaCreate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fechaMod` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `usuarioMod` int(11) DEFAULT NULL,
+  `usuarioCreate` int(11) DEFAULT NULL,
   PRIMARY KEY (`codigo`),
   KEY `estado` (`estado`),
   KEY `categoria` (`categoria`),
-  KEY `usuariomod` (`usuariomod`)
+  KEY `usuariomod` (`usuarioMod`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -429,7 +447,7 @@ CREATE TABLE IF NOT EXISTS `termino` (
   `descripcion` varchar(250) NOT NULL,
   `estado` tinyint(1) NOT NULL,
   PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `termino`
@@ -440,7 +458,9 @@ INSERT INTO `termino` (`codigo`, `termino`, `key`, `categoria`, `descripcion`, `
 (2, 'Femenino', 2, 'sexo', 'este termino corresponde a la categoria sexo al sexo femennino', 1),
 (3, 'Activo', 1, 'Estados De Usuario', 'Este termino hace referencia a el estado activo de un usuario', 1),
 (4, 'Inactivo', 2, 'Estados De Usuario', 'Este termino hace referencia a el estado Inactivo de un usuario', 1),
-(5, 'Eliminado', 3, 'Estados De Usuario', 'Este termino hace referencia a el estado activo de un usuario', 1);
+(5, 'Eliminado', 3, 'Estados De Usuario', 'Este termino hace referencia a el estado activo de un usuario', 1),
+(6, 'Categoria 1', 1, 'Categoria De Producto', 'esta es la primera categoría de productos', 1),
+(7, 'Activo', 1, 'Estados De Producto', 'este es el estado activo un producto', 1);
 
 -- --------------------------------------------------------
 
@@ -485,7 +505,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 --
 
 INSERT INTO `usuario` (`codigo`, `identificacion`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `sexo`, `usuario`, `contrasena`, `rol`, `estado`) VALUES
-(3, 1029384756, 'Super', 'Usuario', 0, 'superadmin@aliah.com', '0000-00-00', 1, 'aliah', 'MTAyOTM4NDc1Ng==', 1, 3),
+(3, 1029384756, 'Super', 'Usuario', 0, 'superadmin@aliah.com', '1969-12-31', 1, 'aliah', 'MTIzNDU2Nzg5MA==', 1, 3),
 (4, 1234567, 'ersdtfghbjnq', 'easxdcfgvbh', 234567, 'serdtfgyh@gmail.com', '2015-05-16', 1, 'asdf', 'VFZSSmVrNUVWVDA9', 1, 3),
 (5, 1234567890, 'diego fernando', 'gonzalez velandia', 6938335, 'diego.gonzalez@gmail.com', '1970-01-01', 1, 'diego.gonzalez', 'TVRJek5EVT0=', 1, 3);
 

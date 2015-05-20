@@ -3,18 +3,21 @@
 namespace app\controllers;
 
 use Yii;
+use app\assets\AppDate;
 use app\models\Producto;
 use app\models\ProductoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 use yii\filters\VerbFilter;
+
 
 /**
  * ProductoController implements the CRUD actions for Producto model.
  */
 class ProductoController extends Controller
 {
-    public $layout = 'pagina_web';
+    public $layout = 'pagina_web'; 
     
     public function behaviors()
     {
@@ -63,10 +66,22 @@ class ProductoController extends Controller
     public function actionCreate()
     {
         $model = new Producto();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->codigo]);
+        $model->usuarioCreate = Yii::$app->user->getId(); ;
+        $model->usuarioMod = Yii::$app->user->getId(); ;
+        print_r('hola ');
+        if ($model->load(Yii::$app->request->post())  && $model->save()) {
+            print_r('hola load ');
+            $model->file = UploadedFile::getInstances($model, 'file');
+            if ( $model->file ) {
+                print_r('hola file ');
+                foreach ($model->file as $file) {
+                    $model->imagen = $model->codigo . '.' . $file->extension;
+                    $file->saveAs('archivos/' . $model->codigo . '.' . $file->extension);
+                }
+                return $this->redirect(['view', 'id' => $model->codigo]);
+            }
         } else {
+            print_r('hola retoro ');
             return $this->render('create', [
                 'model' => $model,
             ]);

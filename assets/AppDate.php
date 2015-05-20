@@ -20,6 +20,8 @@ class AppDate
      */
     public static function stringToDate( $stringDate , $formatDate )
     {
+        // Yii::$app->formatter->locale = 'en-US';
+        // echo Yii::$app->formatter->asDate('2014-01-01'); // output: January 1, 2014
         date_default_timezone_set('America/Bogota');
         setlocale ( LC_TIME , 'spanish' );
         $format = Yii::$app->params['formatDbDate'];

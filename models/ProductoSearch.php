@@ -18,8 +18,8 @@ class ProductoSearch extends Producto
     public function rules()
     {
         return [
-            [['codigo', 'nombre', 'descripcion', 'estado', 'categoria', 'usuariomod'], 'integer'],
-            [['imagen', 'fechamod'], 'safe'],
+            [['codigo', 'nombre', 'descripcion', 'estado', 'categoria', 'usuarioMod', 'usuarioCreate'], 'integer'],
+            [['imagen', 'fechaCreate', 'fechaMod'], 'safe'],
         ];
     }
 
@@ -61,8 +61,10 @@ class ProductoSearch extends Producto
             'descripcion' => $this->descripcion,
             'estado' => $this->estado,
             'categoria' => $this->categoria,
-            'fechamod' => $this->fechamod,
-            'usuariomod' => $this->usuariomod,
+            'fechaCreate' => $this->fechaCreate,
+            'fechaMod' => $this->fechaMod,
+            'usuarioMod' => $this->usuarioMod,
+            'usuarioCreate' => $this->usuarioCreate,
         ]);
 
         $query->andFilterWhere(['like', 'imagen', $this->imagen]);
