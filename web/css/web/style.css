@@ -116,7 +116,7 @@ nav a#pull {
 }
 .contact_left form input[type="text"],input[type="text"],input[type="password"],select,.contact_left form textarea{
 	font-family: 'open_sansregular';
-  margin: 20px 0;
+  /*margin: 20px 0;*/
   box-shadow: none;
   border: 1px solid #9C9C9C;
   background: #ffffff;
@@ -127,7 +127,7 @@ nav a#pull {
   padding: 6px 12px;
   font-size: 14px;
   outline: none;
-  -webkit-appearance: none;
+  /*-webkit-appearance: none;*/
   transition: border-color 0.3s;
   -o-transition: border-color 0.3s;
   -ms-transition: border-color 0.3s;
@@ -206,7 +206,7 @@ input[type="submit"],input[type="button"] {
 	outline: none;
 	padding: 14px 24px;
 	text-transform: uppercase;
-	-webkit-appearance: none;
+	/*-webkit-appearance: none;*/
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
 	-o-transition: all 0.3s ease-in-out;

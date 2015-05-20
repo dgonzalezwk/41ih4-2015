@@ -65,6 +65,7 @@ class ProductoController extends Controller
      */
     public function actionCreate()
     {
+        $layout = 'administracion';
         $model = new Producto();
         $model->usuarioCreate = Yii::$app->user->getId(); ;
         $model->usuarioMod = Yii::$app->user->getId(); ;
