@@ -42,7 +42,7 @@ class Producto extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'descripcion', 'estado', 'categoria', 'imagen', 'usuarioMod', 'usuarioCreate'], 'required'],
+            [['nombre', 'descripcion', 'estado', 'categoria', 'usuarioMod', 'usuarioCreate'], 'required'],
             [['estado', 'categoria', 'usuarioMod', 'usuarioCreate'], 'integer'],
             [[ 'nombre'], 'string', 'max' => 50],
             [[ 'descripcion'], 'string', 'max' => 250],
@@ -50,14 +50,13 @@ class Producto extends \yii\db\ActiveRecord
             [['imagen'], 'string', 'max' => 100],
             ['file', 'file', 
                 'skipOnEmpty' => false,
-                'uploadRequired' => 'No has seleccionado ningún archivo', //Error
                 'maxSize' => 1024*1024*1, //1 MB
                 'tooBig' => 'El tamaño máximo permitido es 1MB', //Error
                 'minSize' => 10, //10 Bytes
                 'tooSmall' => 'El tamaño mínimo permitido son 10 BYTES', //Error
-                'extensions' => 'pdf, txt, doc',
+                'extensions' => 'png, jpeg, jpg',
                 'wrongExtension' => 'El archivo {file} no contiene una extensión permitida {extensions}', //Error
-                'maxFiles' => 4,
+                'maxFiles' => 1,
                 'tooMany' => 'El máximo de archivos permitidos son {limit}', //Error
             ],
         ];
