@@ -14,28 +14,22 @@ use yii\widgets\ActiveForm;
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
-
-    <?= $form->field($model, 'codigo') ?>
-
-    <?= $form->field($model, 'nombre') ?>
-
-    <?= $form->field($model, 'descripcion') ?>
-
-    <?= $form->field($model, 'estado') ?>
-
-    <?= $form->field($model, 'categoria') ?>
-
-    <?php // echo $form->field($model, 'imagen') ?>
-
-    <?php // echo $form->field($model, 'fechamod') ?>
-
-    <?php // echo $form->field($model, 'usuariomod') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+    <div class="col-lg-3">
+        <?= $form->field($model, 'nombre')->label(false) ?>
     </div>
-
+    <div class="col-lg-3">
+        <?= $form->field($model, 'estado')->label(false) ?>
+    </div>
+    <div class="col-lg-3">
+        <?= $form->field($model, 'categoria')->label(false) ?>
+    </div>
+    <div class="col-lg-3">
+        <div class="form-group">
+            <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+            &nbsp;
+            <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        </div>
+    </div>
     <?php ActiveForm::end(); ?>
 
 </div>

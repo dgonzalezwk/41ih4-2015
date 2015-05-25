@@ -49,10 +49,13 @@ AppAsset::register($this);
         </div>
         </div>
        
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
+       <div class="container">
+            <?= Breadcrumbs::widget([
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            ]) ?>
+        </div>
         <?= $content ?>
+
         <div class="footer1_bg">
             <img id="img_foother" src="<?= Url::base()?>/img/img_foother2.png">
             <p id="p_foother">Vestidos Para La Mujer Elegante.</p>

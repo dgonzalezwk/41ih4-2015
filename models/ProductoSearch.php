@@ -18,7 +18,9 @@ class ProductoSearch extends Producto
     public function rules()
     {
         return [
-            [['codigo', 'nombre', 'descripcion', 'estado', 'categoria', 'usuarioMod', 'usuarioCreate'], 'integer'],
+            [['estado', 'categoria', 'usuarioMod', 'usuarioCreate'], 'integer'],
+            [[ 'nombre'], 'string', 'max' => 50],
+            [[ 'descripcion'], 'string', 'max' => 250],
             [['imagen', 'fechaCreate', 'fechaMod'], 'safe'],
         ];
     }

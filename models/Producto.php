@@ -49,7 +49,6 @@ class Producto extends \yii\db\ActiveRecord
             [['fechaCreate', 'fechaMod'], 'safe'],
             [['imagen'], 'string', 'max' => 100],
             ['file', 'file', 
-                'skipOnEmpty' => false,
                 'maxSize' => 1024*1024*1, //1 MB
                 'tooBig' => 'El tamaño máximo permitido es 1MB', //Error
                 'minSize' => 10, //10 Bytes

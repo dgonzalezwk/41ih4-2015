@@ -1,11 +1,11 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-use kartik\file\FileInput;
-use yii\helpers\Url;
-use yii\helpers\ArrayHelper;
 use app\models\TerminoSearch;
+use kartik\file\FileInput;
+use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model app\models\Producto */
 /* @var $form yii\widgets\ActiveForm */
@@ -13,20 +13,23 @@ use app\models\TerminoSearch;
 
 <div class="producto-form">
     <div class="row">
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        "method" => "post",
+        "enableClientValidation" => true,
+        "options" => ["enctype" => "multipart/form-data"],
+     ]); ?>
         <div class="col-lg-6">
             <?= $form->field($model, 'file')->widget(FileInput::classname(), [
                     'options'=>[
                         'multiple'=>false
                     ],
                     'pluginOptions' => [
-                        'uploadUrl' => Url::to(['/site/file-upload']),
-                        'uploadExtraData' => [
-                            'album_id' => 20,
-                            'cat_id' => 'Nature'
-                        ],
-                        'maxFileCount' => 1
-                    ]
+                        'initialPreview'=> $model->isNewRecord ? [] : [ Html::img( $model->imagen ), ],
+                        'showUpload' => false,
+                        'browseLabel' => '',
+                        'removeLabel' => '',
+                        'mainClass' => 'input-group-sm'
+                    ],
                 ]);
             ?>
         </div>

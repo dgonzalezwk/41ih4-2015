@@ -6,10 +6,11 @@ use Yii;
 use app\assets\AppDate;
 use app\models\Producto;
 use app\models\ProductoSearch;
+use yii\filters\VerbFilter;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
-use yii\filters\VerbFilter;
 
 
 /**
@@ -65,28 +66,32 @@ class ProductoController extends Controller
      */
     public function actionCreate()
     {
-        $layout = 'administracion';
+
+        $this->layout = 'administracion';
         $model = new Producto();
         $model->usuarioCreate = Yii::$app->user->getId(); ;
         $model->usuarioMod = Yii::$app->user->getId(); ;
-        print_r('hola ');
-        if ($model->load(Yii::$app->request->post())  && $model->save()) {
-            print_r('hola load ');
-            $model->file = UploadedFile::getInstances($model, 'file');
-            if ( $model->file ) {
-                print_r('hola file ');
-                foreach ($model->file as $file) {
-                    $model->imagen = $model->codigo . '.' . $file->extension;
-                    $file->saveAs('archivos/' . $model->codigo . '.' . $file->extension);
-                }
-                return $this->redirect(['view', 'id' => $model->codigo]);
+        
+        if ( $model->load(Yii::$app->request->post()) ) {
+            
+            $image = UploadedFile::getInstance( $model, 'file' );
+            $ext = end((explode(".", $image->name)));
+            $model->imagen = Yii::$app->security->generateRandomString().".{$ext}";
+            $path =  Yii::$app->basePath . '/web/img/producto/'. $model->imagen;
+
+            if($model->save()){
+                $image->saveAs($path);
+                return $this->redirect(['view', 'id'=>$model->codigo]);
+            } else {
+                
             }
+
         } else {
-            print_r('hola retoro ');
             return $this->render('create', [
                 'model' => $model,
             ]);
         }
+
     }
 
     /**
@@ -97,15 +102,28 @@ class ProductoController extends Controller
      */
     public function actionUpdate($id)
     {
+        $this->layout = 'administracion';
         $model = $this->findModel($id);
+        $model->usuarioMod = Yii::$app->user->getId();
+        $model->imagen = Url::base()."/img/producto/". $model->imagen;
+        if ( $model->load(Yii::$app->request->post()) ) {
+            
+            $image = UploadedFile::getInstance( $model, 'file' );
+            $path =  Url::base()."/img/producto/". $model->imagen;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->codigo]);
+            if($model->save()){
+                $image->saveAs($path);
+                return $this->redirect(['view', 'id'=>$model->codigo]);
+            } else {
+                
+            }
+
         } else {
             return $this->render('update', [
                 'model' => $model,
             ]);
         }
+
     }
 
     /**
