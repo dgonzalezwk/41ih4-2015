@@ -105,20 +105,27 @@ class ProductoController extends Controller
         $this->layout = 'administracion';
         $model = $this->findModel($id);
         $model->usuarioMod = Yii::$app->user->getId();
-        $model->imagen = Url::base()."/img/producto/". $model->imagen;
         if ( $model->load(Yii::$app->request->post()) ) {
             
             $image = UploadedFile::getInstance( $model, 'file' );
-            $path =  Url::base()."/img/producto/". $model->imagen;
+            if(!empty($image)){
+                $path =  Url::base()."/img/producto/". $model->imagen;
+            }
 
             if($model->save()){
-                $image->saveAs($path);
-                return $this->redirect(['view', 'id'=>$model->codigo]);
+                if(!empty($image)){
+                    $image->saveAs($path);
+                    return $this->redirect(['view', 'id'=>$model->codigo]);
+                }
             } else {
-                
+                $model->imagen = Url::base()."/img/producto/". $model->imagen;
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
             }
 
         } else {
+            $model->imagen = Url::base()."/img/producto/". $model->imagen;
             return $this->render('update', [
                 'model' => $model,
             ]);
