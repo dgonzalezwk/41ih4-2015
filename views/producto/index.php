@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ListView;
 use yii\widgets\Pjax;
 
@@ -15,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="producto-index">
         <?php Pjax::begin(['timeout' => 10000,]); ?>
         <div class="row">
-            <h1><?= Html::encode($this->title) ?> | <?= Html::a('Create Producto', ['create'], ['class' => 'btn btn-success']) ?> </h1> 
+            <h1><?= Html::encode($this->title) ?> | <?= Html::a('Crear Producto', ['create'], ['class' => 'btn btn-success']) ?> </h1> 
         </div>
         <div class="row">
             <?php echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -24,8 +25,23 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= ListView::widget([
                 'dataProvider' => $dataProvider,
                 'itemOptions' => ['class' => 'item'],
+                'summary' => Html::tag('div', '<b>{count} - {totalCount}</b> de <b>{end}</b> productos' , [ "class" => "text text-center" ]),
                 'itemView' => function ($model, $key, $index, $widget) {
-                    return Html::a(Html::encode($model->codigo), ['view', 'id' => $model->codigo]);
+                    return #
+                        Html::tag('div',
+                            Html::tag('div',
+                                Html::a( 
+                                    Html::tag('img', '', [ "class" => "img-responsive" , 'src' => Url::base() . '/img/producto/'. $model->imagen ]) 
+                                , [ 'view', 'id' => $model->codigo ] ).
+                                Html::tag('div',
+                                    Html::tag('span', $model->estado0->termino , ['class' => 'pull-right text-muted small']) .
+                                    Html::tag('h3', $model->nombre , [] ) .
+                                    Html::tag('p', $model->descripcion , [] ) .
+                                    Html::tag('p', Html::a( "Ver Detalles" , [ 'view', 'id' => $model->codigo ] , [ "class" => "btn btn-default" ] ) , [] ) 
+                                , [ "class" => "caption" ])
+                            , [ "class" => "thumbnail" ])
+                        , [ "class" => "col-lg-3 text text-center" ]);
+                    #;
                 },
             ]) ?>
         </div>
