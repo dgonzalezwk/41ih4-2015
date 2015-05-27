@@ -9,23 +9,18 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="horario-form">
-
-    <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'horario_apertura')->textInput() ?>
-
-    <?= $form->field($model, 'hora_cierre')->textInput() ?>
-
-    <?= $form->field($model, 'hora_max_cierre')->textInput() ?>
-
-    <?= $form->field($model, 'dia')->textInput() ?>
-
-    <?= $form->field($model, 'punto_venta')->textInput() ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    <div class="row">
+        <?php $form = ActiveForm::begin(); ?>
+            <div class="col-lg-4">
+                <?= $form->field($model, 'horario_apertura')->textInput()->label( false ) ?>
+            </div>
+            <div class="col-lg-4">
+                <?= $form->field($model, 'hora_cierre')->textInput()->label( false ) ?>
+            </div>
+            <div class="col-lg-4">
+                <?= $form->field($model, 'hora_max_cierre')->textInput()->label( false ) ?>
+            </div>
+            <?= $form->field($model, 'dia')->hiddenInput()->label( false ) ?>
+        <?php ActiveForm::end(); ?>
     </div>
-
-    <?php ActiveForm::end(); ?>
-
 </div>

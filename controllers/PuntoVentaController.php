@@ -3,13 +3,16 @@
 namespace app\controllers;
 
 use Yii;
+use app\assets\AppAccessRule;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use app\models\PuntoVenta;
 use app\models\PuntoVentaSearch;
+use app\models\Horario;
 use app\models\Accion;
 use app\models\Modulo;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * PuntoVentaController implements the CRUD actions for PuntoVenta model.
@@ -107,7 +110,7 @@ class PuntoVentaController extends Controller
         $model = new PuntoVenta();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $modulo = $modelModulo->find()->where(['modulo'=>'Ventas'])->one();
-            
+
             $modelAction = new Accion;
             $modelAction->accion = 'Autorizacion de venta en '.$model->barrio." ".$model->direccion;
             $modelAction->descripcion = 'Esta accion corresponde a la autorizacion de venta en '.$model->barrio." ".$model->direccion;
@@ -116,7 +119,15 @@ class PuntoVentaController extends Controller
             
             return $this->redirect(['view', 'id' => $model->codigo]);
         } else {
-            return $this->render('create', ['model' => $model,]);
+
+            $horarios = [];
+            for ($i=0; $i < 6 ; $i++) { 
+                $horario = new Horario();
+                $horario->dia = $i;
+                array_push( $horarios , $horario);
+            }
+
+            return $this->render('create', [ 'model' => $model , "horarios" => $horarios ]);
         }
     }
 

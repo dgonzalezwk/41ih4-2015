@@ -67,7 +67,7 @@ class PuntoVenta extends \yii\db\ActiveRecord
             'barrio' => 'Barrio',
             'direccion' => 'Direccion',
             'local' => 'Local',
-            'estado' => 'Estado',
+            'estado' => 'Activo',
         ];
     }
 
