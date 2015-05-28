@@ -106,6 +106,13 @@ class PuntoVentaController extends Controller
      */
     public function actionCreate()
     {
+
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $transaction->commit();
+        } catch (Exception $e) {
+            $transaction->rollBack();
+        }
         #Accion de creaar punto de venta.
         $model = new PuntoVenta();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

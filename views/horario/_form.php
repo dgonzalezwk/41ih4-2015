@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use kartik\time\TimePicker;
 /* @var $this yii\web\View */
 /* @var $model app\models\Horario */
 /* @var $form yii\widgets\ActiveForm */
@@ -12,13 +12,13 @@ use yii\widgets\ActiveForm;
     <div class="row">
         <?php $form = ActiveForm::begin(); ?>
             <div class="col-lg-4">
-                <?= $form->field($model, 'horario_apertura')->textInput()->label( false ) ?>
+                <?= $form->field($model, 'horario_apertura')->widget(TimePicker::classname(), [])->label( false ) ?>
             </div>
             <div class="col-lg-4">
-                <?= $form->field($model, 'hora_cierre')->textInput()->label( false ) ?>
+                <?= $form->field($model, 'hora_cierre')->widget(TimePicker::classname(), [])->label( false ) ?>
             </div>
             <div class="col-lg-4">
-                <?= $form->field($model, 'hora_max_cierre')->textInput()->label( false ) ?>
+                <?= $form->field($model, 'hora_max_cierre')->widget(TimePicker::classname(), [])->label( false ) ?>
             </div>
             <?= $form->field($model, 'dia')->hiddenInput()->label( false ) ?>
         <?php ActiveForm::end(); ?>
