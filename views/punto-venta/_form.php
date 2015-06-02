@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\Pjax;
+use yii\bootstrap\Tabs;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\PuntoVenta */
@@ -32,14 +33,22 @@ use yii\widgets\Pjax;
         </div>
         <div class="col-lg-6">
             <?php if ( isset($horarios) && is_array($horarios) ): ?>
+                <?php $items = []; ?>
                 <?php foreach ($horarios as $key => $horario): ?>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Horario dia <?= $key ?></div>
-                        <div class="panel-body">
-                            <?= $this->render( '//horario/_form' , [ 'model' => $horario ] ) ?>
-                        </div>
-                    </div>
+                    <?php $temp = []; ?>
+                    <?php $temp['label'] = 'key'; ?>
+                    <?php $temp['content'] = $this->render( '//horario/_form' , [ 'model' => $horario , "key" => $key ] ); ?>
+                    <?php $temp['active'] = false; ?>
+                    <?php $temp['options'] = 'key'; ?>
+                    <?php array_push( $items , $temp );?>
                 <?php endforeach ?>
+                <?= 
+                    Tabs::widget([
+                        'items' => [
+                            $items,
+                        ],
+                    ]);
+                ?>
             <?php endif ?>
         </div>
     </div>

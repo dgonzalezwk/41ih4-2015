@@ -107,6 +107,7 @@ class PuntoVentaController extends Controller
     public function actionCreate()
     {
 
+        $this->layout = 'administracion';
         $transaction = Yii::$app->db->beginTransaction();
         try {
             $transaction->commit();
