@@ -54,6 +54,7 @@ AppAsset::register($this);
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]) ?>
         </div>
+        <?php print_r(Yii::$app->session->getFlash('error')) ?>
         <?= $content ?>
 
         <div class="footer1_bg">

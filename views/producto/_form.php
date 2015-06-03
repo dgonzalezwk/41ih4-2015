@@ -22,7 +22,6 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'file')->widget(FileInput::classname(), [
                     'options'=>[
                         'multiple' => false ,
-
                     ],
                     'pluginOptions' => [
                         'initialPreview'=> $model->isNewRecord ? [] : [ Html::img( $model->imagen , [ "class" => "col-lg-12" ] ), ],

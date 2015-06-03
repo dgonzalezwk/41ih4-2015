@@ -16,7 +16,7 @@ class AppAccessRule extends \yii\filters\AccessRule {
         foreach ($this->roles as $role) {
             
             if ($role == '?') {
-                if ($user->getIsGuest()) {
+                if (!$user->getIsGuest()) {
                     return true;
                 }
             } else if ($role == '@') {

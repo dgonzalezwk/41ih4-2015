@@ -4,8 +4,10 @@ namespace app\controllers;
 
 use Yii;
 use app\assets\AppDate;
+use app\assets\AppAccessRule;
 use app\models\Producto;
 use app\models\ProductoSearch;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -18,8 +20,9 @@ use yii\web\UploadedFile;
  */
 class ProductoController extends Controller
 {
-    public $layout = 'pagina_web'; 
-    
+    public $layout = 'pagina_web';
+    public $modelModulo;
+
     public function behaviors()
     {
         return [
@@ -28,6 +31,25 @@ class ProductoController extends Controller
                 'actions' => [
                     'delete' => ['post'],
                 ],
+            ],
+            'access' => [
+               'class' => AccessControl::className(),
+               'ruleConfig' => [
+                   'class' => AppAccessRule::className(),
+               ],
+               'only' => [ 'index','view','create','update','delete' ],
+               'rules' => [
+                   [
+                       'actions' => [ 'index','view' ],
+                       'allow' => true,
+                       'roles' => ['@'],
+                   ],
+                   [
+                       'actions' => [ 'create','update','delete' ],
+                       'allow' => true,
+                       'roles' => ['?'],
+                   ],
+               ],
             ],
         ];
     }
@@ -83,10 +105,14 @@ class ProductoController extends Controller
                 $image->saveAs($path);
                 return $this->redirect(['view', 'id'=>$model->codigo]);
             } else {
-                
+                Yii::$app->getSession()->setFlash('error',  $model->getErrors() );
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
             }
 
         } else {
+            Yii::$app->getSession()->setFlash('error', $model->getErrors() );
             return $this->render('create', [
                 'model' => $model,
             ]);
