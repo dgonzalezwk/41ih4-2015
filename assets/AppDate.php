@@ -48,7 +48,7 @@ class AppDate
         $format = Yii::$app->params['formatDbDate'];
         if ( $formatDate != null ) {
             $format = $formatDate;
-        }   
+        }
         if ($stringDate!=null && trim($stringDate)!='') {
             if ($format == Yii::$app->params['formatDbDate']) {
                 $arrayPartesFecha = explode('-', $stringDate);
@@ -56,14 +56,11 @@ class AppDate
 
                     if (in_array($arrayPartesFecha[1], AppDate::$mesesCortos)) {
                         $index = array_search($arrayPartesFecha[1],AppDate::$mesesCortos);
-                        
-                        
                         if ( $index <=8 ) {
                             return date( $format , strtotime(''.$arrayPartesFecha[2].'-0'.($index+1).'-'.$arrayPartesFecha[0].'') );
                         } else if ( $index >=9 ) {
                             return date( $format , strtotime(''.$arrayPartesFecha[2].'-'.($index+1).'-'.$arrayPartesFecha[0].'') );
                         }
-                        
                     }else{
                         if ( is_numeric($arrayPartesFecha[1]) && intval($arrayPartesFecha[1])<=12 ) {
                            if ( intval($arrayPartesFecha[1]) <=9 ) {
@@ -94,9 +91,8 @@ class AppDate
                 //             }
                 //         }
                 //     }
-                    
                 //     return $arrayPartesFecha[0].'-'.$mes.'-'.$arrayPartesFecha[2];
-                    
+                //     return $arrayPartesFecha[0].'-'.$mes.'-'.$arrayPartesFecha[2];
                 // } else {
                     return date( $format , strtotime($stringDate) );
                 // }
@@ -104,5 +100,15 @@ class AppDate
         }else{
             return null;
         }
+    }
+
+    public static function getTimeMeridanToTime( $stringTimeMeridian )
+    {
+        return date( Yii::$app->params['formatDbTime'] , strtotime( $stringTimeMeridian ) );
+    }
+
+    public static function getTimeToTimeMeridan( $stringTime )
+    {
+        return date( Yii::$app->params['formatViewTime'] , strtotime( $stringTime ) );
     }
 }

@@ -23,6 +23,7 @@ use Yii;
  * @property Horario[] $horarios
  * @property Ingreso[] $ingresos
  * @property Lote[] $lotes
+ * @property UsuarioPuntoVenta[] $usuarioPuntoVentas 
  */
 class PuntoVenta extends \yii\db\ActiveRecord
 {
@@ -43,7 +44,7 @@ class PuntoVenta extends \yii\db\ActiveRecord
             [['telefono', 'pais', 'ciudad', 'barrio', 'direccion'], 'required'],
             [['estado'], 'boolean'],
             [['Whatsapp'], 'integer'],
-            [['telefono'], 'string', 'max' => 21],
+            [['telefono'], 'integer',],
             [['extension'], 'string', 'max' => 20],
             [['pais'], 'string', 'max' => 15],
             [['ciudad'], 'string', 'max' => 15],
@@ -110,4 +111,12 @@ class PuntoVenta extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Lote::className(), ['destino' => 'codigo']);
     }
+
+    /** 
+    * @return \yii\db\ActiveQuery 
+    */ 
+    public function getUsuarioPuntoVentas() 
+    { 
+        return $this->hasMany(UsuarioPuntoVenta::className(), ['punto_venta' => 'codigo']); 
+    } 
 }

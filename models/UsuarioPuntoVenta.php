@@ -5,25 +5,24 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "horario".
+ * This is the model class for table "usuario_punto_venta".
  *
  * @property integer $codigo
- * @property string $horario_apertura
- * @property string $hora_cierre
- * @property string $hora_max_cierre
- * @property integer $dia
+ * @property integer $usuario
  * @property integer $punto_venta
+ * @property integer $estado
  *
  * @property PuntoVenta $puntoVenta
+ * @property Usuario $usuario0
  */
-class Horario extends \yii\db\ActiveRecord
+class UsuarioPuntoVenta extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'horario';
+        return 'usuario_punto_venta';
     }
 
     /**
@@ -32,9 +31,8 @@ class Horario extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['horario_apertura', 'hora_cierre', 'hora_max_cierre', 'dia', 'punto_venta'], 'required'],
-            [['horario_apertura', 'hora_cierre', 'hora_max_cierre'], 'safe'],
-            [['dia', 'punto_venta'], 'integer']
+            [['usuario', 'punto_venta', 'estado'], 'required'],
+            [['usuario', 'punto_venta', 'estado'], 'integer']
         ];
     }
 
@@ -45,11 +43,9 @@ class Horario extends \yii\db\ActiveRecord
     {
         return [
             'codigo' => 'Codigo',
-            'horario_apertura' => 'Horario Apertura',
-            'hora_cierre' => 'Hora Cierre',
-            'hora_max_cierre' => 'Hora Max Cierre',
-            'dia' => 'Dia',
+            'usuario' => 'Usuario',
             'punto_venta' => 'Punto Venta',
+            'estado' => 'Estado',
         ];
     }
 
@@ -60,5 +56,12 @@ class Horario extends \yii\db\ActiveRecord
     {
         return $this->hasOne(PuntoVenta::className(), ['codigo' => 'punto_venta']);
     }
-    
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsuario0()
+    {
+        return $this->hasOne(Usuario::className(), ['codigo' => 'usuario']);
+    }
 }

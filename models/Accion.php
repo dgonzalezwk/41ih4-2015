@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\models\Modulo;
 
 /**
  * This is the model class for table "accion".
@@ -69,4 +70,10 @@ class Accion extends \yii\db\ActiveRecord
     {
         return $this->hasMany(AccionUsuario::className(), ['accion' => 'codigo']);
     }
+
+    public static function actionByKey( $key )
+    {
+        return Accion::find()->where([ 'key' => $key ])->one();
+    }
+
 }

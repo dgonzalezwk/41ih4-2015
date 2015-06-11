@@ -14,6 +14,8 @@ use yii\filters\VerbFilter;
  */
 class GastoController extends Controller
 {
+    public $layout = 'administracion';
+
     public function behaviors()
     {
         return [
