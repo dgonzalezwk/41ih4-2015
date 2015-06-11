@@ -73,4 +73,9 @@ class UsuarioSearch extends Usuario
 
         return $dataProvider;
     }
+
+    public static function all()
+    {
+        
+    }
 }

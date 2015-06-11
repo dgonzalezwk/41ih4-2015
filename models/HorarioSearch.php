@@ -66,4 +66,10 @@ class HorarioSearch extends Horario
 
         return $dataProvider;
     }
+
+    public static function horarioByCodigo( $codigo ){
+
+        return = Horario::find()->where([ 'codigo' => $codigo ])->one();
+
+    }
 }

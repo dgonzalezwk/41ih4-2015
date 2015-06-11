@@ -23,6 +23,13 @@ AppAsset::register($this);
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
     </div>
+     <div class="container">
+        <div class="row">
+            <?php foreach ( Yii::$app->session->getAllFlashes() as $key => $message ): ?>
+                <div class="alert alert-<?= $key ?>" role="alert"><?= $message ?></div>
+            <?php endforeach ?>
+        </div>
+    </div>
 	<?= $content ?>
 <?php $this->endBody() ?>
 </body>

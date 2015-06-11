@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use Yii;
+use app\assets\AppAccessRule;
+use yii\filters\AccessControl;
 use app\models\Rol;
 use app\models\RolSearch;
 use app\models\Modulo;

@@ -23,9 +23,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'usuario') ?>
 
-    <?= $form->field($model, 'usuario_autorizador') ?>
-
-    <?php // echo $form->field($model, 'descripcion') ?>
+    <?= $form->field($model, 'descripcion') ?>
 
     <?php // echo $form->field($model, 'tipo_gasto') ?>
 
@@ -38,6 +36,12 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'usuario_actualizacion') ?>
 
     <?php // echo $form->field($model, 'fecha_actualizacion') ?>
+
+    <?php // echo $form->field($model, 'usuario_autorizador') ?>
+
+    <?php // echo $form->field($model, 'fecha_autorizacion') ?>
+
+    <?php // echo $form->field($model, 'estado') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

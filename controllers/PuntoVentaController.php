@@ -4,12 +4,13 @@ namespace app\controllers;
 
 use Yii;
 use app\assets\AppAccessRule;
+use app\assets\AppDate;
+use app\assets\AppHandlingErrors;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use app\models\PuntoVenta;
 use app\models\PuntoVentaSearch;
 use app\models\Horario;
-use app\models\Accion;
 use app\models\Modulo;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -106,37 +107,60 @@ class PuntoVentaController extends Controller
      */
     public function actionCreate()
     {
-
         $this->layout = 'administracion';
-        $transaction = Yii::$app->db->beginTransaction();
-        try {
-            $transaction->commit();
-        } catch (Exception $e) {
-            $transaction->rollBack();
-        }
-        #Accion de creaar punto de venta.
+
+        
         $model = new PuntoVenta();
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $modulo = $modelModulo->find()->where(['modulo'=>'Ventas'])->one();
 
-            $modelAction = new Accion;
-            $modelAction->accion = 'Autorizacion de venta en '.$model->barrio." ".$model->direccion;
-            $modelAction->descripcion = 'Esta accion corresponde a la autorizacion de venta en '.$model->barrio." ".$model->direccion;
-            $modelAction->modulo = $modulo['codigo'];
-            $modelAction->key = $modulo['codigo']."-PuntoVenta-sale-".$model->codigo;
-            
-            return $this->redirect(['view', 'id' => $model->codigo]);
+        $horarios = [];
+        if ( $model->load( Yii::$app->request->post() ) ) {
+            $transaction = Yii::$app->db->beginTransaction();
+            if ( $model->save() ) {
+                try {
+
+                    $horarios = Yii::$app->request->post( "horarios" );
+                    foreach ($horarios as $key => $dataHorario) {
+                        $horario = new Horario();
+                        if ( $horario->load( $dataHorario ) ) {
+
+                            $horario->horario_apertura = AppDate::getTimeMeridanToTime( $horario->horario_apertura );
+                            $horario->hora_cierre = AppDate::getTimeMeridanToTime( $horario->hora_cierre );
+                            $horario->hora_max_cierre = AppDate::getTimeMeridanToTime( $horario->hora_max_cierre );
+                            $horario->punto_venta = $model->codigo;
+                            $horario->save();
+
+                        } else {
+                            AppHandlingErrors::setFlash( 'danger' , AppHandlingErrors::getStringErrorModel( $horario->getErrors() ) );
+                            $horarios = $this->requestHorario( Yii::$app->request->post( "horarios" ) );
+                            $transaction->rollBack();
+                            return $this->render('create', [ 'model' => $model , "horarios" => $horarios ]);
+                        }
+                    }
+
+                    $transaction->commit();
+                    AppHandlingErrors::setFlash( 'success' , 'Datos del punto de venta guardados correctamente.' );                    
+                    return $this->redirect(['view', 'id' => $model->codigo]);
+
+                } catch (Exception $e) {
+                    AppHandlingErrors::setFlash( 'danger' , $e->message );
+                    $horarios = $this->requestHorario( Yii::$app->request->post( "horarios" ) );
+                    $transaction->rollBack();
+                    return $this->render('create', [ 'model' => $model , "horarios" => $horarios ]);
+                }
+            } else {
+                AppHandlingErrors::setFlash( 'danger' , AppHandlingErrors::getStringErrorModel( $model->getErrors() ) );
+                $horarios = $this->requestHorario( Yii::$app->request->post( "horarios" ) );
+                return $this->render('create', [ 'model' => $model , "horarios" => $horarios ]);
+            }
         } else {
-
-            $horarios = [];
-            for ($i=0; $i < 6 ; $i++) { 
+            for ($i=0; $i < 7 ; $i++) { 
                 $horario = new Horario();
                 $horario->dia = $i;
                 array_push( $horarios , $horario);
             }
-
             return $this->render('create', [ 'model' => $model , "horarios" => $horarios ]);
         }
+        
     }
 
     /**
@@ -147,14 +171,52 @@ class PuntoVentaController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->codigo]);
+        $model = $this->findModel($id);
+        $horarios = [];
+
+        if ( $model->load( Yii::$app->request->post() ) ) {
+            $transaction = Yii::$app->db->beginTransaction();
+            if ( $model->save() ) {
+                try {
+
+                    $horarios = Yii::$app->request->post( "horarios" );
+                    foreach ( $model->horarios as $key => $horario ) {
+                        if ( $horario->load( $horarios[ $key ] ) ) {
+                            $horario->horario_apertura = AppDate::getTimeMeridanToTime( $horario->horario_apertura );
+                            $horario->hora_cierre = AppDate::getTimeMeridanToTime( $horario->hora_cierre );
+                            $horario->hora_max_cierre = AppDate::getTimeMeridanToTime( $horario->hora_max_cierre );
+                            $horario->save();
+                        } else {
+                            AppHandlingErrors::setFlash( 'danger' , AppHandlingErrors::getStringErrorModel( $horario->getErrors() ) );
+                            $horarios = $this->requestHorario( Yii::$app->request->post( "horarios" ) );
+                            $transaction->rollBack();
+                            return $this->render('update', [ 'model' => $model , "horarios" => $horarios ]);
+                        }
+                    }
+
+                    $transaction->commit();
+                    return $this->redirect(['view', 'id' => $model->codigo]);
+
+                } catch (Exception $e) {
+
+                    AppHandlingErrors::setFlash( 'danger' , $e->message );
+                    $horarios = $this->requestHorario( Yii::$app->request->post( "horarios" ) );;                    
+                    $transaction->rollBack();
+                    return $this->render('update', [ 'model' => $model , "horarios" => $horarios ]);
+
+                }
+            } else {
+
+                AppHandlingErrors::setFlash( 'danger' , AppHandlingErrors::getStringErrorModel( $model->getErrors() ) );
+                $horarios = $this->requestHorario( Yii::$app->request->post( "horarios" ) );
+                return $this->render('update', [ 'model' => $model , "horarios" => $horarios ]);
+
+            }
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+
+            return $this->render('update', [ 'model' => $model , "horarios" => $this->responseHorario( $model->horarios ) ]);
+
         }
     }
 
@@ -185,5 +247,27 @@ class PuntoVentaController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    private function responseHorario( $horarios )
+    {
+        foreach ($horarios as $key => $horario) {
+            $horario->horario_apertura = AppDate::getTimeToTimeMeridan( $horario->horario_apertura );
+            $horario->hora_cierre = AppDate::getTimeToTimeMeridan( $horario->hora_cierre );
+            $horario->hora_max_cierre = AppDate::getTimeToTimeMeridan( $horario->hora_max_cierre );
+        }
+        return $horarios;
+    }    
+
+    private function requestHorario( $horariosRecibidos )
+    {
+        $horarios = [];
+        foreach ($horariosRecibidos as $key => $dataHorario) {
+            $horario = new Horario();
+            if ( $horario->load( $dataHorario ) ) {  
+                array_push( $horarios , $horario);
+            }
+        }
+        return $horarios;
     }
 }

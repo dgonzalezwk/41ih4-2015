@@ -1,5 +1,6 @@
 <?php
 
+use yii\bootstrap\Collapse;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
@@ -7,8 +8,8 @@ use app\models\AccionSearch;
 use app\models\TerminoSearch;
 use app\models\RolSearch;
 use dosamigos\datepicker\DatePicker;
-use dosamigos\datetimepicker\DateTimePicker;
 use yii\widgets\Pjax;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Usuario */
@@ -46,19 +47,36 @@ use yii\widgets\Pjax;
                 </div>
             </div>
             <div class="col-lg-6">
-                <h2>Permisos</h2>
-                <?php if ( isset($modulos) && is_array($modulos) ): ?>
-                    <?php foreach ($modulos as $key => $modulo): ?>
-                        <div class="panel panel-default">
-                        <?php if ( is_array($modulo) ): ?>
-                            <div class="panel-heading"><?= $key ?></div>
-                            <div class="panel-body">
-                                <?php echo Html::checkboxList( 'permisos' , $modulo['seleccionados'] , ArrayHelper::map( $modulo['permisos'] , 'codigo' , 'accion' ) , [  ] ); ?>
-                            </div>
-                        <?php endif ?>
+                <div class="row">
+                    <h2>Permisos</h2>
+                    <?php $itemsCollapse = []; ?>
+                    <?php if ( isset($modulos) && is_array($modulos) ): ?>
+                        <?php foreach ($modulos as $key => $modulo): ?>
+                            <?php if ( is_array($modulo) ): ?>
+                                <?php $temp = []; ?>
+                                <?php $temp['label'] = $key; ?>
+                                <?php $temp['content'] = Html::checkboxList( 'permisos' , $modulo['seleccionados'] , ArrayHelper::map( $modulo['permisos'] , 'codigo' , 'accion' ) , [  ] ); ?>
+                                <?php array_push( $itemsCollapse , $temp );?>
+                            <?php endif ?>
+
+                        <?php endforeach ?>
+                    <?php endif ?>
+                    <?php
+                        echo Collapse::widget([
+                            'items' => $itemsCollapse,
+                        ]);
+                    ?>
+                </div>
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Usuario asignado a:</h3>
                         </div>
-                    <?php endforeach ?>
-                <?php endif ?>
+                        <div class="panel-body">
+                            <?= Html::checkboxList( 'puntos_venta_asignados' , null , ArrayHelper::map( null , 'codigo' , 'accion' ) , [ 'itemOptions' => ] ) ?>
+                        </div>
+                    </div>
+                </div>
             </div>
         <?php ActiveForm::end(); ?>
     <?php Pjax::end(); ?>

@@ -11,7 +11,6 @@ use Yii;
  * @property string $fecha
  * @property string $monto
  * @property integer $usuario
- * @property integer $usuario_autorizador
  * @property string $descripcion
  * @property integer $tipo_gasto
  * @property integer $punto_venta
@@ -19,13 +18,17 @@ use Yii;
  * @property string $fecha_registro
  * @property integer $usuario_actualizacion
  * @property string $fecha_actualizacion
+ * @property integer $usuario_autorizador
+ * @property string $fecha_autorizacion
+ * @property integer $estado
  *
+ * @property Termino $estado0
  * @property Usuario $usuario0
- * @property Usuario $usuarioAutorizador
  * @property Termino $tipoGasto
  * @property PuntoVenta $puntoVenta
  * @property Usuario $usuarioRegistro
  * @property Usuario $usuarioActualizacion
+ * @property Usuario $usuarioAutorizador
  */
 class Gasto extends \yii\db\ActiveRecord
 {
@@ -43,9 +46,9 @@ class Gasto extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fecha', 'monto', 'usuario', 'usuario_autorizador', 'descripcion', 'tipo_gasto', 'punto_venta', 'usuario_registro', 'fecha_registro', 'usuario_actualizacion', 'fecha_actualizacion'], 'required'],
-            [['fecha', 'fecha_registro', 'fecha_actualizacion'], 'safe'],
-            [['usuario', 'usuario_autorizador', 'tipo_gasto', 'punto_venta', 'usuario_registro', 'usuario_actualizacion'], 'integer'],
+            [['fecha', 'monto', 'usuario', 'descripcion', 'tipo_gasto', 'punto_venta', 'usuario_registro', 'fecha_registro', 'fecha_actualizacion', 'estado'], 'required'],
+            [['fecha', 'fecha_registro', 'fecha_actualizacion', 'fecha_autorizacion'], 'safe'],
+            [['usuario', 'tipo_gasto', 'punto_venta', 'usuario_registro', 'usuario_actualizacion', 'usuario_autorizador', 'estado'], 'integer'],
             [['monto'], 'string', 'max' => 12],
             [['descripcion'], 'string', 'max' => 250]
         ];
@@ -61,7 +64,6 @@ class Gasto extends \yii\db\ActiveRecord
             'fecha' => 'Fecha',
             'monto' => 'Monto',
             'usuario' => 'Usuario',
-            'usuario_autorizador' => 'Usuario Autorizador',
             'descripcion' => 'Descripcion',
             'tipo_gasto' => 'Tipo Gasto',
             'punto_venta' => 'Punto Venta',
@@ -69,7 +71,18 @@ class Gasto extends \yii\db\ActiveRecord
             'fecha_registro' => 'Fecha Registro',
             'usuario_actualizacion' => 'Usuario Actualizacion',
             'fecha_actualizacion' => 'Fecha Actualizacion',
+            'usuario_autorizador' => 'Usuario Autorizador',
+            'fecha_autorizacion' => 'Fecha Autorizacion',
+            'estado' => 'Estado',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEstado0()
+    {
+        return $this->hasOne(Termino::className(), ['codigo' => 'estado']);
     }
 
     /**
@@ -78,14 +91,6 @@ class Gasto extends \yii\db\ActiveRecord
     public function getUsuario0()
     {
         return $this->hasOne(Usuario::className(), ['codigo' => 'usuario']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUsuarioAutorizador()
-    {
-        return $this->hasOne(Usuario::className(), ['codigo' => 'usuario_autorizador']);
     }
 
     /**
@@ -118,5 +123,13 @@ class Gasto extends \yii\db\ActiveRecord
     public function getUsuarioActualizacion()
     {
         return $this->hasOne(Usuario::className(), ['codigo' => 'usuario_actualizacion']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsuarioAutorizador()
+    {
+        return $this->hasOne(Usuario::className(), ['codigo' => 'usuario_autorizador']);
     }
 }

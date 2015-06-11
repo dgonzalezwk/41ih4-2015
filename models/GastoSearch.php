@@ -18,8 +18,8 @@ class GastoSearch extends Gasto
     public function rules()
     {
         return [
-            [['codigo', 'usuario', 'usuario_autorizador', 'tipo_gasto', 'punto_venta', 'usuario_registro', 'usuario_actualizacion'], 'integer'],
-            [['fecha', 'monto', 'descripcion', 'fecha_registro', 'fecha_actualizacion'], 'safe'],
+            [['codigo', 'usuario', 'tipo_gasto', 'punto_venta', 'usuario_registro', 'usuario_actualizacion', 'usuario_autorizador', 'estado'], 'integer'],
+            [['fecha', 'monto', 'descripcion', 'fecha_registro', 'fecha_actualizacion', 'fecha_autorizacion'], 'safe'],
         ];
     }
 
@@ -59,13 +59,15 @@ class GastoSearch extends Gasto
             'codigo' => $this->codigo,
             'fecha' => $this->fecha,
             'usuario' => $this->usuario,
-            'usuario_autorizador' => $this->usuario_autorizador,
             'tipo_gasto' => $this->tipo_gasto,
             'punto_venta' => $this->punto_venta,
             'usuario_registro' => $this->usuario_registro,
             'fecha_registro' => $this->fecha_registro,
             'usuario_actualizacion' => $this->usuario_actualizacion,
             'fecha_actualizacion' => $this->fecha_actualizacion,
+            'usuario_autorizador' => $this->usuario_autorizador,
+            'fecha_autorizacion' => $this->fecha_autorizacion,
+            'estado' => $this->estado,
         ]);
 
         $query->andFilterWhere(['like', 'monto', $this->monto])

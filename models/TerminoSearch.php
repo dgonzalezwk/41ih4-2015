@@ -90,4 +90,8 @@ class TerminoSearch extends Termino
     {
         return Termino::find()->where(['categoria'=>'Estados De Producto','estado'=>1])->all();
     }
+    public static function searchTiposGasto()
+    {
+        return Termino::find()->where(['categoria'=>'Tipos De Gastos','estado'=>1])->all();
+    }
 }

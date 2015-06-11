@@ -29,6 +29,7 @@ use Yii;
  * @property Rol $rol0
  * @property Termino $sexo0
  * @property Termino $estado0
+ * @property UsuarioPuntoVenta[] $usuarioPuntoVentas 
  */
 class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
@@ -95,7 +96,7 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function getGastos()
     {
-        return $this->hasMany(Gasto::className(), ['usuario_actualizacion' => 'codigo']);
+        return $this->hasMany(Gasto::className(), ['usuario_autorizador' => 'codigo']);
     }
 
     /**
@@ -146,6 +147,12 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return $this->hasOne(Termino::className(), ['codigo' => 'estado']);
     }
 
+    public function getUsuarioPuntoVentas()
+    {
+       return static::findOne($id);
+       return $this->hasMany(UsuarioPuntoVenta::className(), ['usuario' => 'codigo']);
+    }
+
     /**
      * @inheritdoc
      */
@@ -153,6 +160,7 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return static::findOne($id);
     }
+
 
     /**
      * @inheritdoc

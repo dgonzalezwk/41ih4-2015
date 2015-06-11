@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 20, 2015 at 05:56 AM
+-- Generation Time: Jun 11, 2015 at 05:06 AM
 -- Server version: 5.6.15-log
 -- PHP Version: 5.5.8
 
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `accion` (
 --
 
 INSERT INTO `accion` (`codigo`, `accion`, `descripcion`, `modulo`, `key`) VALUES
-(3, 'Autorizacion de venta en San Victorino calle 10 # 9A - 18', 'Esta accion corresponde a la autorizacion de venta en San Victorino calle 10 # 9A - 18', 1, '1-PuntoVenta-sale-12'),
+(3, 'Autorizacion de venta', 'Esta acción corresponde a la autorización de venta en los diferentes punto de venta asignados', 2, '1-PuntoVenta-sale-*'),
 (4, 'Creación de Punto de venta', 'Esta acción corresponde a la opción de creación de puntos de venta', 2, '2-PuntoVenta-create-*'),
 (5, 'Busqueda de usuarios', '', 3, '3-Usuario-view-*'),
 (6, 'Creacion de usuarios', '', 3, '3-Usuario-create-*'),
@@ -175,21 +175,24 @@ CREATE TABLE IF NOT EXISTS `gasto` (
   `fecha` date NOT NULL,
   `monto` varchar(12) NOT NULL,
   `usuario` int(11) NOT NULL,
-  `usuario_autorizador` int(11) NOT NULL,
   `descripcion` varchar(250) NOT NULL,
   `tipo_gasto` int(11) NOT NULL,
   `punto_venta` int(11) NOT NULL,
   `usuario_registro` int(11) NOT NULL,
   `fecha_registro` date NOT NULL,
-  `usuario_actualizacion` int(11) NOT NULL,
+  `usuario_actualizacion` int(11) DEFAULT NULL,
   `fecha_actualizacion` date NOT NULL,
+  `usuario_autorizador` int(11) DEFAULT NULL,
+  `fecha_autorizacion` timestamp NULL DEFAULT NULL,
+  `estado` int(11) NOT NULL,
   PRIMARY KEY (`codigo`),
   KEY `usuario` (`usuario`),
-  KEY `usuario_autorizador` (`usuario_autorizador`),
   KEY `tipo_gasto` (`tipo_gasto`),
   KEY `punto_venta` (`punto_venta`),
   KEY `usuario_registro` (`usuario_registro`),
-  KEY `usuario_actualizacion` (`usuario_actualizacion`)
+  KEY `usuario_actualizacion` (`usuario_actualizacion`),
+  KEY `usuario_autorizador` (`usuario_autorizador`,`estado`),
+  KEY `estado` (`estado`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -207,7 +210,20 @@ CREATE TABLE IF NOT EXISTS `horario` (
   `punto_venta` int(11) NOT NULL,
   PRIMARY KEY (`codigo`),
   KEY `punto_venta` (`punto_venta`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `horario`
+--
+
+INSERT INTO `horario` (`codigo`, `horario_apertura`, `hora_cierre`, `hora_max_cierre`, `dia`, `punto_venta`) VALUES
+(1, '08:00:00', '18:00:00', '18:00:00', 0, 18),
+(2, '08:00:00', '18:00:00', '18:00:00', 1, 18),
+(3, '08:00:00', '18:00:00', '18:00:00', 2, 18),
+(4, '08:00:00', '18:00:00', '18:00:00', 3, 18),
+(5, '08:00:00', '18:00:00', '18:00:00', 4, 18),
+(6, '08:00:00', '18:00:00', '18:00:00', 5, 18),
+(7, '08:00:00', '18:00:00', '18:00:00', 6, 18);
 
 -- --------------------------------------------------------
 
@@ -343,7 +359,6 @@ CREATE TABLE IF NOT EXISTS `modulo` (
 --
 
 INSERT INTO `modulo` (`codigo`, `modulo`, `controladores`, `estado`) VALUES
-(1, 'Ventas', 'FacturaController', 1),
 (2, 'Puntos De venta', 'PuntoVentaController', 1),
 (3, 'Usuarios', 'RolController', 1),
 (4, 'Categorias', 'TeminoController', 1);
@@ -361,15 +376,23 @@ CREATE TABLE IF NOT EXISTS `producto` (
   `estado` int(11) NOT NULL,
   `categoria` int(11) NOT NULL,
   `imagen` varchar(100) NOT NULL,
-  `fechaCreate` timestamp  ,
-  `fechaMod` timestamp  ,
+  `fechaCreate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fechaMod` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `usuarioMod` int(11) DEFAULT NULL,
   `usuarioCreate` int(11) DEFAULT NULL,
   PRIMARY KEY (`codigo`),
   KEY `estado` (`estado`),
   KEY `categoria` (`categoria`),
   KEY `usuariomod` (`usuarioMod`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+
+--
+-- Dumping data for table `producto`
+--
+
+INSERT INTO `producto` (`codigo`, `nombre`, `descripcion`, `estado`, `categoria`, `imagen`, `fechaCreate`, `fechaMod`, `usuarioMod`, `usuarioCreate`) VALUES
+(7, 'pringuinos', 'consequat. Duis ute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 7, 6, 'PJb3Gkh_52KlkoF4tIijvGf0dh2RIO92.jpg', '2015-05-24 17:26:38', '2015-05-24 17:26:38', 3, 3),
+(8, 'desiertos', 'esta es la imagen para los desiertos', 7, 6, 'HUfoAXY71m3MCPvAarxc9OJxXzZL_VU1.jpg', '2015-05-27 00:40:42', '2015-05-27 00:40:42', 3, 3);
 
 -- --------------------------------------------------------
 
@@ -380,7 +403,7 @@ CREATE TABLE IF NOT EXISTS `producto` (
 CREATE TABLE IF NOT EXISTS `punto_venta` (
   `codigo` int(11) NOT NULL AUTO_INCREMENT,
   `Whatsapp` int(11) DEFAULT NULL,
-  `telefono` varchar(21) NOT NULL,
+  `telefono` int(10) NOT NULL,
   `extension` varchar(20) DEFAULT NULL,
   `pais` varchar(15) NOT NULL,
   `ciudad` varchar(15) NOT NULL,
@@ -390,14 +413,16 @@ CREATE TABLE IF NOT EXISTS `punto_venta` (
   `local` varchar(5) DEFAULT NULL,
   `estado` tinyint(1) NOT NULL,
   PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
 
 --
 -- Dumping data for table `punto_venta`
 --
 
 INSERT INTO `punto_venta` (`codigo`, `Whatsapp`, `telefono`, `extension`, `pais`, `ciudad`, `barrio`, `direccion`, `lugar`, `local`, `estado`) VALUES
-(12, 316825001, '(031) 341 6470', '', 'Colombia', 'Bogota', 'San Victorino', 'calle 10 # 9A - 18', 'Edificio Ecuador', '102', 0);
+(12, 316825001, 0, '', 'Colombia', 'Bogota', 'San Victorino', 'calle 10 # 9A - 18', 'Edificio Ecuador', '102', 0),
+(15, 123456890, 123456, '345', 'Colombia', 'Bogota', 'elenita', 'cra 12 # 55 a 23', 'edificio 22', '123', 1),
+(18, 212321, 2345325, '23452345', 'sdfasd', 'adsfsa', 'sdafasd', 'asdfasd', 'asdfdsaf', 'asdff', 1);
 
 -- --------------------------------------------------------
 
@@ -410,14 +435,16 @@ CREATE TABLE IF NOT EXISTS `rol` (
   `nombre` varchar(40) NOT NULL,
   `estado` tinyint(1) NOT NULL,
   PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `rol`
 --
 
 INSERT INTO `rol` (`codigo`, `nombre`, `estado`) VALUES
-(1, 'Administrador', 1);
+(1, 'Administrador', 1),
+(2, 'Administrador de punto de venta', 1),
+(3, 'Vendedor', 1);
 
 -- --------------------------------------------------------
 
@@ -447,7 +474,7 @@ CREATE TABLE IF NOT EXISTS `termino` (
   `descripcion` varchar(250) NOT NULL,
   `estado` tinyint(1) NOT NULL,
   PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=74 ;
 
 --
 -- Dumping data for table `termino`
@@ -459,8 +486,74 @@ INSERT INTO `termino` (`codigo`, `termino`, `key`, `categoria`, `descripcion`, `
 (3, 'Activo', 1, 'Estados De Usuario', 'Este termino hace referencia a el estado activo de un usuario', 1),
 (4, 'Inactivo', 2, 'Estados De Usuario', 'Este termino hace referencia a el estado Inactivo de un usuario', 1),
 (5, 'Eliminado', 3, 'Estados De Usuario', 'Este termino hace referencia a el estado activo de un usuario', 1),
-(6, 'Categoria 1', 1, 'Categoria De Producto', 'esta es la primera categoría de productos', 1),
-(7, 'Activo', 1, 'Estados De Producto', 'este es el estado activo un producto', 1);
+(6, 'No identificado', 0, 'Categoria De Producto', 'Este termino corresponde a el estado no identificado de categorias de producto', 1),
+(7, 'Activo', 1, 'Estados De Producto', 'este es el estado activo un producto', 1),
+(8, 'Bebe', 0, 'Talla', 'Talla de bebe', 1),
+(9, 'Bebe', 2, 'Talla', 'Talla de bebe', 1),
+(10, 'Bebe', 4, 'Talla', 'Talla de bebe', 1),
+(11, 'Niña', 6, 'Talla', 'Talla de niña', 1),
+(12, 'Nina', 8, 'Talla', 'Talla de nina', 1),
+(13, 'Niña', 10, 'Talla', 'Talla de niña', 1),
+(14, 'Teens', 12, 'Talla', 'Talla de teens', 1),
+(15, 'Teens', 14, 'Talla', 'Talla de teens', 1),
+(16, 'Teens', 16, 'Talla', 'Talla de teens', 1),
+(17, 'Small', 18, 'Talla', 'Talla de small', 1),
+(18, 'Medium', 20, 'Talla', 'Talla de medium', 1),
+(19, 'Large', 22, 'Talla', 'Talla de large', 1),
+(20, 'Extra large', 24, 'Talla', 'Talla de extra large', 1),
+(21, 'Doble extra large', 26, 'Talla', 'Talla de doble extra large', 1),
+(22, 'Estándar', 28, 'Talla', 'Talla de estándar', 1),
+(23, 'No identificado', 0, 'Color', 'color No identificado', 1),
+(24, 'Negro', 10, 'Color', 'color Negro', 1),
+(25, 'Gris', 11, 'Color', 'color Gris', 1),
+(26, 'Plata', 12, 'Color', 'color Plata', 1),
+(27, 'Blanco', 13, 'Color', 'color Blanco', 1),
+(28, 'Perla', 14, 'Color', 'color Perla', 1),
+(29, 'Fuxia', 15, 'Color', 'color Fuxia', 1),
+(30, 'Rosado', 16, 'Color', 'color Rosado', 1),
+(31, 'Camote', 17, 'Color', 'color Camote', 1),
+(32, 'Barney', 18, 'Color', 'color Barney', 1),
+(33, 'Lila', 19, 'Color', 'color Lila', 1),
+(34, 'Melon', 20, 'Color', 'color Melon', 1),
+(35, 'Coral', 21, 'Color', 'color Coral', 1),
+(36, 'Naranja', 22, 'Color', 'color Naranja', 1),
+(37, 'Rojo', 23, 'Color', 'color Rojo', 1),
+(38, 'Vino', 24, 'Color', 'color Vino', 1),
+(39, 'Verde menta', 25, 'Color', 'color Verde menta', 1),
+(40, 'Verde agua', 26, 'Color', 'color Verde agua', 1),
+(41, 'Turqueza', 27, 'Color', 'color Turqueza', 1),
+(42, 'Jade', 28, 'Color', 'color Jade', 1),
+(43, 'Azulino', 29, 'Color', 'color Azulino', 1),
+(44, 'Azul noche', 30, 'Color', 'color Azul noche', 1),
+(45, 'Dorado', 31, 'Color', 'color Dorado', 1),
+(46, 'Marron', 32, 'Color', 'color Marron', 1),
+(47, 'Verde noche', 33, 'Color', 'color Verde noche', 1),
+(48, 'Verde manzana', 34, 'Color', 'color Verde manzana', 1),
+(49, 'Verde esmeralda', 35, 'Color', 'color Verde esmeralda', 1),
+(50, 'Bautizo', 10, 'Categoria De Producto', 'Categria de producto Bautizo', 1),
+(51, 'Paje', 11, 'Categoria De Producto', 'Categria de producto Paje', 1),
+(52, 'Primera comunion', 12, 'Categoria De Producto', 'Categria de producto Primera comunion', 1),
+(53, 'Niña', 13, 'Categoria De Producto', 'Categria de producto Niña', 1),
+(54, 'Teens', 14, 'Categoria De Producto', 'Categria de producto Teens', 1),
+(55, 'Quince', 15, 'Categoria De Producto', 'Categria de producto Quince', 1),
+(56, 'Novia', 16, 'Categoria De Producto', 'Categria de producto Novia', 1),
+(57, 'Dama', 17, 'Categoria De Producto', 'Categria de producto Dama', 1),
+(58, 'Señoreal', 18, 'Categoria De Producto', 'Categria de producto Señoreal', 1),
+(59, 'Conjunto', 19, 'Categoria De Producto', 'Categria de producto Conjunto', 1),
+(60, 'Enterizo', 20, 'Categoria De Producto', 'Categria de producto Enterizo', 1),
+(61, 'Casual', 21, 'Categoria De Producto', 'Categria de producto Casual', 1),
+(62, 'Bluzas', 22, 'Categoria De Producto', 'Categria de producto Bluzas', 1),
+(63, 'Pantalon', 23, 'Categoria De Producto', 'Categria de producto Pantalon', 1),
+(64, 'Falda', 24, 'Categoria De Producto', 'Categria de producto Falda', 1),
+(65, 'Accesorios', 25, 'Categoria De Producto', 'Categria de producto Accesorios', 1),
+(66, 'Corsel', 26, 'Categoria De Producto', 'Categria de producto Corsel', 1),
+(67, 'No identificado', 0, 'Detalle de producto', 'Detalle de producto No identificado', 1),
+(68, 'Corto ', 1, 'Detalle de producto', 'Detalle de producto Corto ', 1),
+(69, 'Campana', 2, 'Detalle de producto', 'Detalle de producto Campana', 1),
+(70, 'Largo', 3, 'Detalle de producto', 'Detalle de producto Largo', 1),
+(71, 'Cola de pato', 4, 'Detalle de producto', 'Detalle de producto Cola de pato', 1),
+(72, '3/4', 5, 'Detalle de producto', 'Detalle de producto 3/4', 1),
+(73, 'Entallado', 6, 'Detalle de producto', 'Detalle de producto Entallado', 1);
 
 -- --------------------------------------------------------
 
@@ -506,8 +599,23 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 
 INSERT INTO `usuario` (`codigo`, `identificacion`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `sexo`, `usuario`, `contrasena`, `rol`, `estado`) VALUES
 (3, 1029384756, 'Super', 'Usuario', 0, 'superadmin@aliah.com', '1969-12-31', 1, 'aliah', 'MTIzNDU2Nzg5MA==', 1, 3),
-(4, 1234567, 'ersdtfghbjnq', 'easxdcfgvbh', 234567, 'serdtfgyh@gmail.com', '2015-05-16', 1, 'asdf', 'VFZSSmVrNUVWVDA9', 1, 3),
 (5, 1234567890, 'diego fernando', 'gonzalez velandia', 6938335, 'diego.gonzalez@gmail.com', '1970-01-01', 1, 'diego.gonzalez', 'TVRJek5EVT0=', 1, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `usuario_punto_venta`
+--
+
+CREATE TABLE IF NOT EXISTS `usuario_punto_venta` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `usuario` int(11) NOT NULL,
+  `punto_venta` int(11) NOT NULL,
+  `estado` tinyint(1) NOT NULL,
+  PRIMARY KEY (`codigo`),
+  KEY `usuario` (`usuario`,`punto_venta`),
+  KEY `punto_venta` (`punto_venta`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Constraints for dumped tables
@@ -555,11 +663,12 @@ ALTER TABLE `factura_ganadora`
 --
 ALTER TABLE `gasto`
   ADD CONSTRAINT `gasto_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `gasto_ibfk_2` FOREIGN KEY (`usuario_autorizador`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `gasto_ibfk_3` FOREIGN KEY (`tipo_gasto`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `gasto_ibfk_4` FOREIGN KEY (`punto_venta`) REFERENCES `punto_venta` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `gasto_ibfk_5` FOREIGN KEY (`usuario_registro`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `gasto_ibfk_6` FOREIGN KEY (`usuario_actualizacion`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `gasto_ibfk_6` FOREIGN KEY (`usuario_actualizacion`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `gasto_ibfk_7` FOREIGN KEY (`usuario_autorizador`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `gasto_ibfk_8` FOREIGN KEY (`estado`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `horario`
@@ -625,6 +734,13 @@ ALTER TABLE `usuario`
   ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`rol`) REFERENCES `rol` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `usuario_ibfk_2` FOREIGN KEY (`sexo`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `usuario_ibfk_3` FOREIGN KEY (`estado`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `usuario_punto_venta`
+--
+ALTER TABLE `usuario_punto_venta`
+  ADD CONSTRAINT `usuario_punto_venta_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `usuario_punto_venta_ibfk_2` FOREIGN KEY (`punto_venta`) REFERENCES `punto_venta` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
