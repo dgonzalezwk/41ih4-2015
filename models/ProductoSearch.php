@@ -73,4 +73,5 @@ class ProductoSearch extends Producto
 
         return $dataProvider;
     }
+
 }

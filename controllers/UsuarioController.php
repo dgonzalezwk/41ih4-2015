@@ -12,6 +12,7 @@ use app\models\AccionUsuarioSearch;
 use app\models\AccionSearch;
 use app\models\Usuario;
 use app\models\UsuarioSearch;
+use app\models\UsuarioPuntoVenta;
 use app\models\Modulo;
 use app\models\LoginForm;
 use yii\web\Controller;
@@ -123,42 +124,79 @@ class UsuarioController extends Controller
     public function actionCreate()
     {
         $model = new Usuario();
+        $permisos = null;
+        $puntosVentaSeleccionados = null;
         if ($model->load(Yii::$app->request->post())) {
             $stringDate = $model->fecha_nacimiento;
             $model->contrasena = base64_encode($model->contrasena);
             $model->fecha_nacimiento = AppDate::stringToDate($model->fecha_nacimiento , null );
-            if ($model->save()){
-                $permisos = Yii::$app->request->post('permisos');
-                if ( is_array( $permisos ) ) {
-                    foreach ($permisos as $accion) {
-                        $modelAccionUsuario = new AccionUsuario();
-                        $modelAccionUsuario->load(  [ 'AccionUsuario' => [
-                                'accion' => $accion,
-                                'usuario' => $model->codigo,
-                                'estado' => 1,
-                            ],
-                        ]);
-                        $modelAccionUsuario->save();
-                    }
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($model->save()){
+                        
+                        $permisos = Yii::$app->request->post( 'permisos' , null );
+                        $puntosVentaSeleccionados = Yii::$app->request->post("puntos_venta_asignados" , null );
+
+                        if ( is_array( $permisos ) ) {
+                            foreach ($permisos as $accion) {
+                                $modelAccionUsuario = new AccionUsuario();
+                                $modelAccionUsuario->load(  [ 'AccionUsuario' => [
+                                        'accion' => $accion,
+                                        'usuario' => $model->codigo,
+                                        'estado' => 1,
+                                    ],
+                                ]);
+                                if ( !$modelAccionUsuario->save() ) {
+                                    AppHandlingErrors::setFlash( 'danger' , AppHandlingErrors::getStringErrorModel( $modelAccionUsuario->getErrors() ) );
+                                    $model->fecha_nacimiento = $stringDate;
+                                    $model->contrasena = base64_decode($model->contrasena);
+                                    $arrayModulos = $this->arregloAccionesModulo( $permisos );
+                                    return $this->render('create', [ 'model' => $model , 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
+                                }
+                            }
+                        }
+                        if ( is_array( $puntosVentaSeleccionados ) ) {
+                            foreach ($puntosVentaSeleccionados as $idPuntoVenta) {
+                                $usuarioPuntoVenta = new UsuarioPuntoVenta();
+                                $usuarioPuntoVenta->load( [ 'UsuarioPuntoVenta' => [
+                                        'usuario' => $model->codigo,
+                                        'punto_venta' => $idPuntoVenta,
+                                        'estado' => 1,
+                                    ]
+                                ] );
+                                if ( !$usuarioPuntoVenta->save() ) {
+                                    AppHandlingErrors::setFlash( 'danger' , AppHandlingErrors::getStringErrorModel( $usuarioPuntoVenta->getErrors() ) );
+                                    $model->fecha_nacimiento = $stringDate;
+                                    $model->contrasena = base64_decode($model->contrasena);
+                                    $arrayModulos = $this->arregloAccionesModulo( $permisos );
+                                    return $this->render('create', [ 'model' => $model , 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
+                                }
+                            }
+                        }
+                        
+                        $transaction->commit();
+                        AppHandlingErrors::setFlash( 'success' , 'Datos del Usuario guardados correctamente.' );                    
+                        return $this->redirect(['view', 'id' => $model->codigo]);
+
+                } else {
+                    AppHandlingErrors::setFlash( 'danger' , AppHandlingErrors::getStringErrorModel( $model->getErrors() ) );
+                    $model->fecha_nacimiento = $stringDate;
+                    $model->contrasena = base64_decode($model->contrasena);
+                    $arrayModulos = $this->arregloAccionesModulo( $permisos );
+                    return $this->render('create', [ 'model' => $model , 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
                 }
-                return $this->redirect(['view', 'id' => $model->codigo]);
-            } else {
+
+            } catch (Exception $e) {
+                $arrayModulos = $this->arregloAccionesModulo( $permisos );
+                AppHandlingErrors::setFlash( 'danger' ,  $e->message );
+                $transaction->rollBack();
                 $model->fecha_nacimiento = $stringDate;
                 $model->contrasena = base64_decode($model->contrasena);
-                return $this->render('create', ['model' => $model,'modulos' => []] );
+                return $this->render('create', [ 'model' => $model , 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
             }
         } else {
-            $arrayModulos = [];
-            $modulos = $this->modelModulo->find()->all();
-            foreach ($modulos as $modulo) {
-                $arrayPermisos = [];
-                $acciones = AccionSearch::accionesPorModulo($modulo);
-                foreach ( $acciones as $accion ) {
-                    array_push( $arrayPermisos , $accion );
-                }
-                $arrayModulos[$modulo->modulo] = [ 'seleccionados' => null , 'permisos' => $arrayPermisos];
-            }
-            return $this->render('create', ['model' => $model, 'modulos' => $arrayModulos] );
+            $arrayModulos = $this->arregloAccionesModulo( $permisos );
+            return $this->render('create', [ 'model' => $model, 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
         }
     }
 
@@ -175,8 +213,8 @@ class UsuarioController extends Controller
             $stringDate = $model->fecha_nacimiento;
             $model->contrasena = base64_encode($model->contrasena);
             $model->fecha_nacimiento = AppDate::stringToDate($model->fecha_nacimiento , null );
-            if ($model->save())
-            {
+            if ($model->save()){
+
                 $permisos = Yii::$app->request->post('permisos');
                 $acciones = AccionSearch::all();
                 foreach ( $acciones as $accion ) {
@@ -212,7 +250,10 @@ class UsuarioController extends Controller
                     }
                 }
                 return $this->redirect(['view', 'id' => $model->codigo]);
+
             } else {
+
+                AppHandlingErrors::setFlash( 'danger' , AppHandlingErrors::getStringErrorModel( $model->getErrors() ) );
                 $model->fecha_nacimiento = $stringDate;
                 $model->contrasena = base64_decode($model->contrasena);
                 return $this->render('update', ['model' => $model, 'modulos' => [] ] );
@@ -293,5 +334,21 @@ class UsuarioController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    protected function arregloAccionesModulo( $seleccionados ){
+
+        $arrayModulos = [];
+        $modulos = $this->modelModulo->find()->all();
+        foreach ($modulos as $modulo) {
+            $arrayPermisos = [];
+            $acciones = AccionSearch::accionesPorModulo($modulo);
+            foreach ( $acciones as $accion ) {
+                array_push( $arrayPermisos , $accion );
+            }
+            $arrayModulos[$modulo->modulo] = [ 'seleccionados' => $seleccionados , 'permisos' => $arrayPermisos];
+        }
+        return $arrayModulos;
+
     }
 }

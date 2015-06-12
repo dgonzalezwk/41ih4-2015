@@ -14,6 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="container">
 	<div class="usuario-create">
 	    <h1><?= Html::encode($this->title) ?></h1>
-	    <?= $this->render('_form', [ 'model' => $model ,'modulos'=> $modulos ] ) ?>
+	    <?= $this->render('_form', [ 'model' => $model , 'modulos'=> $modulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] ) ?>
 	</div>
 </div>

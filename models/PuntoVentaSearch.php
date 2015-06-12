@@ -72,4 +72,9 @@ class PuntoVentaSearch extends PuntoVenta
 
         return $dataProvider;
     }
+
+    public static function all()
+    {
+        return PuntoVenta::find()->where(['estado'=>1])->all();
+    }
 }

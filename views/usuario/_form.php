@@ -5,6 +5,7 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use app\models\AccionSearch;
+use app\models\PuntoVentaSearch;
 use app\models\TerminoSearch;
 use app\models\RolSearch;
 use dosamigos\datepicker\DatePicker;
@@ -68,12 +69,10 @@ use yii\widgets\Pjax;
                     ?>
                 </div>
                 <div class="row">
+                    <h2>Asignado a:</h2>
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Usuario asignado a:</h3>
-                        </div>
                         <div class="panel-body">
-                            <?= Html::checkboxList( 'puntos_venta_asignados' , null , ArrayHelper::map( null , 'codigo' , 'accion' ) , [ 'itemOptions' => ] ) ?>
+                            <?= Html::checkboxList( 'puntos_venta_asignados' , $puntosVentaSeleccionados , ArrayHelper::map( PuntoVentaSearch::all() , 'codigo' ,  function ( $puntoVenta ) { return $puntoVenta->lugar . ' ' . $puntoVenta->direccion; } ) , [ ] ) ?>
                         </div>
                     </div>
                 </div>
