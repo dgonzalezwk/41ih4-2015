@@ -27,7 +27,6 @@ use yii\widgets\Pjax;
                 <?= $form->field($model, 'email')->textInput(['maxlength' => 30]) ?>
                 <?= $form->field($model, 'fecha_nacimiento')->widget(DatePicker::className(), [
                     'language' => 'es',
-                    //'template' => '{input}',
                     'inline' => false,
                     'clientOptions' => [
                         'autoclose' => true,
@@ -55,8 +54,8 @@ use yii\widgets\Pjax;
                         <?php foreach ($modulos as $key => $modulo): ?>
                             <?php if ( is_array($modulo) ): ?>
                                 <?php $temp = []; ?>
-                                <?php $temp['label'] = $key; ?>
-                                <?php $temp['content'] = Html::checkboxList( 'permisos' , $modulo['seleccionados'] , ArrayHelper::map( $modulo['permisos'] , 'codigo' , 'accion' ) , [  ] ); ?>
+                                <?php $temp['label'] = 'Permisos sobre '.$key; ?>
+                                <?php $temp['content'] = Html::checkboxList( 'permisos' , $modulo['seleccionados'] , ArrayHelper::map( $modulo['permisos'] , 'codigo' , 'accion' ) , [ 'itemOptions' => [ 'labelOptions' => [ 'class' => 'col-lg-6' ] ] ] ); ?>
                                 <?php array_push( $itemsCollapse , $temp );?>
                             <?php endif ?>
 
@@ -72,7 +71,7 @@ use yii\widgets\Pjax;
                     <h2>Asignado a:</h2>
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <?= Html::checkboxList( 'puntos_venta_asignados' , $puntosVentaSeleccionados , ArrayHelper::map( PuntoVentaSearch::all() , 'codigo' ,  function ( $puntoVenta ) { return $puntoVenta->lugar . ' ' . $puntoVenta->direccion; } ) , [ ] ) ?>
+                            <?= Html::checkboxList( 'puntos_venta_asignados' , $puntosVentaSeleccionados , ArrayHelper::map( PuntoVentaSearch::all() , 'codigo' ,  function ( $puntoVenta ) { return $puntoVenta->lugar . ' ' . $puntoVenta->direccion; } ) , [ 'itemOptions' => [ 'labelOptions' => [ 'class' => 'col-lg-6' ] ] ] ) ?>
                         </div>
                     </div>
                 </div>

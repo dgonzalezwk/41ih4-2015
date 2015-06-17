@@ -40,22 +40,22 @@ class TerminoController extends Controller
                    [
                        'actions' => [ 'index','view' ],
                        'allow' => true,
-                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Categorias'])->one()->codigo."-Termino-view-*"],
+                       'roles' => ["Termino-view-*"],
                    ],
                    [
                        'actions' => [ 'create' ],
                        'allow' => true,
-                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Categorias'])->one()->codigo."-Termino-create-*"],
+                       'roles' => ["Termino-create-*"],
                    ],
                    [
                        'actions' => [ 'update' ],
                        'allow' => true,
-                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Categorias'])->one()->codigo."-Termino-update-*"],
+                       'roles' => ["Termino-update-*"],
                    ],
                    [
                        'actions' => [ 'delete' ],
                        'allow' => true,
-                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Categorias'])->one()->codigo."-Termino-delete-*"],
+                       'roles' => ["Termino-delete-*"],
                    ],
 
                ],

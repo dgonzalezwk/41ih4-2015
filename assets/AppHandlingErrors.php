@@ -32,6 +32,10 @@ class AppHandlingErrors
 
     public static function setFlash( $stringType , $stringMenssage )
     {
+        
+        if ( $stringType == 'success' ) {
+            Yii::$app->session->removeFlash( 'danger' );
+        }
         Yii::$app->session->setFlash( $stringType , $stringMenssage );
     }
 

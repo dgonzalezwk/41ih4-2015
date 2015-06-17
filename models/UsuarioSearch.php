@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Usuario;
+use app\models\TerminoSearch;
 
 /**
  * UsuarioSearch represents the model behind the search form about `app\models\Usuario`.
@@ -76,6 +77,15 @@ class UsuarioSearch extends Usuario
 
     public static function all()
     {
-        
+        return Usuario::find()->where(['estado'=> TerminoSearch::EstadoUsuarioActivo()->codigo ])-> andWhere( [ 'not', [ 'codigo' => Yii::$app->user->identity->codigo ] ] )->all();
     }
+
+    public static function autorizadoresPuntoVenta( $puntoVenta)
+    {
+        $modulo = ModuloSearch::byName( 'Puntos De venta' );
+        $accion = AccionSearch::actionByKey( $modulo->codigo."-PuntoVenta-authorizeExpenditures-*" );
+        $sql = 'select * from usuario a inner join usuario_punto_venta b on a.codigo = b.usuario inner join accion_usuario c on a.codigo = c.usuario where a.rol IN('.RolSearch::getAdministrador()->codigo.','.RolSearch::getAdministradorPuntoVenta()->codigo.') and a.estado = '.TerminoSearch::EstadoUsuarioActivo()->codigo.' and b.codigo = '.$puntoVenta->codigo.' and c.codigo = '.$accion->codigo.' and c.estado = 1  ';
+        return Usuario::findBySql($sql)->all();
+    }
+
 }

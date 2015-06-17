@@ -18,22 +18,22 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::a('Crear punto de venta', ['create'], ['class' => 'btn btn-success']) ?>
         </p>
         <?php Pjax::begin()?>
-        <?= GridView::widget([
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
-                'ciudad',
-                'barrio',
-                'direccion',
-                //'codigo',     
-                //'telefono',
-                //'extension',
-                // 'local',
-                'estado:boolean',
-                ['class' => 'yii\grid\ActionColumn'],
-            ],
-        ]); ?>
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    'ciudad',
+                    'barrio',
+                    'direccion',
+                    //'codigo',     
+                    //'telefono',
+                    //'extension',
+                    // 'local',
+                    'estado:boolean',
+                    ['class' => 'yii\grid\ActionColumn'],
+                ],
+            ]); ?>
         <?php Pjax::end();?>
     </div>
 </div>

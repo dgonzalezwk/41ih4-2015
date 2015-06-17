@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="container">
     <div class="gasto-index">
         <h1><?= Html::encode($this->title) ?></h1>
-        <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+        <?php echo $this->render('_search', ['model' => $searchModel]); ?>
         <p>
             <?= Html::a('Registrar Gasto', ['create'], ['class' => 'btn btn-success']) ?>
         </p>
@@ -24,7 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
                 'fecha',
                 'monto',
-                'descripcion',
                 'tipo_gasto',
                 'punto_venta',
                 'usuario_registro',

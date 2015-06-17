@@ -50,7 +50,9 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['identificacion', 'nombre', 'apellido', 'telefono', 'email', 'fecha_nacimiento', 'sexo', 'usuario', 'contrasena', 'rol', 'estado'], 'required'],
             [['identificacion', 'telefono', 'sexo', 'rol', 'estado'], 'integer'],
             [['fecha_nacimiento'], 'safe'],
-            [['nombre', 'apellido', 'email', 'usuario', 'contrasena'], 'string', 'max' => 30]
+            [['nombre', 'apellido', 'email', 'usuario', 'contrasena'], 'string', 'max' => 30],
+            [['email'], 'unique'],
+           [['usuario'], 'unique']
         ];
     }
 
@@ -149,7 +151,6 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     public function getUsuarioPuntoVentas()
     {
-       return static::findOne($id);
        return $this->hasMany(UsuarioPuntoVenta::className(), ['usuario' => 'codigo']);
     }
 

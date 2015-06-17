@@ -51,11 +51,18 @@ class AppDate
         }
         if ($stringDate!=null && trim($stringDate)!='') {
             if ($format == Yii::$app->params['formatDbDate']) {
-                $arrayPartesFecha = explode('-', $stringDate);
+                $arrayPartesFecha = explode(' ', $stringDate);
                 if ( count($arrayPartesFecha) == 3 ) {
 
-                    if (in_array($arrayPartesFecha[1], AppDate::$mesesCortos)) {
+                    if (in_array( $arrayPartesFecha[1] , AppDate::$mesesCortos , true )) {
                         $index = array_search($arrayPartesFecha[1],AppDate::$mesesCortos);
+                        if ( $index <=8 ) {
+                            return date( $format , strtotime(''.$arrayPartesFecha[2].'-0'.($index+1).'-'.$arrayPartesFecha[0].'') );
+                        } else if ( $index >=9 ) {
+                            return date( $format , strtotime(''.$arrayPartesFecha[2].'-'.($index+1).'-'.$arrayPartesFecha[0].'') );
+                        }
+                    } else if (in_array( $arrayPartesFecha[1] , AppDate::$meses , true )) {
+                        $index = array_search($arrayPartesFecha[1],AppDate::$meses);
                         if ( $index <=8 ) {
                             return date( $format , strtotime(''.$arrayPartesFecha[2].'-0'.($index+1).'-'.$arrayPartesFecha[0].'') );
                         } else if ( $index >=9 ) {

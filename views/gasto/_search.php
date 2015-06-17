@@ -15,37 +15,15 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'codigo') ?>
-
     <?= $form->field($model, 'fecha') ?>
-
-    <?= $form->field($model, 'monto') ?>
-
     <?= $form->field($model, 'usuario') ?>
-
-    <?= $form->field($model, 'descripcion') ?>
-
-    <?php // echo $form->field($model, 'tipo_gasto') ?>
-
-    <?php // echo $form->field($model, 'punto_venta') ?>
-
-    <?php // echo $form->field($model, 'usuario_registro') ?>
-
-    <?php // echo $form->field($model, 'fecha_registro') ?>
-
-    <?php // echo $form->field($model, 'usuario_actualizacion') ?>
-
-    <?php // echo $form->field($model, 'fecha_actualizacion') ?>
-
-    <?php // echo $form->field($model, 'usuario_autorizador') ?>
-
-    <?php // echo $form->field($model, 'fecha_autorizacion') ?>
-
+    <?php echo $form->field($model, 'tipo_gasto') ?>
+    <?php echo $form->field($model, 'punto_venta') ?>
     <?php // echo $form->field($model, 'estado') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton('Buscar', ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton('Limpiar Filtros', ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

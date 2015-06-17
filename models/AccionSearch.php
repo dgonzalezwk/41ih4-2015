@@ -11,7 +11,7 @@ use app\models\Accion;
  * AccionSearch represents the model behind the search form about `app\models\Accion`.
  */
 class AccionSearch extends Accion
-{
+{    
     /**
      * @inheritdoc
      */
@@ -78,5 +78,10 @@ class AccionSearch extends Accion
 
     public static function all(){
         return Accion::find()->all();
+    }
+
+    public static function actionByKey( $key )
+    {
+        return Accion::find()->where([ 'key' => $key ])->one();
     }
 }

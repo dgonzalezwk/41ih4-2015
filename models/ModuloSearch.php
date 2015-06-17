@@ -66,4 +66,9 @@ class ModuloSearch extends Modulo
         
         return $dataProvider;
     }
+
+    public static function byName( $modulo )
+    {
+        return Modulo::find()->where([ 'modulo' => $modulo ])->one();
+    }
 }

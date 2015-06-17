@@ -13,6 +13,6 @@ $this->params['breadcrumbs'][] = 'Editar';
 <div class="container">
 	<div class="usuario-update">
 	    <h1><?= Html::encode($this->title) ?></h1>
-	    <?= $this->render('_form', ['model' => $model , 'modulos'=> $modulos ] ) ?>
+	    <?= $this->render('_form', [ 'model' => $model , 'modulos'=> $modulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] ) ?>
 	</div>
 </div>

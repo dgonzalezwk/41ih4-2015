@@ -40,22 +40,22 @@ class RolController extends Controller
                    [
                        'actions' => [ 'index','view' ],
                        'allow' => true,
-                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Usuarios'])->one()->codigo."-Rol-view-*"],
+                       'roles' => ["Rol-view-*"],
                    ],
                    [
                        'actions' => [ 'create' ],
                        'allow' => true,
-                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Usuarios'])->one()->codigo."-Rol-create-*"],
+                       'roles' => ["Rol-create-*"],
                    ],
                    [
                        'actions' => [ 'update' ],
                        'allow' => true,
-                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Usuarios'])->one()->codigo."-Rol-update-*"],
+                       'roles' => ["Rol-update-*"],
                    ],
                    [
                        'actions' => [ 'delete' ],
                        'allow' => true,
-                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Usuarios'])->one()->codigo."-Rol-delete-*"],
+                       'roles' => ["Rol-delete-*"],
                    ],
 
                ],

@@ -44,22 +44,22 @@ class PuntoVentaController extends Controller
                    [
                        'actions' => [ 'index','view' ],
                        'allow' => true,
-                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Puntos De venta'])->one()->codigo."-PuntoVenta-view-*"],
+                       'roles' => ["PuntoVenta-view-*"],
                    ],
                    [
                        'actions' => [ 'create' ],
                        'allow' => true,
-                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Puntos De venta'])->one()->codigo."-PuntoVenta-create-*"],
+                       'roles' => ["PuntoVenta-create-*"],
                    ],
                    [
                        'actions' => [ 'update' ],
                        'allow' => true,
-                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Puntos De venta'])->one()->codigo."-PuntoVenta-update-*"],
+                       'roles' => ["PuntoVenta-update-*"],
                    ],
                    [
                        'actions' => [ 'delete' ],
                        'allow' => true,
-                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Puntos De venta'])->one()->codigo."-PuntoVenta-delete-*"],
+                       'roles' => ["PuntoVenta-delete-*"],
                    ],
 
                ],

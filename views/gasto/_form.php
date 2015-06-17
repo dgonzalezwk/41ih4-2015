@@ -30,7 +30,7 @@ use dosamigos\datepicker\DatePicker;
         <?= $form->field($model, 'monto')->textInput(['maxlength' => 12]) ?>
         <?= $form->field($model, 'descripcion')->textInput(['maxlength' => 250]) ?>
         <?= $form->field($model, 'tipo_gasto')->dropDownList(ArrayHelper::map(TerminoSearch::searchTiposGasto(), 'codigo', 'termino'),['prompt'=>'Seleccione Una Opcion']) ?>
-        <?= $form->field($model, 'usuario_autorizador')->dropDownList(ArrayHelper::map(UsuarioSearch::all(), 'codigo', 'termino'),['prompt'=>'Seleccione Una Opcion']) ?>
+        <?= $form->field($model, 'usuario_autorizador')->dropDownList(ArrayHelper::map(UsuarioSearch::all(), 'codigo', function ( $usuario) { return $usuario->nombre . ' ' . $usuario->apellido; }),['prompt'=>'Seleccione Una Opcion']) ?>
         <div class="form-group">
             <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
         </div>

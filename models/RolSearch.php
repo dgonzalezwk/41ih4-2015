@@ -70,4 +70,14 @@ class RolSearch extends Rol
     {
         return Rol::find()->where(['estado'=>1])->all();
     }
+
+    public static function getAdministrador()
+    {
+        return Rol::find()->where([ 'nombre' => 'Administrador' , 'estado' => 1])->one();
+    }
+
+    public static function getAdministradorPuntoVenta()
+    {
+        return Rol::find()->where([ 'nombre' => 'Administrador de punto de venta' , 'estado' => 1])->one();
+    }
 }

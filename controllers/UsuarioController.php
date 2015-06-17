@@ -5,16 +5,20 @@ namespace app\controllers;
 use Yii;
 use app\assets\AppDate;
 use app\assets\AppAccessRule;
+use app\assets\AppHandlingErrors;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 use app\models\AccionUsuario;
 use app\models\AccionUsuarioSearch;
 use app\models\AccionSearch;
+use app\models\PuntoVentaSearch;
+use app\models\Modulo;
+use app\models\LoginForm;
 use app\models\Usuario;
 use app\models\UsuarioSearch;
 use app\models\UsuarioPuntoVenta;
-use app\models\Modulo;
-use app\models\LoginForm;
+use app\models\UsuarioPuntoVentaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -51,22 +55,22 @@ class UsuarioController extends Controller
                    [
                        'actions' => [ 'index','view' ],
                        'allow' => true,
-                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Usuarios'])->one()->codigo."-Usuario-view-*"],
+                       'roles' => ["Usuario-view-*"],
                    ],
                    [
                        'actions' => [ 'create' ],
                        'allow' => true,
-                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Usuarios'])->one()->codigo."-Usuario-create-*"],
+                       'roles' => ["Usuario-create-*"],
                    ],
                    [
                        'actions' => [ 'update' ],
                        'allow' => true,
-                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Usuarios'])->one()->codigo."-Usuario-update-*"],
+                       'roles' => ["Usuario-update-*"],
                    ],
                    [
                        'actions' => [ 'delete' ],
                        'allow' => true,
-                       'roles' => [$this->modelModulo->find()->where(['modulo'=>'Usuarios'])->one()->codigo."-Usuario-delete-*"],
+                       'roles' => ["Usuario-delete-*"],
                    ],
 
                ],
@@ -126,16 +130,18 @@ class UsuarioController extends Controller
         $model = new Usuario();
         $permisos = null;
         $puntosVentaSeleccionados = null;
+
         if ($model->load(Yii::$app->request->post())) {
             $stringDate = $model->fecha_nacimiento;
             $model->contrasena = base64_encode($model->contrasena);
             $model->fecha_nacimiento = AppDate::stringToDate($model->fecha_nacimiento , null );
             $transaction = Yii::$app->db->beginTransaction();
             try {
+
+                $permisos = Yii::$app->request->post( 'permisos' , null );
+                $puntosVentaSeleccionados = Yii::$app->request->post("puntos_venta_asignados" , null );
+
                 if ($model->save()){
-                        
-                        $permisos = Yii::$app->request->post( 'permisos' , null );
-                        $puntosVentaSeleccionados = Yii::$app->request->post("puntos_venta_asignados" , null );
 
                         if ( is_array( $permisos ) ) {
                             foreach ($permisos as $accion) {
@@ -177,8 +183,8 @@ class UsuarioController extends Controller
                         $transaction->commit();
                         AppHandlingErrors::setFlash( 'success' , 'Datos del Usuario guardados correctamente.' );                    
                         return $this->redirect(['view', 'id' => $model->codigo]);
-
                 } else {
+
                     AppHandlingErrors::setFlash( 'danger' , AppHandlingErrors::getStringErrorModel( $model->getErrors() ) );
                     $model->fecha_nacimiento = $stringDate;
                     $model->contrasena = base64_decode($model->contrasena);
@@ -187,6 +193,7 @@ class UsuarioController extends Controller
                 }
 
             } catch (Exception $e) {
+
                 $arrayModulos = $this->arregloAccionesModulo( $permisos );
                 AppHandlingErrors::setFlash( 'danger' ,  $e->message );
                 $transaction->rollBack();
@@ -209,77 +216,116 @@ class UsuarioController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $permisos = ArrayHelper::map( $model->accionUsuarios , 'codigo' , 'accion' );
+        $puntosVentaSeleccionados = ArrayHelper::map( $model->usuarioPuntoVentas , 'codigo' , 'punto_venta' );;
+
         if ($model->load(Yii::$app->request->post())) {
+
             $stringDate = $model->fecha_nacimiento;
             $model->contrasena = base64_encode($model->contrasena);
             $model->fecha_nacimiento = AppDate::stringToDate($model->fecha_nacimiento , null );
-            if ($model->save()){
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
 
-                $permisos = Yii::$app->request->post('permisos');
-                $acciones = AccionSearch::all();
-                foreach ( $acciones as $accion ) {
-                    if ( is_array( $permisos ) && in_array( $accion->codigo , $permisos ) ) {
-                        if ( AccionUsuarioSearch::isValido( $accion , $model ) ) {
-                            $modelAccionUsuario = AccionUsuarioSearch::accionPorUsuario( $accion , $model );
-                            if (  !$modelAccionUsuario->estado ) {
+                $permisos = Yii::$app->request->post( 'permisos' , null );
+                $puntosVentaSeleccionados = Yii::$app->request->post("puntos_venta_asignados" , null );
+                if ($model->save()){
+
+                    $permisos = Yii::$app->request->post('permisos');
+                    $acciones = AccionSearch::all();
+                    foreach ( $acciones as $accion ) {
+                        if ( is_array( $permisos ) && in_array( $accion->codigo , $permisos ) ) {
+                            if ( AccionUsuarioSearch::isValido( $accion , $model ) ) {
+                                $modelAccionUsuario = AccionUsuarioSearch::accionPorUsuario( $accion , $model );
+                                if (  !$modelAccionUsuario->estado ) {
+                                    $modelAccionUsuario->load([ 'AccionUsuario' => [
+                                            'estado' => 1,
+                                        ],
+                                    ]);
+                                    $modelAccionUsuario->save();
+                                }
+                            } else {
+                                $modelAccionUsuario = new AccionUsuario();
                                 $modelAccionUsuario->load([ 'AccionUsuario' => [
+                                        'accion' => $accion->codigo,
+                                        'usuario' => $model->codigo,
                                         'estado' => 1,
                                     ],
                                 ]);
                                 $modelAccionUsuario->save();
                             }
-                        } else {
-                            $modelAccionUsuario = new AccionUsuario();
-                            $modelAccionUsuario->load([ 'AccionUsuario' => [
-                                    'accion' => $accion->codigo,
-                                    'usuario' => $model->codigo,
-                                    'estado' => 1,
-                                ],
-                            ]);
-                            $modelAccionUsuario->save();
-                        }
-                    } else if ( AccionUsuarioSearch::isValido( $accion , $model ) ) {
-                        $modelAccionUsuario = AccionUsuarioSearch::accionPorUsuario( $accion , $model );
-                        if (  $modelAccionUsuario->estado ) {
-                            $modelAccionUsuario->load([ 'AccionUsuario' => [
-                                    'estado' => 0,
-                                ],
-                            ]);
-                            $modelAccionUsuario->save();
+                        } else if ( AccionUsuarioSearch::isValido( $accion , $model ) ) {
+                            $modelAccionUsuario = AccionUsuarioSearch::accionPorUsuario( $accion , $model );
+                            if (  $modelAccionUsuario->estado ) {
+                                $modelAccionUsuario->load([ 'AccionUsuario' => [
+                                        'estado' => 0,
+                                    ],
+                                ]);
+                                $modelAccionUsuario->save();
+                            }
                         }
                     }
+                    $puntosVenta = PuntoVentaSearch::all();
+                    foreach ( $puntosVenta as $puntoVenta ) {
+                        if ( is_array( $puntosVentaSeleccionados ) && in_array( $puntoVenta->codigo , $puntosVentaSeleccionados ) ) {
+                            if ( UsuarioPuntoVentaSearch::isValido( $puntoVenta , $model ) ) {
+                                $modelUsuarioPuntoVenta = UsuarioPuntoVentaSearch::puntoVentaPorUsuario( $puntoVenta , $model );
+                                if (  !$modelUsuarioPuntoVenta->estado ) {
+                                    $modelUsuarioPuntoVenta->load([ 'UsuarioPuntoVenta' => [
+                                            'estado' => 1,
+                                        ],
+                                    ]);
+                                    $modelUsuarioPuntoVenta->save();
+                                }
+                            } else {
+                                $modelUsuarioPuntoVenta = new UsuarioPuntoVenta();
+                                $modelUsuarioPuntoVenta->load([ 'UsuarioPuntoVenta' => [
+                                        'punto_venta' => $puntoVenta->codigo,
+                                        'usuario' => $model->codigo,
+                                        'estado' => 1,
+                                    ],
+                                ]);
+                                $modelUsuarioPuntoVenta->save();
+                            }
+                        } else if ( UsuarioPuntoVentaSearch::isValido( $accion , $model ) ) {
+                            $modelUsuarioPuntoVenta = UsuarioPuntoVentaSearch::puntoVentaPorUsuario( $accion , $model );
+                            if (  $modelUsuarioPuntoVenta->estado ) {
+                                $modelUsuarioPuntoVenta->load([ 'UsuarioPuntoVenta' => [
+                                        'estado' => 0,
+                                    ],
+                                ]);
+                                $modelUsuarioPuntoVenta->save();
+                            }
+                        }
+                    }
+
+                    $transaction->commit();
+                    AppHandlingErrors::setFlash( 'success' , 'Datos del Usuario guardados correctamente.' );
+                    return $this->redirect(['view', 'id' => $model->codigo]);
+                } else {
+
+                    $arrayModulos = $this->arregloAccionesModulo( $permisos );
+                    AppHandlingErrors::setFlash( 'danger' , AppHandlingErrors::getStringErrorModel( $model->getErrors() ) );
+                    $model->fecha_nacimiento = $stringDate;
+                    $model->contrasena = base64_decode( $model->contrasena );
+                    return $this->render('update', ['model' => $model, 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
                 }
-                return $this->redirect(['view', 'id' => $model->codigo]);
+            } catch (Exception $e) {
 
-            } else {
+                $arrayModulos = $this->arregloAccionesModulo( $permisos );
 
-                AppHandlingErrors::setFlash( 'danger' , AppHandlingErrors::getStringErrorModel( $model->getErrors() ) );
+                AppHandlingErrors::setFlash( 'danger' ,  $e->message );
+                $transaction->rollBack();
                 $model->fecha_nacimiento = $stringDate;
                 $model->contrasena = base64_decode($model->contrasena);
-                return $this->render('update', ['model' => $model, 'modulos' => [] ] );
+                return $this->render('update', ['model' => $model, 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
             }
         } else {
             
-            $model->fecha_nacimiento = AppDate::stringToDate($model->fecha_nacimiento , Yii::$app->params['formatViewDate'] );
-            $model->contrasena = base64_decode($model->contrasena);
-            $arrayModulos = [];
-            $modulos = $this->modelModulo->find()->all();
-            foreach ($modulos as $modulo) {
-                $acciones = AccionSearch::accionesPorModulo($modulo);
-                $arrayPermisos = [];
-                $selected = [];
-                foreach ( $acciones as $accion ) {
-                    if ( AccionUsuarioSearch::isValido( $accion , $model ) ) {
-                        $modelAccionUsuario = AccionUsuarioSearch::accionPorUsuario( $accion , $model );
-                        if (  $modelAccionUsuario->estado == 1 ) {
-                            array_push( $selected , $accion->codigo );
-                        }
-                    }
-                    array_push( $arrayPermisos , $accion );
-                }
-                $arrayModulos[$modulo->modulo] = [ 'seleccionados' => $selected , 'permisos' => $arrayPermisos];
-            }
-            return $this->render('update', ['model' => $model, 'modulos' => $arrayModulos] );
+            $model->fecha_nacimiento = AppDate::stringToDate( $model->fecha_nacimiento , Yii::$app->params['formatViewDate'] );
+            $model->contrasena = base64_decode( $model->contrasena );
+            $arrayModulos = $this->arregloAccionesModulo( $permisos );
+            return $this->render('update', ['model' => $model, 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
         }
     }
 
@@ -338,12 +384,34 @@ class UsuarioController extends Controller
 
     protected function arregloAccionesModulo( $seleccionados ){
 
+        #$arrayModulos = [];
+        #$modulos = $this->modelModulo->find()->all();
+        #foreach ($modulos as $modulo) {
+            #$acciones = AccionSearch::accionesPorModulo($modulo);
+            #$arrayPermisos = [];
+            #$selected = [];
+            #foreach ( $acciones as $accion ) {
+                #if ( AccionUsuarioSearch::isValido( $accion , $model ) ) {
+                    #$modelAccionUsuario = AccionUsuarioSearch::accionPorUsuario( $accion , $model );
+                    #if (  $modelAccionUsuario->estado == 1 ) {
+                        #array_push( $selected , $accion->codigo );
+                    #}
+                #}
+                #array_push( $arrayPermisos , $accion );
+            #}
+            #$arrayModulos[$modulo->modulo] = [ 'seleccionados' => $selected , 'permisos' => $arrayPermisos];
+        #}
+
         $arrayModulos = [];
         $modulos = $this->modelModulo->find()->all();
         foreach ($modulos as $modulo) {
-            $arrayPermisos = [];
             $acciones = AccionSearch::accionesPorModulo($modulo);
+            $arrayPermisos = [];
+            $selected = [];
             foreach ( $acciones as $accion ) {
+                if ( is_array( $seleccionados ) && in_array ( $accion->codigo , $seleccionados , true ) ) {
+                    array_push( $selected , $accion->codigo );
+                }
                 array_push( $arrayPermisos , $accion );
             }
             $arrayModulos[$modulo->modulo] = [ 'seleccionados' => $seleccionados , 'permisos' => $arrayPermisos];
