@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 11, 2015 at 05:06 AM
+-- Generation Time: Jun 19, 2015 at 05:26 AM
 -- Server version: 5.6.15-log
 -- PHP Version: 5.5.8
 
@@ -34,30 +34,35 @@ CREATE TABLE IF NOT EXISTS `accion` (
   `key` varchar(30) NOT NULL,
   PRIMARY KEY (`codigo`),
   KEY `modulo` (`modulo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
 
 --
 -- Dumping data for table `accion`
 --
 
 INSERT INTO `accion` (`codigo`, `accion`, `descripcion`, `modulo`, `key`) VALUES
-(3, 'Autorizacion de venta', 'Esta acción corresponde a la autorización de venta en los diferentes punto de venta asignados', 2, '1-PuntoVenta-sale-*'),
-(4, 'Creación de Punto de venta', 'Esta acción corresponde a la opción de creación de puntos de venta', 2, '2-PuntoVenta-create-*'),
-(5, 'Busqueda de usuarios', '', 3, '3-Usuario-view-*'),
-(6, 'Creacion de usuarios', '', 3, '3-Usuario-create-*'),
-(7, 'Edicion de usuarios', '', 3, '3-Usuario-update-*'),
-(8, 'Eliminacion de usuario', '', 3, '3-Usuario-delete-*'),
-(9, 'Busqueda de roles', '', 3, '3-Rol-view-*'),
-(10, 'Creacion de roles', '', 3, '3-Rol-create-*'),
-(11, 'Edicion de roles', '', 3, '3-Rol-update-*'),
-(12, 'Eliminacion de roles', '', 3, '3-Rol-delete-*'),
-(13, 'Busqueda de puntos de venta', '', 2, '2-PuntoVenta-view-*'),
-(14, 'Edicion de puntos de venta', '', 2, '2-PuntoVenta-update-*'),
-(15, 'Eliminacion de puntos de venta', '', 2, '2-PuntoVenta-delete-*'),
-(16, 'Busqueda de terminos', '', 4, '4-Termino-view-*'),
-(17, 'Creacion de terminos', '', 4, '4-Termino-create-*'),
-(18, 'Edicion de termnos', '', 4, '4-Termino-update-*'),
-(19, 'Eliminacion de terminos', '', 4, '4-Termino-delete-*');
+(3, 'Venta de productos', 'Esta acción corresponde a la autorización de venta en los diferentes punto de venta asignados', 2, 'PuntoVenta-sale-*'),
+(4, 'Creación de Punto de venta', 'Esta acción corresponde a la opción de creación de puntos de venta', 2, 'PuntoVenta-create-*'),
+(5, 'Busqueda de usuarios', '', 3, 'Usuario-view-*'),
+(6, 'Creacion de usuarios', '', 3, 'Usuario-create-*'),
+(7, 'Edicion de usuarios', '', 3, 'Usuario-update-*'),
+(8, 'Eliminacion de usuario', '', 3, 'Usuario-delete-*'),
+(9, 'Busqueda de roles', '', 3, 'Rol-view-*'),
+(10, 'Creacion de roles', '', 3, 'Rol-create-*'),
+(11, 'Edicion de roles', '', 3, 'Rol-update-*'),
+(12, 'Eliminacion de roles', '', 3, 'Rol-delete-*'),
+(13, 'Busqueda de puntos de venta', '', 2, 'PuntoVenta-view-*'),
+(14, 'Edicion de puntos de venta', '', 2, 'PuntoVenta-update-*'),
+(15, 'Eliminacion de puntos de venta', '', 2, 'PuntoVenta-delete-*'),
+(16, 'Busqueda de terminos', '', 4, 'Termino-view-*'),
+(17, 'Creacion de terminos', '', 4, 'Termino-create-*'),
+(18, 'Edicion de termnos', '', 4, 'Termino-update-*'),
+(19, 'Eliminacion de terminos', '', 4, 'Termino-delete-*'),
+(20, 'Autorizar gastos del punto de venta', 'esta accion es la que permite manejar la parte de autorización de gastos sobre los puntos de venta ligados al usuario', 2, 'Gasto-authorizeExpendit-*'),
+(21, 'registrar gastos', 'registrar gastos', 2, 'Gasto-create-*'),
+(22, 'Editar gastos', 'Editar gastos', 2, 'Gasto-update-*'),
+(23, 'Busqueda de gastos', 'Busqueda de gastos', 2, 'Gasto-view-*'),
+(24, 'Eliminar gastos', 'Eliminar gastos', 2, 'Gasto-delete-*');
 
 -- --------------------------------------------------------
 
@@ -73,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `accion_usuario` (
   PRIMARY KEY (`codigo`),
   KEY `accion` (`accion`),
   KEY `usuario` (`usuario`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
 
 --
 -- Dumping data for table `accion_usuario`
@@ -101,7 +106,16 @@ INSERT INTO `accion_usuario` (`codigo`, `accion`, `usuario`, `estado`) VALUES
 (19, 16, 3, 1),
 (20, 17, 3, 1),
 (21, 18, 3, 1),
-(22, 19, 3, 1);
+(22, 19, 3, 1),
+(23, 5, 5, 1),
+(24, 12, 5, 1),
+(25, 16, 5, 1),
+(26, 19, 5, 1),
+(27, 20, 3, 1),
+(28, 21, 3, 1),
+(29, 22, 3, 1),
+(30, 23, 3, 1),
+(31, 24, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -179,9 +193,9 @@ CREATE TABLE IF NOT EXISTS `gasto` (
   `tipo_gasto` int(11) NOT NULL,
   `punto_venta` int(11) NOT NULL,
   `usuario_registro` int(11) NOT NULL,
-  `fecha_registro` date NOT NULL,
+  `fecha_registro` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `usuario_actualizacion` int(11) DEFAULT NULL,
-  `fecha_actualizacion` date NOT NULL,
+  `fecha_actualizacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `usuario_autorizador` int(11) DEFAULT NULL,
   `fecha_autorizacion` timestamp NULL DEFAULT NULL,
   `estado` int(11) NOT NULL,
@@ -474,7 +488,7 @@ CREATE TABLE IF NOT EXISTS `termino` (
   `descripcion` varchar(250) NOT NULL,
   `estado` tinyint(1) NOT NULL,
   PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=74 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=75 ;
 
 --
 -- Dumping data for table `termino`
@@ -553,7 +567,8 @@ INSERT INTO `termino` (`codigo`, `termino`, `key`, `categoria`, `descripcion`, `
 (70, 'Largo', 3, 'Detalle de producto', 'Detalle de producto Largo', 1),
 (71, 'Cola de pato', 4, 'Detalle de producto', 'Detalle de producto Cola de pato', 1),
 (72, '3/4', 5, 'Detalle de producto', 'Detalle de producto 3/4', 1),
-(73, 'Entallado', 6, 'Detalle de producto', 'Detalle de producto Entallado', 1);
+(73, 'Entallado', 6, 'Detalle de producto', 'Detalle de producto Entallado', 1),
+(74, 'Gastos de envio', 1, 'Tipos De Gastos', 'Gasto de envió', 1);
 
 -- --------------------------------------------------------
 
@@ -588,6 +603,8 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `rol` int(11) NOT NULL,
   `estado` int(11) NOT NULL,
   PRIMARY KEY (`codigo`),
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `usuario` (`usuario`),
   KEY `rol` (`rol`),
   KEY `sexo` (`sexo`),
   KEY `estado` (`estado`)
@@ -598,8 +615,8 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 --
 
 INSERT INTO `usuario` (`codigo`, `identificacion`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `sexo`, `usuario`, `contrasena`, `rol`, `estado`) VALUES
-(3, 1029384756, 'Super', 'Usuario', 0, 'superadmin@aliah.com', '1969-12-31', 1, 'aliah', 'MTIzNDU2Nzg5MA==', 1, 3),
-(5, 1234567890, 'diego fernando', 'gonzalez velandia', 6938335, 'diego.gonzalez@gmail.com', '1970-01-01', 1, 'diego.gonzalez', 'TVRJek5EVT0=', 1, 3);
+(3, 1029384756, 'Super', 'Usuario', 0, 'superadmin@aliah.com', '1995-09-16', 1, 'aliah', 'MTIzNDU2Nzg5MA==', 1, 3),
+(5, 1234567890, 'diego fernando', 'gonzalez velandia', 6938335, 'diego.gonzalez@gmail.com', '1998-06-13', 1, 'diego.gonzalez', 'TVRJek5EVT0=', 1, 3);
 
 -- --------------------------------------------------------
 
@@ -615,7 +632,19 @@ CREATE TABLE IF NOT EXISTS `usuario_punto_venta` (
   PRIMARY KEY (`codigo`),
   KEY `usuario` (`usuario`,`punto_venta`),
   KEY `punto_venta` (`punto_venta`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+
+--
+-- Dumping data for table `usuario_punto_venta`
+--
+
+INSERT INTO `usuario_punto_venta` (`codigo`, `usuario`, `punto_venta`, `estado`) VALUES
+(1, 5, 15, 1),
+(2, 5, 15, 1),
+(7, 5, 15, 1),
+(8, 5, 15, 1),
+(9, 3, 15, 1),
+(10, 3, 18, 1);
 
 --
 -- Constraints for dumped tables
