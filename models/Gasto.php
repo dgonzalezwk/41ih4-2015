@@ -46,10 +46,10 @@ class Gasto extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fecha', 'monto', 'usuario', 'descripcion', 'tipo_gasto', 'punto_venta', 'usuario_registro', 'fecha_registro', 'fecha_actualizacion', 'estado'], 'required'],
+            [['fecha', 'monto', 'usuario', 'descripcion', 'tipo_gasto', 'punto_venta', 'usuario_registro', 'estado'], 'required'],
             [['fecha', 'fecha_registro', 'fecha_actualizacion', 'fecha_autorizacion'], 'safe'],
             [['usuario', 'tipo_gasto', 'punto_venta', 'usuario_registro', 'usuario_actualizacion', 'usuario_autorizador', 'estado'], 'integer'],
-            [['monto'], 'string', 'max' => 12],
+            [['monto'], 'integer', 'max' => 999999],
             [['descripcion'], 'string', 'max' => 250]
         ];
     }

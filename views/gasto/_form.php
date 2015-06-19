@@ -22,8 +22,8 @@ use dosamigos\datepicker\DatePicker;
             'clientOptions' => [
                 'autoclose' => true,
                 'format' => 'dd MM yyyy',
-                'startDate'=> '-70y',
-                'endDate' => '-17y',
+                'startDate'=> '-7d',
+                'endDate' => '-0y',
                 'todayBtn' => true
             ]
         ]) ?>

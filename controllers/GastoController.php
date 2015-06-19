@@ -3,11 +3,14 @@
 namespace app\controllers;
 
 use Yii;
+use app\assets\AppAccessRule;
 use app\models\Gasto;
 use app\models\GastoSearch;
+use app\models\Modulo;
+use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * GastoController implements the CRUD actions for Gasto model.
@@ -15,15 +18,47 @@ use yii\filters\VerbFilter;
 class GastoController extends Controller
 {
     public $layout = 'administracion';
+    public $modelModulo;
 
     public function behaviors()
     {
+        $this->modelModulo = new Modulo();
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
                 ],
+            ],
+            'access' => [
+               'class' => AccessControl::className(),
+               'ruleConfig' => [
+                   'class' => AppAccessRule::className(),
+               ],
+               'only' => [ 'index','view','create','update','delete' ],
+               'rules' => [
+                   [
+                       'actions' => [ 'index','view' ],
+                       'allow' => true,
+                       'roles' => ["Gasto-view-*"],
+                   ],
+                   [
+                       'actions' => [ 'create' ],
+                       'allow' => true,
+                       'roles' => ["Gasto-create-*"],
+                   ],
+                   [
+                       'actions' => [ 'update' ],
+                       'allow' => true,
+                       'roles' => ["Gasto-update-*"],
+                   ],
+                   [
+                       'actions' => [ 'delete' ],
+                       'allow' => true,
+                       'roles' => ["Gasto-delete-*"],
+                   ],
+
+               ],
             ],
         ];
     }
