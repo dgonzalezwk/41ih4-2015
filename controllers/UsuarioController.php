@@ -365,6 +365,17 @@ class UsuarioController extends Controller
         return $this->goHome();
     }
 
+    public function actionCambiarPuntoVenta( $index )
+    {
+
+        $cookies = Yii::$app->response->cookies;
+        $cookie = new \yii\web\Cookie([
+            'name' => 'puntoVentaSelected',
+            'value' => $index,
+            'expire' => time() + 86400 * 365,
+        ]);
+        $cookies->add($cookie);
+    }
 
     /**
      * Finds the Usuario model based on its primary key value.
@@ -384,24 +395,6 @@ class UsuarioController extends Controller
 
     protected function arregloAccionesModulo( $seleccionados ){
 
-        #$arrayModulos = [];
-        #$modulos = $this->modelModulo->find()->all();
-        #foreach ($modulos as $modulo) {
-            #$acciones = AccionSearch::accionesPorModulo($modulo);
-            #$arrayPermisos = [];
-            #$selected = [];
-            #foreach ( $acciones as $accion ) {
-                #if ( AccionUsuarioSearch::isValido( $accion , $model ) ) {
-                    #$modelAccionUsuario = AccionUsuarioSearch::accionPorUsuario( $accion , $model );
-                    #if (  $modelAccionUsuario->estado == 1 ) {
-                        #array_push( $selected , $accion->codigo );
-                    #}
-                #}
-                #array_push( $arrayPermisos , $accion );
-            #}
-            #$arrayModulos[$modulo->modulo] = [ 'seleccionados' => $selected , 'permisos' => $arrayPermisos];
-        #}
-
         $arrayModulos = [];
         $modulos = $this->modelModulo->find()->all();
         foreach ($modulos as $modulo) {
@@ -419,4 +412,5 @@ class UsuarioController extends Controller
         return $arrayModulos;
 
     }
+
 }

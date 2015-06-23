@@ -10,9 +10,7 @@ $this->title = 'Crear punto de venta';
 $this->params['breadcrumbs'][] = ['label' => 'Puntos de venta', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="container">
-	<div class="punto-venta-create">
-	    <h1><?= Html::encode($this->title) ?></h1>
-	    <?= $this->render('_form', [ 'model' => $model, 'horarios' => $horarios]) ?>
-	</div>
+<div class="punto-venta-create">
+    <h1><?= Html::encode($this->title) ?></h1>
+    <?= $this->render('_form', [ 'model' => $model, 'horarios' => $horarios]) ?>
 </div>

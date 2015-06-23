@@ -11,14 +11,10 @@ use app\models\RolSearch;
 $this->title = 'Usuarios';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
-<div class="container">
+<div class="col-1g-12">
     <div class="usuario-index">
         <h1><?= Html::encode($this->title) ?></h1>
         <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-        <p>
-            <?= Html::a('Crear Usuario', ['create'], ['class' => 'btn btn-success']) ?>
-        </p>
         <?php Pjax::begin(['timeout' => 10000,]); ?>
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
@@ -38,5 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ]); ?>
         <?php Pjax::end(); ?>
+        <p>
+            <?= Html::a('Crear Usuario', ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
     </div>
 </div>

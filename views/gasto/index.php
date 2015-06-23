@@ -10,25 +10,23 @@ use yii\grid\GridView;
 $this->title = 'Gastos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="container">
-    <div class="gasto-index">
-        <h1><?= Html::encode($this->title) ?></h1>
-        <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-        <p>
-            <?= Html::a('Registrar Gasto', ['create'], ['class' => 'btn btn-success']) ?>
-        </p>
-        <?= GridView::widget([
-            'dataProvider' => $dataProvider,
-            #'filterModel' => $searchModel,
-            'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
-                'fecha',
-                'monto',
-                'tipo_gasto',
-                'punto_venta',
-                'usuario_registro',
-                ['class' => 'yii\grid\ActionColumn'],
-            ],
-        ]); ?>
-    </div>
+<div class="gasto-index">
+    <h1><?= Html::encode($this->title) ?></h1>
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>    
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        #'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            'fecha',
+            'monto',
+            'tipo_gasto',
+            'punto_venta',
+            'usuario_registro',
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
+    <p>
+        <?= Html::a('Registrar Gasto', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>    
 </div>
