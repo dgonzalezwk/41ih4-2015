@@ -222,4 +222,15 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return $this->contrasena === base64_encode($password);
     }    
+
+    public function getPuntoVentaSelected()
+    {
+        $index = Yii::$app->getRequest()->getCookies()->getValue( 'puntoVentaSelected' );
+        $puntosVentaAsignados = Yii::$app->user->identity->usuarioPuntoVentas;
+        if ( count( $puntosVentaAsignados ) >= $index ) {
+            return $puntosVentaAsignados[ $index ];
+        } else {
+            return null;
+        }
+    }
 }

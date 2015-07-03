@@ -19,30 +19,31 @@ AppAsset::register($this);
 </head>
 <body>
 <?php $this->beginBody() ?>
-<div class="col-lg-2">
-    <div class="btn-group-vertical" role="group">
-        <img src="<?= Url::base() ?>/img/logo.png" alt="..." class="img-thumbnail">
-        <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                puntos de venta
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <?php foreach ( Yii::$app->user->identity->usuarioPuntoVentas as $key => $usuarioPuntoVenta): ?>
-                    <?php if ( Yii::$app->request->cookies->getValue('puntoVentaSelected', null) != null && Yii::$app->request->cookies->getValue('puntoVentaSelected', null) == $key ): ?>
-                        <li><a class="btn-primary active" href="<?= Url::toRoute( [ 'usuario/cambiar-punto-venta','index' => $key ] ) ?>"><?= $usuarioPuntoVenta->puntoVenta->ciudad." - ".$usuarioPuntoVenta->puntoVenta->barrio." - ".$usuarioPuntoVenta->puntoVenta->direccion ?></a></li>
-                    <?php else: ?>
-                        <li><a href="<?= Url::toRoute( [ 'usuario/cambiar-punto-venta','index' => $key ] ) ?>"><?= $usuarioPuntoVenta->puntoVenta->ciudad." - ".$usuarioPuntoVenta->puntoVenta->barrio." - ".$usuarioPuntoVenta->puntoVenta->direccion ?></a></li>
-                    <?php endif ?>
-                <?php endforeach ?>
-            </ul>
+<?php if ( !Yii::$app->user->isGuest ): ?>
+    <div class="col-lg-2">
+        <div class="btn-group-vertical" role="group">
+            <img src="<?= Url::base() ?>/img/logo.png" alt="..." class="img-thumbnail">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    puntos de venta
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <?php foreach ( Yii::$app->user->identity->usuarioPuntoVentas as $key => $usuarioPuntoVenta): ?>
+                        <?php if ( Yii::$app->request->cookies->getValue('puntoVentaSelected', null) != null && Yii::$app->request->cookies->getValue('puntoVentaSelected', null) == $key ): ?>
+                            <li><a class="btn-primary active" href="<?= Url::toRoute( [ 'usuario/cambiar-punto-venta','index' => $key ] ) ?>"><?= $usuarioPuntoVenta->puntoVenta->ciudad." - ".$usuarioPuntoVenta->puntoVenta->barrio." - ".$usuarioPuntoVenta->puntoVenta->direccion ?></a></li>
+                        <?php else: ?>
+                            <li><a href="<?= Url::toRoute( [ 'usuario/cambiar-punto-venta','index' => $key ] ) ?>"><?= $usuarioPuntoVenta->puntoVenta->ciudad." - ".$usuarioPuntoVenta->puntoVenta->barrio." - ".$usuarioPuntoVenta->puntoVenta->direccion ?></a></li>
+                        <?php endif ?>
+                    <?php endforeach ?>
+                </ul>
+            </div>
+            <a href="<?=Yii::$app->urlManager->createUrl(['gasto/index'])?>" class="btn btn-default">Gastos</a>
+            <a href="<?=Yii::$app->urlManager->createUrl(['usuario/index'])?>" class="btn btn-default">Usuarios</a>
+            <a href="<?=Yii::$app->urlManager->createUrl(['ingreso/index'])?>" class="btn btn-default">Ingresos</a>
         </div>
-        <button type="button" class="btn btn-default">Gastos</button>
-        <button type="button" class="btn btn-default">Usuarios</button>
-        <button type="button" class="btn btn-default">Gastos</button>
-        <button type="button" class="btn btn-default">Ingresos</button>
     </div>
-</div>
+<?php endif ?>
 <div class="container-fluid">
     <div class="col-lg-10">
         <div class="row">

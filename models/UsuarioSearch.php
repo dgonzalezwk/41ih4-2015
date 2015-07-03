@@ -80,12 +80,22 @@ class UsuarioSearch extends Usuario
         return Usuario::find()->where(['estado'=> TerminoSearch::EstadoUsuarioActivo()->codigo ])-> andWhere( [ 'not', [ 'codigo' => Yii::$app->user->identity->codigo ] ] )->all();
     }
 
-    public static function autorizadoresPuntoVenta( $puntoVenta)
+    public static function autorizadoresPuntoVenta( $puntoVenta )
     {
-        $modulo = ModuloSearch::byName( 'Puntos De venta' );
-        $accion = AccionSearch::actionByKey( $modulo->codigo."-PuntoVenta-authorizeExpenditures-*" );
-        $sql = 'select * from usuario a inner join usuario_punto_venta b on a.codigo = b.usuario inner join accion_usuario c on a.codigo = c.usuario where a.rol IN('.RolSearch::getAdministrador()->codigo.','.RolSearch::getAdministradorPuntoVenta()->codigo.') and a.estado = '.TerminoSearch::EstadoUsuarioActivo()->codigo.' and b.codigo = '.$puntoVenta->codigo.' and c.codigo = '.$accion->codigo.' and c.estado = 1  ';
+        $accion = AccionSearch::actionByKey( "Gasto-authorizeExpendit-*" );
+        $sql = 'select a.* from usuario a inner join usuario_punto_venta b on a.codigo = b.usuario inner join accion_usuario c on a.codigo = c.usuario where a.rol IN('.RolSearch::getAdministrador()->codigo.','.RolSearch::getAdministradorPuntoVenta()->codigo.') and a.estado = '.TerminoSearch::estadoUsuarioActivo()->codigo.' and b.codigo = '.$puntoVenta->codigo.' and c.codigo = '.$accion->codigo.' and c.estado = 1  ';
         return Usuario::findBySql($sql)->all();
+    }
+
+    public function getPuntoVentaSelected()
+    {
+        $index = Yii::$app->getRequest()->getCookies()->getValue( 'puntoVentaSelected' );
+        $puntosVentaAsignados = Yii::$app->user->identity->usuarioPuntoVentas;
+        if ( count( $puntosVentaAsignados ) >= $index ) {
+            return $puntosVentaAsignados[ $index ];
+        } else {
+            return null;
+        }
     }
 
 }

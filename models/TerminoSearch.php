@@ -94,8 +94,18 @@ class TerminoSearch extends Termino
     {
         return Termino::find()->where(['categoria'=>'Tipos De Gastos','estado'=>1])->all();
     }
-    public static function EstadoUsuarioActivo()
+    public static function estadoUsuarioActivo()
     {
-        return Termino::find()->where(['categoria'=>'Estados De Usuario', 'termino'=>'Activo' ,'estado'=>1])->one();
+        return Termino::find()->where(['categoria'=>'Estados De Usuario', 'key'=>1 ,'estado'=>1])->one();
+    }
+
+    public static function estadoGastoPorAutorizar()
+    {
+        return Termino::find()->where(['categoria'=>'Estado De Gasto', 'key'=>1 ,'estado'=>1])->one();
+    }
+
+    public static function estadoGastoAutorizado()
+    {
+        return Termino::find()->where(['categoria'=>'Estado De Gasto', 'key'=>2 ,'estado'=>1])->one();
     }
 }

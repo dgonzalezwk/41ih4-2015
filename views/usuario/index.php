@@ -14,11 +14,11 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="col-1g-12">
     <div class="usuario-index">
         <h1><?= Html::encode($this->title) ?></h1>
-        <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+        <?php echo $this->render('_search', ['model' => $searchModel]); ?>
         <?php Pjax::begin(['timeout' => 10000,]); ?>
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
+                #'filterModel' => $searchModel,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
                     'identificacion',

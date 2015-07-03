@@ -350,6 +350,13 @@ class UsuarioController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            $cookies = Yii::$app->response->cookies;
+            $cookie = new \yii\web\Cookie([
+                'name' => 'puntoVentaSelected',
+                'value' => 0,
+                'expire' => time() + 86400 * 365,
+            ]);
+            $cookies->add($cookie);
             return $this->goBack();
         } else {
             return $this->render('login', [
