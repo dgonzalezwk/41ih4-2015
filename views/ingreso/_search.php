@@ -15,15 +15,24 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'codigo') ?>
+    
+    <div class="col-lg-3">
+        <?= $form->field($model, 'fecha_cierre_caja')->label( false ) ?>
+    </div>
+    <div class="col-lg-3">
+        <?= $form->field($model, 'fecha_llegada')->label( false ) ?>
+    </div>
+    <div class="col-lg-3">
+        <?= $form->field($model, 'cantidad')->label( false ) ?>
+    </div>
+    <div class="col-lg-3">
+        <div class="form-group">
+            <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+            <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'fecha_cierre_caja') ?>
-
-    <?= $form->field($model, 'fecha_llegada') ?>
-
-    <?= $form->field($model, 'cantidad') ?>
-
-    <?= $form->field($model, 'corresponde')->checkbox() ?>
+    
 
     <?php // echo $form->field($model, 'usuario_pago') ?>
 
@@ -49,10 +58,6 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'fecha_actualizacion') ?>
 
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
-    </div>
 
     <?php ActiveForm::end(); ?>
 

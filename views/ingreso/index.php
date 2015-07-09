@@ -1,7 +1,9 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\grid\GridView;
+
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\IngresoSearch */
@@ -13,15 +15,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="ingreso-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
     <p>
-        <?= Html::a('Create Ingreso', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::button('Create Ingreso', [ 'value' => Url::to( [ 'ingreso/create' ] ) ,'class' => 'btn btn-success' , 'id' => 'modalButton' ]) ?>
     </p>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        #'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
