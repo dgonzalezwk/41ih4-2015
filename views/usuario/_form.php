@@ -17,7 +17,6 @@ use yii\widgets\Pjax;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 <div class="usuario-form">
-    <div class="row">
     <?php Pjax::begin(); ?>
         <?php $form = ActiveForm::begin(['options' => ['data-pjax' => true ]]); ?>
             <div class="col-lg-6">
@@ -79,5 +78,4 @@ use yii\widgets\Pjax;
             </div>
         <?php ActiveForm::end(); ?>
     <?php Pjax::end(); ?>
-    </div>
 </div>

@@ -13,7 +13,6 @@ AppAsset::register($this);
 <head>
 	<meta charset="<?= Yii::$app->charset ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="<?= Url::base()?>/css/admin/style.css" rel="stylesheet" type="text/css" media="all" />
 	<?= Html::csrfMetaTags() ?>
 	<title><?= Html::encode($this->title) ?></title>
 	<?php $this->head() ?>
@@ -45,37 +44,60 @@ AppAsset::register($this);
         </div>
     </div>
 <?php endif ?>
-
-<div class="col-lg-10">
-    <div class="container-fluid">
+<div class="container-fluid">
+    <div class="col-lg-10">
+        <div class="row">
+            <nav class="navbar navbar-default">
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+                        <li><a href="#">Link</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">Separated link</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">One more separated link</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </nav>
+        </div>
         
         <div class="row">
             <?= Breadcrumbs::widget([
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]) ?>
         </div>
-        <div class="row text text-center">
-            <div class="col-lg-offset-3 col-lg-6">
-                <?php foreach ( Yii::$app->session->getAllFlashes() as $key => $message ): ?>
-                    <div class="alert alert-<?= $key ?>" role="alert"><?= $message ?></div>
-                <?php endforeach ?>
+        
+        <div class="container-fluid">
+            <div class="row text text-center">
+                <div class="col-lg-6">
+                    <?php foreach ( Yii::$app->session->getAllFlashes() as $key => $message ): ?>
+                        <div class="alert alert-<?= $key ?>" role="alert"><?= $message ?></div>
+                    <?php endforeach ?>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <?= $content ?>
+        <div class="container-fluid">
+            <div class="row">
+                <?= $content ?>
+            </div>
         </div>
-        <?php 
-            Modal::begin([
-                    'header' => '<h4>'.Html::encode($this->title).'</h4>',
-                    'id' => 'modal',
-                    'size' => 'modal-lg'
-                ]);
-                echo "<div id='modalContent'></div>";
-            Modal::end();
-        ?>
-    </div>
     
+    </div>
 </div>
+<?php
+    Modal::begin([
+    ]);
+    Modal::end();
+?>
 <?php $this->endBody() ?>
 </body>
 </html>

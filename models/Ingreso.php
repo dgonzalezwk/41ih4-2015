@@ -20,9 +20,6 @@ use Yii;
  * @property integer $punto_venta
  * @property integer $origen
  * @property integer $destino
- * @property string $cantidad_esperada
- * @property integer $tipo_ingreso
- * @property integer $estado
  * @property integer $usuario_registro
  * @property string $fecha_registro
  * @property integer $usuario_actualizacion
@@ -51,11 +48,11 @@ class Ingreso extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fecha_cierre_caja', 'fecha_llegada', 'cantidad', 'usuario_pago', 'usuario_autorizador', 'suma_anexada', 'descripcion', 'punto_venta', 'origen', 'destino', 'cantidad_esperada', 'tipo_ingreso', 'estado', 'usuario_registro', 'fecha_registro', 'usuario_actualizacion', 'fecha_actualizacion'], 'required'],
+            [['fecha_cierre_caja', 'fecha_llegada', 'cantidad', 'usuario_pago', 'usuario_autorizador', 'suma_anexada', 'descripcion', 'punto_venta', 'origen', 'destino', 'usuario_registro', 'fecha_registro', 'usuario_actualizacion', 'fecha_actualizacion'], 'required'],
             [['fecha_cierre_caja', 'fecha_llegada', 'fecha_registro', 'fecha_actualizacion'], 'safe'],
             [['corresponde', 'igualado'], 'boolean'],
-            [['usuario_pago', 'usuario_autorizador', 'punto_venta', 'origen', 'destino', 'tipo_ingreso', 'estado', 'usuario_registro', 'usuario_actualizacion'], 'integer'],
-            [['cantidad', 'suma_anexada', 'cantidad_esperada'], 'string', 'max' => 12],
+            [['usuario_pago', 'usuario_autorizador', 'punto_venta', 'origen', 'destino', 'usuario_registro', 'usuario_actualizacion'], 'integer'],
+            [['cantidad', 'suma_anexada'], 'string', 'max' => 12],
             [['descripcion'], 'string', 'max' => 250]
         ];
     }
@@ -79,9 +76,6 @@ class Ingreso extends \yii\db\ActiveRecord
             'punto_venta' => 'Punto Venta',
             'origen' => 'Origen',
             'destino' => 'Destino',
-            'cantidad_esperada' => 'Cantidad Esperada',
-            'tipo_ingreso' => 'Tipo Ingreso',
-            'estado' => 'Estado',
             'usuario_registro' => 'Usuario Registro',
             'fecha_registro' => 'Fecha Registro',
             'usuario_actualizacion' => 'Usuario Actualizacion',
