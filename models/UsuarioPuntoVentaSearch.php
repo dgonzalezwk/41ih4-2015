@@ -66,8 +66,8 @@ class UsuarioPuntoVentaSearch extends UsuarioPuntoVenta
 
     public static function isValido( $puntoVenta , $usuario )
     {
-        $result = UsuarioPuntoVenta::find()->where( [ 'usuario'=>$puntoVenta->codigo , 'punto_venta'=>$usuario->codigo ] )->all();
-        if ( isset( $result ) && count($result) > 0 ) {
+        $result = UsuarioPuntoVenta::find()->where( [ 'usuario' => $usuario->codigo , 'punto_venta'=> $puntoVenta->codigo ] )->one();
+        if ( isset( $result ) ) {
             return true;
         } else {
             return false;
@@ -76,8 +76,8 @@ class UsuarioPuntoVentaSearch extends UsuarioPuntoVenta
 
     public static function puntoVentaPorUsuario( $puntoVenta , $usuario )
     {
-        $result = UsuarioPuntoVenta::find()->where( [ 'usuario'=>$puntoVenta->codigo , 'punto_venta'=>$usuario->codigo ] )->all();
-        if ( isset( $result ) && count($result) > 0 ) {
+        $result = UsuarioPuntoVenta::find()->where( [ 'dusuario' => $usuario->codigo , 'punto_venta' => $puntoVenta->codigo ] )->one();
+        if ( isset( $result ) ) {
             return $result;
         } else {
             return false;
