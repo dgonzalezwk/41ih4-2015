@@ -68,11 +68,12 @@ class TerminoSearch extends Termino
 
         return $dataProvider;
     }
-    
+
     public static function searchCategories()
     {
         return Termino::find()->select('categoria')->where(['estado'=>1])->distinct(true)->all();
     }
+
     public static function searchSexos()
     {
         return Termino::find()->where(['categoria'=>'sexo','estado'=>1])->all();
@@ -93,21 +94,18 @@ class TerminoSearch extends Termino
     {
         return Termino::find()->where(['categoria'=>'Tipos De Gastos','estado'=>1])->all();
     }
-    public static function estadosIngresos()
-    {
-        return Termino::find()->where(['categoria'=>'Estados De Ingresos' ,'estado'=>1])->all();
-    }
     public static function estadoUsuarioActivo()
     {
         return Termino::find()->where(['categoria'=>'Estados De Usuario', 'key'=>1 ,'estado'=>1])->one();
     }
+
     public static function estadoGastoPorAutorizar()
     {
         return Termino::find()->where(['categoria'=>'Estado De Gasto', 'key'=>1 ,'estado'=>1])->one();
     }
+
     public static function estadoGastoAutorizado()
     {
         return Termino::find()->where(['categoria'=>'Estado De Gasto', 'key'=>2 ,'estado'=>1])->one();
     }
-
 }

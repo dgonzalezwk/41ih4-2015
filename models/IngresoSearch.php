@@ -18,8 +18,8 @@ class IngresoSearch extends Ingreso
     public function rules()
     {
         return [
-            [['codigo', 'usuario_pago', 'usuario_autorizador', 'punto_venta', 'origen', 'destino', 'tipo_ingreso', 'estado', 'usuario_registro', 'usuario_actualizacion'], 'integer'],
-            [['fecha_cierre_caja', 'fecha_llegada', 'cantidad', 'suma_anexada', 'descripcion', 'cantidad_esperada', 'fecha_registro', 'fecha_actualizacion'], 'safe'],
+            [['codigo', 'usuario_pago', 'usuario_autorizador', 'punto_venta', 'origen', 'destino', 'usuario_registro', 'usuario_actualizacion'], 'integer'],
+            [['fecha_cierre_caja', 'fecha_llegada', 'cantidad', 'suma_anexada', 'descripcion', 'fecha_registro', 'fecha_actualizacion'], 'safe'],
             [['corresponde', 'igualado'], 'boolean'],
         ];
     }
@@ -67,8 +67,6 @@ class IngresoSearch extends Ingreso
             'punto_venta' => $this->punto_venta,
             'origen' => $this->origen,
             'destino' => $this->destino,
-            'tipo_ingreso' => $this->tipo_ingreso,
-            'estado' => $this->estado,
             'usuario_registro' => $this->usuario_registro,
             'fecha_registro' => $this->fecha_registro,
             'usuario_actualizacion' => $this->usuario_actualizacion,
@@ -77,8 +75,7 @@ class IngresoSearch extends Ingreso
 
         $query->andFilterWhere(['like', 'cantidad', $this->cantidad])
             ->andFilterWhere(['like', 'suma_anexada', $this->suma_anexada])
-            ->andFilterWhere(['like', 'descripcion', $this->descripcion])
-            ->andFilterWhere(['like', 'cantidad_esperada', $this->cantidad_esperada]);
+            ->andFilterWhere(['like', 'descripcion', $this->descripcion]);
 
         return $dataProvider;
     }

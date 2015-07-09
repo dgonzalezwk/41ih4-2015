@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 09, 2015 at 04:11 AM
+-- Generation Time: Jun 19, 2015 at 05:26 AM
 -- Server version: 5.6.15-log
 -- PHP Version: 5.5.8
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `accion` (
   `key` varchar(30) NOT NULL,
   PRIMARY KEY (`codigo`),
   KEY `modulo` (`modulo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
 
 --
 -- Dumping data for table `accion`
@@ -62,11 +62,7 @@ INSERT INTO `accion` (`codigo`, `accion`, `descripcion`, `modulo`, `key`) VALUES
 (21, 'registrar gastos', 'registrar gastos', 2, 'Gasto-create-*'),
 (22, 'Editar gastos', 'Editar gastos', 2, 'Gasto-update-*'),
 (23, 'Busqueda de gastos', 'Busqueda de gastos', 2, 'Gasto-view-*'),
-(24, 'Eliminar gastos', 'Eliminar gastos', 2, 'Gasto-delete-*'),
-(25, 'ver ingresos', 'esta accion corresponde a la vista de ingresos', 2, 'Ingreso-view-*'),
-(26, 'creacion de ingresos', 'registro de ingresos de un punto de venta', 2, 'Ingreso-create-*'),
-(27, 'edicion de ingresosos', 'edicion de ingresos de un punto de venta', 2, 'Ingreso-update-*'),
-(28, 'eliminacion de ingresos de un punto de venta', 'eliminacion de ingresos de puntos de venta', 2, 'Ingreso-delete-*');
+(24, 'Eliminar gastos', 'Eliminar gastos', 2, 'Gasto-delete-*');
 
 -- --------------------------------------------------------
 
@@ -82,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `accion_usuario` (
   PRIMARY KEY (`codigo`),
   KEY `accion` (`accion`),
   KEY `usuario` (`usuario`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
 
 --
 -- Dumping data for table `accion_usuario`
@@ -119,11 +115,7 @@ INSERT INTO `accion_usuario` (`codigo`, `accion`, `usuario`, `estado`) VALUES
 (28, 21, 3, 1),
 (29, 22, 3, 1),
 (30, 23, 3, 1),
-(31, 24, 3, 1),
-(32, 25, 3, 1),
-(33, 26, 3, 1),
-(34, 27, 3, 1),
-(35, 28, 3, 1);
+(31, 24, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -215,14 +207,7 @@ CREATE TABLE IF NOT EXISTS `gasto` (
   KEY `usuario_actualizacion` (`usuario_actualizacion`),
   KEY `usuario_autorizador` (`usuario_autorizador`,`estado`),
   KEY `estado` (`estado`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
-
---
--- Dumping data for table `gasto`
---
-
-INSERT INTO `gasto` (`codigo`, `fecha`, `monto`, `usuario`, `descripcion`, `tipo_gasto`, `punto_venta`, `usuario_registro`, `fecha_registro`, `usuario_actualizacion`, `fecha_actualizacion`, `usuario_autorizador`, `fecha_autorizacion`, `estado`) VALUES
-(3, '2015-06-23', '200000', 3, 'gasto 1', 74, 15, 3, '2015-06-29 18:14:44', 3, '2015-07-04 22:19:04', 3, NULL, 76);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -274,9 +259,6 @@ CREATE TABLE IF NOT EXISTS `ingreso` (
   `punto_venta` int(11) NOT NULL,
   `origen` int(11) NOT NULL,
   `destino` int(11) NOT NULL,
-  `cantidad_esperada` varchar(12) NOT NULL,
-  `tipo_ingreso` int(11) NOT NULL,
-  `estado` int(11) NOT NULL,
   `usuario_registro` int(11) NOT NULL,
   `fecha_registro` date NOT NULL,
   `usuario_actualizacion` int(11) NOT NULL,
@@ -506,7 +488,7 @@ CREATE TABLE IF NOT EXISTS `termino` (
   `descripcion` varchar(250) NOT NULL,
   `estado` tinyint(1) NOT NULL,
   PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=79 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=75 ;
 
 --
 -- Dumping data for table `termino`
@@ -586,11 +568,7 @@ INSERT INTO `termino` (`codigo`, `termino`, `key`, `categoria`, `descripcion`, `
 (71, 'Cola de pato', 4, 'Detalle de producto', 'Detalle de producto Cola de pato', 1),
 (72, '3/4', 5, 'Detalle de producto', 'Detalle de producto 3/4', 1),
 (73, 'Entallado', 6, 'Detalle de producto', 'Detalle de producto Entallado', 1),
-(74, 'Gastos de envio', 1, 'Tipos De Gastos', 'Gasto de envió', 1),
-(75, 'Por Autorizar', 1, 'Estado De Gasto', 'este es el estado del gasto por autorizar', 1),
-(76, 'Autorizado', 2, 'Estado De Gasto', 'estado autorizado de los gastos generados en el punto de venta', 1),
-(77, 'Comun', 1, 'Estados De Ingresos', 'este estado corresponde a un ingreso comun el cual puede generarse en cualquier momento', 1),
-(78, 'Cierre de caja', 2, 'Estados De Ingresos', 'este estado corresponde a las ganancias en un día que se generan en un punto de venta.', 1);
+(74, 'Gastos de envio', 1, 'Tipos De Gastos', 'Gasto de envió', 1);
 
 -- --------------------------------------------------------
 
@@ -637,7 +615,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 --
 
 INSERT INTO `usuario` (`codigo`, `identificacion`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `sexo`, `usuario`, `contrasena`, `rol`, `estado`) VALUES
-(3, 1029384756, 'Super', 'Usuario', 0, 'superadmin@aliah.com', '1995-12-16', 1, 'aliah', 'MTIzNDU2Nzg5MA==', 1, 3),
+(3, 1029384756, 'Super', 'Usuario', 0, 'superadmin@aliah.com', '1995-09-16', 1, 'aliah', 'MTIzNDU2Nzg5MA==', 1, 3),
 (5, 1234567890, 'diego fernando', 'gonzalez velandia', 6938335, 'diego.gonzalez@gmail.com', '1998-06-13', 1, 'diego.gonzalez', 'TVRJek5EVT0=', 1, 3);
 
 -- --------------------------------------------------------
@@ -654,7 +632,7 @@ CREATE TABLE IF NOT EXISTS `usuario_punto_venta` (
   PRIMARY KEY (`codigo`),
   KEY `usuario` (`usuario`,`punto_venta`),
   KEY `punto_venta` (`punto_venta`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `usuario_punto_venta`
@@ -666,15 +644,7 @@ INSERT INTO `usuario_punto_venta` (`codigo`, `usuario`, `punto_venta`, `estado`)
 (7, 5, 15, 1),
 (8, 5, 15, 1),
 (9, 3, 15, 1),
-(10, 3, 18, 1),
-(11, 3, 15, 1),
-(12, 3, 18, 1),
-(13, 3, 15, 1),
-(14, 3, 18, 1),
-(15, 3, 15, 1),
-(16, 3, 18, 1),
-(17, 3, 15, 1),
-(18, 3, 18, 1);
+(10, 3, 18, 1);
 
 --
 -- Constraints for dumped tables

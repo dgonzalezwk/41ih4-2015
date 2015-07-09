@@ -20,13 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 #'filterModel' => $searchModel,
-                'rowOptions' => function( $model ){
-                    if ( $model->estado0->key == 1 ) {
-                        return [ 'class' => 'danger' ];
-                    } else if ( $model->estado0->key == 2 ){
-                        return [ 'class' => 'success' ];
-                    }
-                },
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
                     [
@@ -44,7 +37,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'class' => 'yii\grid\ActionColumn',
-                        'contentOptions'=>['class'=>'text text-center'],
                         'template' => '{view}&nbsp;{update}&nbsp;{delete}&nbsp;{authorize}&nbsp;{not-authorize}',
                         'buttons' => [
                             'authorize' => function ($url, $model) {

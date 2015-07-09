@@ -3,63 +3,25 @@
 namespace app\controllers;
 
 use Yii;
-use app\assets\AppAccessRule;
-use app\assets\AppDate;
-use app\assets\AppHandlingErrors;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 use app\models\Ingreso;
 use app\models\IngresoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
 
 /**
  * IngresoController implements the CRUD actions for Ingreso model.
  */
 class IngresoController extends Controller
 {
-    public $layout = 'administracion';
-    
-
     public function behaviors()
     {
-        
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
                 ],
-            ],
-            'access' => [
-               'class' => AccessControl::className(),
-               'ruleConfig' => [
-                   'class' => AppAccessRule::className(),
-               ],
-               'only' => [ 'index','view','create','update','delete' ],
-               'rules' => [
-                   [
-                       'actions' => [ 'index','view' ],
-                       'allow' => true,
-                       'roles' => ["Ingreso-view-*"],
-                   ],
-                   [
-                       'actions' => [ 'create' ],
-                       'allow' => true,
-                       'roles' => ["Ingreso-create-*"],
-                   ],
-                   [
-                       'actions' => [ 'update' ],
-                       'allow' => true,
-                       'roles' => ["Ingreso-update-*"],
-                   ],
-                   [
-                       'actions' => [ 'delete' ],
-                       'allow' => true,
-                       'roles' => ["Ingreso-delete-*"],
-                   ],
-
-               ],
             ],
         ];
     }
@@ -99,23 +61,13 @@ class IngresoController extends Controller
     public function actionCreate()
     {
         $model = new Ingreso();
-        if ( $model->load( Yii::$app->request->post() ) ) {
-            $transaction = Yii::$app->db->beginTransaction();
-            try {
-              if ( $model->save() ){
-                $transaction->commit();
-              } else {
-                $transaction->rollBack();
-                return $this->renderAjax('create', [ 'model' => $model ] );
-              }
-            } catch (Exception $e) {
-              $transaction->rollBack();
-              return $this->renderAjax('create', [ 'model' => $model ] );
-            }
 
-            return $this->redirect([ 'view' , 'id' => $model->codigo ]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->codigo]);
         } else {
-            return $this->renderAjax( 'create' , [ 'model' => $model ]);
+            return $this->render('create', [
+                'model' => $model,
+            ]);
         }
     }
 

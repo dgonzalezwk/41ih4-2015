@@ -11,10 +11,11 @@ $this->params['breadcrumbs'][] = ['label' => 'Ingresos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ingreso-create">
-	<div class="row">
-	    <h1><?= Html::encode($this->title) ?></h1>
-	</div>
-	<div class="row">
-	    <?= $this->render('_form', [ 'model' => $model ]) ?>
-	</div>
+
+    <h1><?= Html::encode($this->title) ?></h1>
+
+    <?= $this->render('_form', [
+        'model' => $model,
+    ]) ?>
+
 </div>

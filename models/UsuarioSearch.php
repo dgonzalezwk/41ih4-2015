@@ -87,4 +87,15 @@ class UsuarioSearch extends Usuario
         return Usuario::findBySql($sql)->all();
     }
 
+    public function getPuntoVentaSelected()
+    {
+        $index = Yii::$app->getRequest()->getCookies()->getValue( 'puntoVentaSelected' );
+        $puntosVentaAsignados = Yii::$app->user->identity->usuarioPuntoVentas;
+        if ( count( $puntosVentaAsignados ) >= $index ) {
+            return $puntosVentaAsignados[ $index ];
+        } else {
+            return null;
+        }
+    }
+
 }

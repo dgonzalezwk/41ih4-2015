@@ -157,7 +157,7 @@ class UsuarioController extends Controller
                                     $model->fecha_nacimiento = $stringDate;
                                     $model->contrasena = base64_decode($model->contrasena);
                                     $arrayModulos = $this->arregloAccionesModulo( $permisos );
-                                    return $this->renderAjax('create', [ 'model' => $model , 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
+                                    return $this->render('create', [ 'model' => $model , 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
                                 }
                             }
                         }
@@ -175,7 +175,7 @@ class UsuarioController extends Controller
                                     $model->fecha_nacimiento = $stringDate;
                                     $model->contrasena = base64_decode($model->contrasena);
                                     $arrayModulos = $this->arregloAccionesModulo( $permisos );
-                                    return $this->renderAjax('create', [ 'model' => $model , 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
+                                    return $this->render('create', [ 'model' => $model , 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
                                 }
                             }
                         }
@@ -189,7 +189,7 @@ class UsuarioController extends Controller
                     $model->fecha_nacimiento = $stringDate;
                     $model->contrasena = base64_decode($model->contrasena);
                     $arrayModulos = $this->arregloAccionesModulo( $permisos );
-                    return $this->renderAjax('create', [ 'model' => $model , 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
+                    return $this->render('create', [ 'model' => $model , 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
                 }
 
             } catch (Exception $e) {
@@ -199,11 +199,11 @@ class UsuarioController extends Controller
                 $transaction->rollBack();
                 $model->fecha_nacimiento = $stringDate;
                 $model->contrasena = base64_decode($model->contrasena);
-                return $this->renderAjax('create', [ 'model' => $model , 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
+                return $this->render('create', [ 'model' => $model , 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
             }
         } else {
             $arrayModulos = $this->arregloAccionesModulo( $permisos );
-            return $this->renderAjax('create', [ 'model' => $model, 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
+            return $this->render('create', [ 'model' => $model, 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
         }
     }
 
@@ -270,7 +270,7 @@ class UsuarioController extends Controller
                         if ( is_array( $puntosVentaSeleccionados ) && in_array( $puntoVenta->codigo , $puntosVentaSeleccionados ) ) {
                             if ( UsuarioPuntoVentaSearch::isValido( $puntoVenta , $model ) ) {
                                 $modelUsuarioPuntoVenta = UsuarioPuntoVentaSearch::puntoVentaPorUsuario( $puntoVenta , $model );
-                                if (  !is_bool($modelUsuarioPuntoVenta) &&  !$modelUsuarioPuntoVenta->estado ) {
+                                if (  !$modelUsuarioPuntoVenta->estado ) {
                                     $modelUsuarioPuntoVenta->load([ 'UsuarioPuntoVenta' => [
                                             'estado' => 1,
                                         ],
@@ -287,9 +287,9 @@ class UsuarioController extends Controller
                                 ]);
                                 $modelUsuarioPuntoVenta->save();
                             }
-                        } else if ( UsuarioPuntoVentaSearch::isValido( $puntoVenta , $model ) ) {
+                        } else if ( UsuarioPuntoVentaSearch::isValido( $accion , $model ) ) {
                             $modelUsuarioPuntoVenta = UsuarioPuntoVentaSearch::puntoVentaPorUsuario( $accion , $model );
-                            if ( !is_bool($modelUsuarioPuntoVenta) && $modelUsuarioPuntoVenta->estado ) {
+                            if (  $modelUsuarioPuntoVenta->estado ) {
                                 $modelUsuarioPuntoVenta->load([ 'UsuarioPuntoVenta' => [
                                         'estado' => 0,
                                     ],
