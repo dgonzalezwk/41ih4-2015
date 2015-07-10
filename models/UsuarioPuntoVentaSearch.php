@@ -76,7 +76,7 @@ class UsuarioPuntoVentaSearch extends UsuarioPuntoVenta
 
     public static function puntoVentaPorUsuario( $puntoVenta , $usuario )
     {
-        $result = UsuarioPuntoVenta::find()->where( [ 'dusuario' => $usuario->codigo , 'punto_venta' => $puntoVenta->codigo ] )->one();
+        $result = UsuarioPuntoVenta::find()->where( [ 'usuario' => $usuario->codigo , 'punto_venta' => $puntoVenta->codigo ] )->one();
         if ( isset( $result ) ) {
             return $result;
         } else {

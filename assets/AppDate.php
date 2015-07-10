@@ -78,31 +78,33 @@ class AppDate
                         }
                     }
                 }
-            } else {
-                // $arrayPartesFecha = explode('-', date( $format , strtotime($stringDate) ));
-                // if ( count($arrayPartesFecha) == 3 ) {
+            } else if ( $format == Yii::$app->params['formatViewDate'] ) {
 
-                //     $mes = '';
-                //     if ($format == Yii::$app->params['formatViewDate']){
-                //         if (in_array($arrayPartesFecha[1], AppDate::$mesesIngles)) {
-                //             $index = array_search($arrayPartesFecha[1],AppDate::$mesesIngles);
-                //             if ( $index != false ) {
-                //                 $mes = AppDate::$meses[$index];
-                //             }
-                //         }
-                //     } else if ($format == Yii::$app->params['formatViewDatePicker']) {
-                //         if (in_array($arrayPartesFecha[1], AppDate::$mesesIngles)) {
-                //             $index = array_search($arrayPartesFecha[1],AppDate::$mesesIngles);
-                //             if ( $index != false ) {
-                //                 $mes = AppDate::$mesesCortos[$index];
-                //             }
-                //         }
-                //     }
-                //     return $arrayPartesFecha[0].'-'.$mes.'-'.$arrayPartesFecha[2];
-                //     return $arrayPartesFecha[0].'-'.$mes.'-'.$arrayPartesFecha[2];
-                // } else {
+                $arrayPartesFecha = explode('-', $stringDate );
+                if ( count($arrayPartesFecha) == 3 ) {
+                    $index = intval( $arrayPartesFecha[1] );
+                    $mes = AppDate::$meses[ ( $index - 1 ) ]; 
+                    return $arrayPartesFecha[2].' '.$mes.' '.$arrayPartesFecha[0];
+                } else {
                     return date( $format , strtotime($stringDate) );
-                // }
+                }
+            } else if ($format == Yii::$app->params['formatViewDatePicker']) {
+
+                $arrayPartesFecha = explode('-', $stringDate );
+                if ( count($arrayPartesFecha) == 3 ) {
+                    if (in_array($arrayPartesFecha[1], AppDate::$mesesIngles)) {
+                        $index = array_search($arrayPartesFecha[1],AppDate::$mesesIngles);
+                        if ( $index != false ) {
+                            $mes = AppDate::$mesesCortos[$index];
+                        }
+                    }
+                    return $arrayPartesFecha[0].'-'.$mes.'-'.$arrayPartesFecha[2];
+                } else {
+                    return date( $format , strtotime($stringDate) );
+                }
+            } else {
+
+                return date( $format , strtotime($stringDate) );
             }
         }else{
             return null;

@@ -1,7 +1,8 @@
 <?php
 
-use app\models\TerminoSearch;
 use app\models\PuntoVentaSearch;
+use app\models\TerminoSearch;
+use app\models\UsuarioSearch;
 use dosamigos\datepicker\DatePicker;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -44,13 +45,13 @@ use yii\widgets\ActiveForm;
             ?>
         </div>
         <div class="col-lg-6">
+            <?= $form->field($model, 'usuario_pago')->dropDownList(ArrayHelper::map( UsuarioSearch::allNotSession() , 'codigo', function ( $usuario) { return $usuario->nombre . ' ' . $usuario->apellido; }),['prompt'=>'Seleccione Una Opcion'])  ?>
+        </div>
+        <div class="col-lg-6">
             <?= $form->field($model, 'cantidad')->textInput(['maxlength' => 12]) ?>
         </div>
         <div class="col-lg-6">
             <?= $form->field($model, 'cantidad_esperada')->textInput(['maxlength' => 12]) ?>
-        </div>
-        <div class="col-lg-6">
-            <?= $form->field($model, 'usuario_pago')->textInput() ?>
         </div>
         <div class="col-lg-6">
             <?= $form->field($model, 'descripcion')->textArea(['rows' => '6', 'maxlength' => 250]) ?>

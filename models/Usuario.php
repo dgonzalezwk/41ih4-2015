@@ -82,7 +82,7 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function getAccionUsuarios()
     {
-        return $this->hasMany(AccionUsuario::className(), ['usuario' => 'codigo']);
+        return $this->hasMany(AccionUsuario::className(), ['usuario' => 'codigo'])->where(['estado' => '1'])->all();
     }
 
     /**
@@ -151,7 +151,7 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     public function getUsuarioPuntoVentas()
     {
-       return $this->hasMany(UsuarioPuntoVenta::className(), ['usuario' => 'codigo']);
+       return $this->hasMany(UsuarioPuntoVenta::className(), ['usuario' => 'codigo'])->where(['estado' => '1'])->all();
     }
 
     /**

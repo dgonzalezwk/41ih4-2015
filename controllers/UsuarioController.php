@@ -216,8 +216,8 @@ class UsuarioController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $permisos = ArrayHelper::map( $model->accionUsuarios , 'codigo' , 'accion' );
-        $puntosVentaSeleccionados = ArrayHelper::map( $model->usuarioPuntoVentas , 'codigo' , 'punto_venta' );;
+        $permisos = ArrayHelper::map( $model->getAccionUsuarios() , 'codigo' , 'accion' );
+        $puntosVentaSeleccionados = ArrayHelper::map( $model->getUsuarioPuntoVentas() , 'codigo' , 'punto_venta' );;
 
         if ($model->load(Yii::$app->request->post())) {
 
@@ -288,7 +288,7 @@ class UsuarioController extends Controller
                                 $modelUsuarioPuntoVenta->save();
                             }
                         } else if ( UsuarioPuntoVentaSearch::isValido( $puntoVenta , $model ) ) {
-                            $modelUsuarioPuntoVenta = UsuarioPuntoVentaSearch::puntoVentaPorUsuario( $accion , $model );
+                            $modelUsuarioPuntoVenta = UsuarioPuntoVentaSearch::puntoVentaPorUsuario( $puntoVenta , $model );
                             if ( !is_bool($modelUsuarioPuntoVenta) && $modelUsuarioPuntoVenta->estado ) {
                                 $modelUsuarioPuntoVenta->load([ 'UsuarioPuntoVenta' => [
                                         'estado' => 0,
@@ -321,7 +321,7 @@ class UsuarioController extends Controller
                 return $this->render('update', ['model' => $model, 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
             }
         } else {
-            
+
             $model->fecha_nacimiento = AppDate::stringToDate( $model->fecha_nacimiento , Yii::$app->params['formatViewDate'] );
             $model->contrasena = base64_decode( $model->contrasena );
             $arrayModulos = $this->arregloAccionesModulo( $permisos );

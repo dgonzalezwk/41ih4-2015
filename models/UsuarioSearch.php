@@ -87,4 +87,8 @@ class UsuarioSearch extends Usuario
         return Usuario::findBySql($sql)->all();
     }
 
+    public static function allNotSession()
+    {
+        return Usuario::find()->where([ 'estado' => TerminoSearch::estadoUsuarioActivo()->codigo ])->andWhere( ['NOT IN', 'codigo', [ Yii::$app->user->identity->codigo ] ] )->all();
+    }
 }
