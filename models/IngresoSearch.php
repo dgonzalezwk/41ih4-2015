@@ -82,4 +82,9 @@ class IngresoSearch extends Ingreso
 
         return $dataProvider;
     }
+
+    public static function byFechaCierreCaja( $fecha )
+    {
+        return Ingreso::find()->where( [ 'fecha_cierre_caja' => $fecha , 'tipo_ingreso' => TerminoSearch::tipoIngresoCierreCaja()->codigo ] )->all();
+    }
 }

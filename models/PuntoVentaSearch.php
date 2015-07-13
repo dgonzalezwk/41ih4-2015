@@ -82,4 +82,5 @@ class PuntoVentaSearch extends PuntoVenta
     {
         return PuntoVenta::find()->where([ 'estado' => 1 ])->andWhere( ['NOT IN', 'codigo', [ Yii::$app->user->identity->getPuntoVentaSelected()->punto_venta ] ] )->all();
     }
+
 }

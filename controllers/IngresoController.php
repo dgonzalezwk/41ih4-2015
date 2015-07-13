@@ -166,4 +166,27 @@ class IngresoController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    /**
+     * Deletes an existing Ingreso model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionValidarCierre()
+    {
+        Yii::$app->response->format = 'json';
+        $fecha = Yii::$app->request->post( 'fecha' , null );
+        if ( $fecha != null && $fecha != '' ) {
+          $ingresos = IngresoSearch::byFechaCierreCaja( $fecha );
+          if ( count( $ingresos ) > 0 ) {
+            return [ "success" => false ];
+          } else {
+            
+            return [ "success" => true ];
+          }
+        } else {
+          return [ "success" => false ];
+        }
+    }
 }

@@ -62,6 +62,6 @@ class ItemFactura extends \yii\db\ActiveRecord
      */
     public function getProducto0()
     {
-        return $this->hasOne(Producto::className(), ['codigo' => 'producto']);
+        return $this->hasOne(Lote::className(), ['codigo' => 'producto']);
     }
 }

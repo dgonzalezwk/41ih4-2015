@@ -3,8 +3,9 @@
 use app\models\PuntoVentaSearch;
 use app\models\TerminoSearch;
 use app\models\UsuarioSearch;
-use kartik\widgets\DatePicker;
+use kartik\date\DatePicker;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -21,9 +22,36 @@ use yii\widgets\ActiveForm;
         </div>
         <div class="col-lg-6">
             <?= $form->field($model, 'fecha_cierre_caja')->widget(DatePicker::classname(), [
+                'language' => 'es',
+                'removeButton' => false,
                 'options' => ['placeholder' => 'Enter birth date ...'],
+                'pluginEvents' => [
+                    "show" => "function(e) {  }",
+                    "hide" => "function(e) {  }",
+                    "clearDate" => "function(e) {  }",
+                    "changeDate" => "function(e) {
+                        var sFecha = $( '#ingreso-fecha_cierre_caja' ).val();
+                        $.post( '".Url::to( [ 'ingreso/validar-cierre' ] )."' , { fecha : sFecha } , function( data ){
+                            if ( data.success ) {
+                                $('#modalContent .alert').remove();
+                                $('#modalContent #btn-save').removeAttr( 'disabled' );
+                            } else {
+                                $('#modalContent .alert').remove();
+                                $('#modalContent').prepend('<div class=".'"alert alert-danger"'." role=".'"alert"'.">No puedes generar un cierre de caja</div>');
+                                $('#modalContent #btn-save').attr( 'disabled' , 'disabled' );
+                            }
+                        } , 'json');
+                    }",
+                    "changeYear" => "function(e) {  }",
+                    "changeMonth" => "function(e) {  }",
+                ],
                 'pluginOptions' => [
-                    'autoclose'=>true
+                    'orientation' => 'top right',
+                    'autoclose' => true,
+                    'format' => 'dd MM yyyy',
+                    'startDate'=> '-7d',
+                    'endDate' => '0d',
+                    'todayBtn' => true
                 ]
             ]) ?>
         </div>
@@ -52,7 +80,7 @@ use yii\widgets\ActiveForm;
         </div>
         <div class="col-lg-6">
             <div class="form-group">
-                <?= Html::submitButton($model->isNewRecord ? 'Registrar Ingreso' : 'Editar Datos', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                <?= Html::submitButton($model->isNewRecord ? 'Registrar Ingreso' : 'Editar Datos', [ 'id' => 'btn-save' , 'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
             </div>
         </div>
 

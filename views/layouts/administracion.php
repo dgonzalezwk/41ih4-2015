@@ -55,7 +55,7 @@ AppAsset::register($this);
             ]) ?>
         </div>
         <div class="row text text-center">
-            <div class="col-lg-offset-3 col-lg-6">
+            <div id="alerts" class="col-lg-offset-3 col-lg-6">
                 <?php foreach ( Yii::$app->session->getAllFlashes() as $key => $message ): ?>
                     <div class="alert alert-<?= $key ?>" role="alert"><?= $message ?></div>
                 <?php endforeach ?>

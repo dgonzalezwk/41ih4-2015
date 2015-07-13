@@ -109,5 +109,9 @@ class TerminoSearch extends Termino
     {
         return Termino::find()->where(['categoria'=>'Estado De Gasto', 'key'=>2 ,'estado'=>1])->one();
     }
+    public static function tipoIngresoCierreCaja()
+    {
+        return Termino::find()->where(['categoria'=>'Estados De Ingresos', 'key'=>2 ,'estado'=>1])->one();
+    }
 
 }

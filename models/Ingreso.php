@@ -28,12 +28,14 @@ use Yii;
  * @property integer $usuario_actualizacion
  * @property string $fecha_actualizacion
  *
+ * @property Termino $estado0
  * @property Usuario $usuarioAutorizador
  * @property Usuario $usuarioPago
  * @property Usuario $usuarioRegistro
  * @property Usuario $usuarioActualizacion
  * @property PuntoVenta $origen0
  * @property PuntoVenta $destino0
+ * @property Termino $tipoIngreso
  */
 class Ingreso extends \yii\db\ActiveRecord
 {
@@ -90,6 +92,13 @@ class Ingreso extends \yii\db\ActiveRecord
     }
 
     /**
+    * @return \yii\db\ActiveQuery
+    */
+    public function getEstado0() 
+    { 
+        return $this->hasOne(Termino::className(), ['codigo' => 'estado']); 
+    } 
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getUsuarioAutorizador()
@@ -136,4 +145,12 @@ class Ingreso extends \yii\db\ActiveRecord
     {
         return $this->hasOne(PuntoVenta::className(), ['codigo' => 'destino']);
     }
+
+    /** 
+    * @return \yii\db\ActiveQuery 
+    */ 
+    public function getTipoIngreso() 
+    { 
+        return $this->hasOne(Termino::className(), ['codigo' => 'tipo_ingreso']); 
+    } 
 }
