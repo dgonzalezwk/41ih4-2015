@@ -93,10 +93,6 @@ class TerminoSearch extends Termino
     {
         return Termino::find()->where(['categoria'=>'Tipos De Gastos','estado'=>1])->all();
     }
-    public static function estadosIngresos()
-    {
-        return Termino::find()->where(['categoria'=>'Estados De Ingresos' ,'estado'=>1])->all();
-    }
     public static function estadoUsuarioActivo()
     {
         return Termino::find()->where(['categoria'=>'Estados De Usuario', 'key'=>1 ,'estado'=>1])->one();
@@ -109,9 +105,29 @@ class TerminoSearch extends Termino
     {
         return Termino::find()->where(['categoria'=>'Estado De Gasto', 'key'=>2 ,'estado'=>1])->one();
     }
+    public static function tiposIngresos()
+    {
+        return Termino::find()->where(['categoria'=>'Tipo De Ingresos' ,'estado'=>1])->all();
+    }
     public static function tipoIngresoCierreCaja()
     {
-        return Termino::find()->where(['categoria'=>'Estados De Ingresos', 'key'=>2 ,'estado'=>1])->one();
+        return Termino::find()->where(['categoria'=>'Tipo De Ingresos', 'key'=>2 ,'estado'=>1])->one();
+    }
+    public static function estadosIngresos()
+    {
+        return Termino::find()->where(['categoria'=>'Estado De Ingresos' ,'estado'=>1])->all();
+    }
+    public static function estadoIngresoCorrecto()
+    {
+        return Termino::find()->where(['categoria'=>'Estado De Ingresos', 'key'=>1 ,'estado'=>1])->one();
+    }
+    public static function estadoIngresoMenor()
+    {
+        return Termino::find()->where(['categoria'=>'Estado De Ingresos', 'key'=>2 ,'estado'=>1])->one();
+    }
+    public static function estadoIngresoMayor()
+    {
+        return Termino::find()->where(['categoria'=>'Estado De Ingresos', 'key'=>3 ,'estado'=>1])->one();
     }
 
 }

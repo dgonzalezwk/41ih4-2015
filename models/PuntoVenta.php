@@ -122,7 +122,7 @@ class PuntoVenta extends \yii\db\ActiveRecord
 
     public function ventasByFecha( $fecha )
     {
-        $datos = Yii::$app->$db->createCommand( 'select b.cantidad as cantidad , c.precio_mayor as precio_x_mayor , c.precio_unidad as precio_x_unidad from factura a inner join item_factura b on a.codigo = b.factura inner join lote c on b.producto = c.codigo where a.fecha = :paramFecha and a.punto_venta =  :paramPuntoVenta ' , [
+        $datos = Yii::$app->db->createCommand( 'select a.punto_venta ,sum( IF( b.cantidad > ( '.Yii::$app->params['cantSaleMax'].'-1 ) , c.precio_mayor * b.cantidad , c.precio_unidad * b.cantidad ) ) as valor from factura a inner join item_factura b on a.codigo = b.factura inner join lote c on b.producto = c.codigo where a.fecha = :paramFecha and a.punto_venta = :paramPuntoVenta group by a.punto_venta' , [
             ':paramFecha' => $fecha ,
             ':paramPuntoVenta' => $this->codigo ,
         ])->queryOne();

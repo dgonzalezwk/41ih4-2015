@@ -10,6 +10,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use app\models\Ingreso;
 use app\models\IngresoSearch;
+use app\models\TerminoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -100,20 +101,38 @@ class IngresoController extends Controller
     {
         $model = new Ingreso();
         if ( $model->load( Yii::$app->request->post() ) ) {
-            $transaction = Yii::$app->db->beginTransaction();
-            try {
-              if ( $model->save() ){
-                $transaction->commit();
-              } else {
-                $transaction->rollBack();
-                return $this->renderAjax('create', [ 'model' => $model ] );
-              }
-            } catch (Exception $e) {
-              $transaction->rollBack();
-              return $this->renderAjax('create', [ 'model' => $model ] );
-            }
 
+          $model->punto_venta = Yii::$app->user->identity->getPuntoVentaSelected()->punto_venta;
+          $model->destino = Yii::$app->user->identity->getPuntoVentaSelected()->punto_venta;
+          $model->usuario_registro = Yii::$app->user->identity->codigo;
+          $model->fecha_registro = AppDate::date();
+          $model->fecha_llegada = AppDate::date();
+
+          $model->corresponde = 0;
+          $model->igualado = 0;
+          $model->suma_anexada = 0;
+
+          $intCantidad = intval( $model->cantidad );
+          $intCantidad_esperada = intval( $model->cantidad_esperada );
+          
+          if ( $intCantidad == $intCantidad_esperada ) {
+            $model->corresponde = 1;
+            $model->igualado = 1;
+            $model->estado = TerminoSearch::estadoIngresoCorrecto()->codigo;
+          } else if ( $intCantidad > $intCantidad_esperada ) {
+            $model->corresponde = 1;
+            $model->igualado = 1;
+            $model->suma_anexada = ( $intCantidad - $intCantidad_esperada );
+            $model->estado = TerminoSearch::estadoIngresoMayor()->codigo;
+          } else if ( $intCantidad < $intCantidad_esperada ) {
+            $model->estado = TerminoSearch::estadoIngresoMenor()->codigo;
+          }
+
+          if ( $model->save() ){
             return $this->redirect([ 'view' , 'id' => $model->codigo ]);
+          } else {
+            return $this->renderAjax('create', [ 'model' => $model ] );
+          }
         } else {
             return $this->renderAjax( 'create' , [ 'model' => $model ]);
         }
@@ -182,8 +201,16 @@ class IngresoController extends Controller
           if ( count( $ingresos ) > 0 ) {
             return [ "success" => false ];
           } else {
-            
-            return [ "success" => true ];
+            $datos = Yii::$app->user->identity->getPuntoVentaSelected()->puntoVenta->ventasByFecha( $fecha );
+            if ( $datos != null ) {
+              if ( isset( $datos['valor'] ) && $datos['valor'] != "" ) {
+                return [ "success" => true , 'valor' => $datos['valor'] ];
+              } else {
+                return [ "success" => false ];
+              }
+            } else {
+              return [ "success" => false ];
+            }
           }
         } else {
           return [ "success" => false ];

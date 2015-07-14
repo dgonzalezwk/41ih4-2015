@@ -10,17 +10,17 @@ use Yii;
  * @property integer $codigo
  * @property string $fecha_cierre_caja
  * @property string $fecha_llegada
- * @property string $cantidad
+ * @property string $integer
  * @property boolean $corresponde
  * @property integer $usuario_pago
  * @property integer $usuario_autorizador
  * @property boolean $igualado
- * @property string $suma_anexada
+ * @property integer $suma_anexada
  * @property string $descripcion
  * @property integer $punto_venta
  * @property integer $origen
  * @property integer $destino
- * @property string $cantidad_esperada
+ * @property integer $cantidad_esperada
  * @property integer $tipo_ingreso
  * @property integer $estado
  * @property integer $usuario_registro
@@ -53,11 +53,10 @@ class Ingreso extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fecha_cierre_caja', 'fecha_llegada', 'cantidad', 'usuario_pago', 'usuario_autorizador', 'suma_anexada', 'descripcion', 'punto_venta', 'origen', 'destino', 'cantidad_esperada', 'tipo_ingreso', 'estado', 'usuario_registro', 'fecha_registro', 'usuario_actualizacion', 'fecha_actualizacion'], 'required'],
+            [['fecha_cierre_caja', 'fecha_llegada', 'cantidad', 'usuario_pago', 'usuario_autorizador', 'suma_anexada', 'descripcion', 'punto_venta', 'origen', 'destino', 'cantidad_esperada', 'tipo_ingreso', 'estado', 'usuario_registro'], 'required'],
             [['fecha_cierre_caja', 'fecha_llegada', 'fecha_registro', 'fecha_actualizacion'], 'safe'],
             [['corresponde', 'igualado'], 'boolean'],
-            [['usuario_pago', 'usuario_autorizador', 'punto_venta', 'origen', 'destino', 'tipo_ingreso', 'estado', 'usuario_registro', 'usuario_actualizacion'], 'integer'],
-            [['cantidad', 'suma_anexada', 'cantidad_esperada'], 'string', 'max' => 12],
+            [['cantidad', 'usuario_pago', 'usuario_autorizador', 'suma_anexada', 'punto_venta', 'origen', 'destino', 'cantidad_esperada', 'tipo_ingreso', 'estado', 'usuario_registro', 'usuario_actualizacion'], 'integer'],
             [['descripcion'], 'string', 'max' => 250]
         ];
     }
@@ -69,11 +68,11 @@ class Ingreso extends \yii\db\ActiveRecord
     {
         return [
             'codigo' => 'Codigo',
-            'fecha_cierre_caja' => 'Fecha Cierre Caja',
+            'fecha_cierre_caja' => 'Fecha de salida',
             'fecha_llegada' => 'Fecha Llegada',
             'cantidad' => 'Cantidad',
             'corresponde' => 'Corresponde',
-            'usuario_pago' => 'Usuario Pago',
+            'usuario_pago' => 'Usuario que entrega',
             'usuario_autorizador' => 'Usuario Autorizador',
             'igualado' => 'Igualado',
             'suma_anexada' => 'Suma Anexada',

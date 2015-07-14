@@ -8,4 +8,6 @@ return [
     #formato de fechas para vististas de usuario
     'formatViewDate' => 'd F Y',
     'formatViewTime' => 'h:i A',
+    #cantidad de productos para considerarlo x mayor
+    'cantSaleMax' => 6,
 ];

@@ -61,14 +61,19 @@ AppAsset::register($this);
                 <?php endforeach ?>
             </div>
         </div>
-        <div class="row">
+        <div class="row" id="main-content">
             <?= $content ?>
         </div>
         <?php 
             Modal::begin([
-                    'header' => '<h4>'.Html::encode($this->title).'</h4>',
+                    'headerOptions' => ['id' => 'modalHeader'],
                     'id' => 'modal',
-                    'size' => 'modal-lg'
+                    'size' => 'modal-lg',
+                    'clientOptions' => ['backdrop' => 'static', 'keyboard' => FALSE],
+                    'closeButton' => [
+                      'label' => 'x',
+                      'class' => 'btn btn-danger btn-xs pull-right',
+                    ],
                 ]);
                 echo "<div id='modalContent'></div>";
             Modal::end();
