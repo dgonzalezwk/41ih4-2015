@@ -45,9 +45,6 @@ use yii\widgets\Pjax;
             ]) ?>
         </div>
         <div class="col-lg-6">
-            <?= $form->field($model, 'usuario_autorizador')->dropDownList(ArrayHelper::map(UsuarioSearch::autorizadoresPuntoVenta( Yii::$app->user->identity->getPuntoVentaSelected() ), 'codigo', function ( $usuario) { return $usuario->nombre . ' ' . $usuario->apellido; }),['prompt'=>'Seleccione Una Opcion']) ?>
-        </div>
-        <div class="col-lg-6">
             <?= $form->field($model, 'origen')->dropDownList(
                 ArrayHelper::map( 
                     PuntoVentaSearch::allNotSelected() , 
@@ -62,10 +59,10 @@ use yii\widgets\Pjax;
             <?= $form->field($model, 'usuario_pago')->dropDownList(ArrayHelper::map( UsuarioSearch::allNotSession() , 'codigo', function ( $usuario) { return $usuario->nombre . ' ' . $usuario->apellido; }),['prompt'=>'Seleccione Una Opcion'])  ?>
         </div>
         <div class="col-lg-6">
-            <?= $form->field($model, 'cantidad')->textInput(['maxlength' => 12]) ?>
+            <?= $form->field($model, 'descripcion')->textArea(['rows' => '6', 'maxlength' => 250]) ?>
         </div>
         <div class="col-lg-6">
-            <?= $form->field($model, 'descripcion')->textArea(['rows' => '6', 'maxlength' => 250]) ?>
+            <?= $form->field($model, 'cantidad')->textInput(['maxlength' => 12]) ?>
         </div>
         <div class="col-lg-6">
             <?= $form->field($model, 'cantidad_esperada')->textInput(['maxlength' => 12]) ?>

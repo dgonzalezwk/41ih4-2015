@@ -102,37 +102,36 @@ class IngresoController extends Controller
         $model = new Ingreso();
         if ( $model->load( Yii::$app->request->post() ) ) {
 
-          $model->punto_venta = Yii::$app->user->identity->getPuntoVentaSelected()->punto_venta;
-          $model->destino = Yii::$app->user->identity->getPuntoVentaSelected()->punto_venta;
-          $model->usuario_registro = Yii::$app->user->identity->codigo;
-          $model->fecha_registro = AppDate::date();
-          $model->fecha_llegada = AppDate::date();
+            $model->punto_venta = Yii::$app->user->identity->getPuntoVentaSelected()->punto_venta;
+            $model->destino = Yii::$app->user->identity->getPuntoVentaSelected()->punto_venta;
+            $model->usuario_registro = Yii::$app->user->identity->codigo;
+            $model->fecha_llegada = AppDate::date();
 
-          $model->corresponde = 0;
-          $model->igualado = 0;
-          $model->suma_anexada = 0;
+            $model->corresponde = 0;
+            $model->igualado = 0;
+            $model->suma_anexada = 0;
 
-          $intCantidad = intval( $model->cantidad );
-          $intCantidad_esperada = intval( $model->cantidad_esperada );
-          
-          if ( $intCantidad == $intCantidad_esperada ) {
-            $model->corresponde = 1;
-            $model->igualado = 1;
-            $model->estado = TerminoSearch::estadoIngresoCorrecto()->codigo;
-          } else if ( $intCantidad > $intCantidad_esperada ) {
-            $model->corresponde = 1;
-            $model->igualado = 1;
-            $model->suma_anexada = ( $intCantidad - $intCantidad_esperada );
-            $model->estado = TerminoSearch::estadoIngresoMayor()->codigo;
-          } else if ( $intCantidad < $intCantidad_esperada ) {
-            $model->estado = TerminoSearch::estadoIngresoMenor()->codigo;
-          }
+            $intCantidad = intval( $model->cantidad );
+            $intCantidad_esperada = intval( $model->cantidad_esperada );
+              
+            if ( $intCantidad == $intCantidad_esperada ) {
+                $model->corresponde = 1;
+                $model->igualado = 1;
+                $model->estado = TerminoSearch::estadoIngresoCorrecto()->codigo;
+            } else if ( $intCantidad > $intCantidad_esperada ) {
+                $model->corresponde = 1;
+                $model->igualado = 1;
+                $model->suma_anexada = ( $intCantidad - $intCantidad_esperada );
+                $model->estado = TerminoSearch::estadoIngresoMayor()->codigo;
+            } else if ( $intCantidad < $intCantidad_esperada ) {
+                $model->estado = TerminoSearch::estadoIngresoMenor()->codigo;
+            }
 
-          if ( $model->save() ){
-            return $this->redirect([ 'view' , 'id' => $model->codigo ]);
-          } else {
-            return $this->renderAjax('create', [ 'model' => $model ] );
-          }
+            if ( $model->save() ){
+                return $this->redirect([ 'view' , 'id' => $model->codigo ]);
+            } else {
+                return $this->renderAjax('create', [ 'model' => $model ] );
+            }
         } else {
             return $this->renderAjax( 'create' , [ 'model' => $model ]);
         }
@@ -148,8 +147,38 @@ class IngresoController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->codigo]);
+        if ( $model->load( Yii::$app->request->post() ) ) {
+
+            $model->punto_venta = Yii::$app->user->identity->getPuntoVentaSelected()->punto_venta;
+            $model->destino = Yii::$app->user->identity->getPuntoVentaSelected()->punto_venta;
+            $model->usuario_registro = Yii::$app->user->identity->codigo;
+            $model->fecha_llegada = AppDate::date();
+
+            $model->corresponde = 0;
+            $model->igualado = 0;
+            $model->suma_anexada = 0;
+
+            $intCantidad = intval( $model->cantidad );
+            $intCantidad_esperada = intval( $model->cantidad_esperada );
+              
+            if ( $intCantidad == $intCantidad_esperada ) {
+                $model->corresponde = 1;
+                $model->igualado = 1;
+                $model->estado = TerminoSearch::estadoIngresoCorrecto()->codigo;
+            } else if ( $intCantidad > $intCantidad_esperada ) {
+                $model->corresponde = 1;
+                $model->igualado = 1;
+                $model->suma_anexada = ( $intCantidad - $intCantidad_esperada );
+                $model->estado = TerminoSearch::estadoIngresoMayor()->codigo;
+            } else if ( $intCantidad < $intCantidad_esperada ) {
+                $model->estado = TerminoSearch::estadoIngresoMenor()->codigo;
+            }
+
+            if ( $model->save() ){
+                return $this->redirect([ 'view' , 'id' => $model->codigo ]);
+            } else {
+                return $this->renderAjax('create', [ 'model' => $model ] );
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,

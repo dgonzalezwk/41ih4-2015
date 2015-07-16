@@ -13,7 +13,6 @@ use Yii;
  * @property string $integer
  * @property boolean $corresponde
  * @property integer $usuario_pago
- * @property integer $usuario_autorizador
  * @property boolean $igualado
  * @property integer $suma_anexada
  * @property string $descripcion
@@ -29,7 +28,6 @@ use Yii;
  * @property string $fecha_actualizacion
  *
  * @property Termino $estado0
- * @property Usuario $usuarioAutorizador
  * @property Usuario $usuarioPago
  * @property Usuario $usuarioRegistro
  * @property Usuario $usuarioActualizacion
@@ -53,10 +51,10 @@ class Ingreso extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fecha_cierre_caja', 'fecha_llegada', 'cantidad', 'usuario_pago', 'usuario_autorizador', 'suma_anexada', 'descripcion', 'punto_venta', 'origen', 'destino', 'cantidad_esperada', 'tipo_ingreso', 'estado', 'usuario_registro'], 'required'],
+            [['fecha_cierre_caja', 'fecha_llegada', 'cantidad', 'usuario_pago', 'suma_anexada', 'descripcion', 'punto_venta', 'origen', 'destino', 'cantidad_esperada', 'tipo_ingreso', 'estado', 'usuario_registro'], 'required'],
             [['fecha_cierre_caja', 'fecha_llegada', 'fecha_registro', 'fecha_actualizacion'], 'safe'],
             [['corresponde', 'igualado'], 'boolean'],
-            [['cantidad', 'usuario_pago', 'usuario_autorizador', 'suma_anexada', 'punto_venta', 'origen', 'destino', 'cantidad_esperada', 'tipo_ingreso', 'estado', 'usuario_registro', 'usuario_actualizacion'], 'integer'],
+            [['cantidad', 'usuario_pago', 'suma_anexada', 'punto_venta', 'origen', 'destino', 'cantidad_esperada', 'tipo_ingreso', 'estado', 'usuario_registro', 'usuario_actualizacion'], 'integer'],
             [['descripcion'], 'string', 'max' => 250]
         ];
     }
@@ -73,7 +71,6 @@ class Ingreso extends \yii\db\ActiveRecord
             'cantidad' => 'Cantidad',
             'corresponde' => 'Corresponde',
             'usuario_pago' => 'Usuario que entrega',
-            'usuario_autorizador' => 'Usuario Autorizador',
             'igualado' => 'Igualado',
             'suma_anexada' => 'Suma Anexada',
             'descripcion' => 'Descripcion',
@@ -96,13 +93,6 @@ class Ingreso extends \yii\db\ActiveRecord
     public function getEstado0() 
     { 
         return $this->hasOne(Termino::className(), ['codigo' => 'estado']); 
-    } 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUsuarioAutorizador()
-    {
-        return $this->hasOne(Usuario::className(), ['codigo' => 'usuario_autorizador']);
     }
 
     /**
