@@ -18,7 +18,7 @@ class IngresoSearch extends Ingreso
     public function rules()
     {
         return [
-            [['codigo', 'usuario_pago', 'usuario_autorizador', 'punto_venta', 'origen', 'destino', 'tipo_ingreso', 'estado', 'usuario_registro', 'usuario_actualizacion'], 'integer'],
+            [['codigo', 'usuario_pago', 'punto_venta', 'origen', 'destino', 'tipo_ingreso', 'estado', 'usuario_registro', 'usuario_actualizacion'], 'integer'],
             [['fecha_cierre_caja', 'fecha_llegada', 'cantidad', 'suma_anexada', 'descripcion', 'cantidad_esperada', 'fecha_registro', 'fecha_actualizacion'], 'safe'],
             [['corresponde', 'igualado'], 'boolean'],
         ];
@@ -62,7 +62,6 @@ class IngresoSearch extends Ingreso
             'fecha_llegada' => $this->fecha_llegada,
             'corresponde' => $this->corresponde,
             'usuario_pago' => $this->usuario_pago,
-            'usuario_autorizador' => $this->usuario_autorizador,
             'igualado' => $this->igualado,
             'punto_venta' => $this->punto_venta,
             'origen' => $this->origen,

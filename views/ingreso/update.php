@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Ingreso */
 
-$this->title = 'Update Ingreso: ' . ' ' . $model->codigo;
+$this->title = 'Editar Ingreso: ' . $model->fecha_cierre_caja . ' - No ' . $model->codigo;
 $this->params['breadcrumbs'][] = ['label' => 'Ingresos', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->codigo, 'url' => ['view', 'id' => $model->codigo]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = ['label' => $model->fecha_cierre_caja . ' - No ' . $model->codigo , 'url' => ['view', 'id' => $model->codigo]];
+$this->params['breadcrumbs'][] = 'Editar';
 ?>
 <div class="ingreso-update">
 

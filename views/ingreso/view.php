@@ -34,7 +34,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'cantidad',
             'corresponde:boolean',
             'usuario_pago',
-            'usuario_autorizador',
             'igualado:boolean',
             'suma_anexada',
             'descripcion',

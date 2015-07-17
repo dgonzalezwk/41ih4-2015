@@ -10,7 +10,10 @@ use yii\widgets\ActiveForm;
 
 <div class="accion-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+    	'id' => 'form-action' ,
+        'options' => ['data-pjax' => true ],
+    ]); ?>
 
     <?= $form->field($model, 'accion')->textInput(['maxlength' => 100]) ?>
 

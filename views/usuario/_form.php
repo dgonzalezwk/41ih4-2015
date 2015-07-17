@@ -19,7 +19,7 @@ use yii\widgets\Pjax;
 <div class="usuario-form">
     <div class="row">
     <?php Pjax::begin(); ?>
-        <?php $form = ActiveForm::begin(['options' => ['data-pjax' => true ]]); ?>
+        <?php $form = ActiveForm::begin([ 'id' => 'form-usuario' , 'options' => ['data-pjax' => true ] ]); ?>
             <div class="col-lg-6">
                 <?= $form->field($model, 'identificacion')->textInput() ?>
                 <?= $form->field($model, 'nombre')->textInput(['maxlength' => 30]) ?>

@@ -105,6 +105,7 @@ class IngresoController extends Controller
             $model->punto_venta = Yii::$app->user->identity->getPuntoVentaSelected()->punto_venta;
             $model->destino = Yii::$app->user->identity->getPuntoVentaSelected()->punto_venta;
             $model->usuario_registro = Yii::$app->user->identity->codigo;
+            $model->fecha_salida = $model->fecha_cierre_caja;
             $model->fecha_llegada = AppDate::date();
 
             $model->corresponde = 0;
@@ -152,6 +153,7 @@ class IngresoController extends Controller
             $model->punto_venta = Yii::$app->user->identity->getPuntoVentaSelected()->punto_venta;
             $model->destino = Yii::$app->user->identity->getPuntoVentaSelected()->punto_venta;
             $model->usuario_registro = Yii::$app->user->identity->codigo;
+            $model->fecha_salida = $model->fecha_cierre_caja;
             $model->fecha_llegada = AppDate::date();
 
             $model->corresponde = 0;
