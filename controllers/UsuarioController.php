@@ -19,6 +19,7 @@ use app\models\Usuario;
 use app\models\UsuarioSearch;
 use app\models\UsuarioPuntoVenta;
 use app\models\UsuarioPuntoVentaSearch;
+use app\models\TerminoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -337,9 +338,11 @@ class UsuarioController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $model = $this->findModel($id);
+        $model->estado = TerminoSearch::estadoUsuarioEliminado()->codigo;
+        if ( $model->save() ) {
+            return $this->redirect(['index']);
+        }
     }
 
     public function actionLogin()

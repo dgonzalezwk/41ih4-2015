@@ -45,17 +45,34 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'class' => 'yii\grid\ActionColumn',
                         'contentOptions'=>['class'=>'text text-center'],
-                        'template' => '{view}&nbsp;{update}&nbsp;{delete}&nbsp;{authorize}&nbsp;{not-authorize}',
+                        'template' => '{view}&nbsp;{update}&nbsp;{authorize}&nbsp;{not-authorize}',
                         'buttons' => [
+                            'update' => function ($url, $model) {
+                                if($model->estado0->key == 1){
+                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                        'title' => $url,
+                                    ]);
+                                } else {
+                                    return '';
+                                }
+                            },
                             'authorize' => function ($url, $model) {
-                                return Html::a('<span class="glyphicon glyphicon-ok"></span>', $url, [
-                                            'title' => Yii::t('app', 'Authorize'),
-                                ]);
+                                if($model->estado0->key == 2){
+                                    return '';
+                                } else {
+                                    return Html::a('<span class="glyphicon glyphicon-ok"></span>', $url, [
+                                                'title' => Yii::t('app', 'Authorize'),
+                                    ]);
+                                }
                             },
                             'not-authorize' => function ($url, $model) {
-                                return Html::a('<span class="glyphicon glyphicon-remove"></span>', $url, [
-                                            'title' => Yii::t('app', 'NotAuthorize'),
-                                ]);
+                                if($model->estado0->key == 1){
+                                    return '';
+                                } else {
+                                    return Html::a('<span class="glyphicon glyphicon-remove"></span>', $url, [
+                                                'title' => Yii::t('app', 'NotAuthorize'),
+                                    ]);
+                                }
                             },
                         ],
                     ],

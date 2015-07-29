@@ -10,10 +10,10 @@ use Yii;
  * @property integer $codigo
  * @property string $fecha_cierre_caja
  * @property string $fecha_llegada
- * @property string $integer
+ * @property string $cantidad
  * @property boolean $corresponde
  * @property integer $usuario_pago
- * @property boolean $igualado
+ * @property integer $igualado
  * @property integer $suma_anexada
  * @property string $descripcion
  * @property integer $punto_venta
@@ -22,6 +22,7 @@ use Yii;
  * @property integer $cantidad_esperada
  * @property integer $tipo_ingreso
  * @property integer $estado
+ * @property integer $usuario_autorizador 
  * @property integer $usuario_registro
  * @property string $fecha_registro
  * @property integer $usuario_actualizacion
@@ -141,5 +142,13 @@ class Ingreso extends \yii\db\ActiveRecord
     public function getTipoIngreso() 
     { 
         return $this->hasOne(Termino::className(), ['codigo' => 'tipo_ingreso']); 
-    } 
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsuarioAutorizador()
+    {
+        return $this->hasOne(Usuario::className(), ['codigo' => 'usuario_autorizador']);
+    }
 }

@@ -96,13 +96,19 @@ class ProductoController extends Controller
         
         if ( $model->load(Yii::$app->request->post()) ) {
             
-            $image = UploadedFile::getInstance( $model, 'file' );
-            $ext = end((explode(".", $image->name)));
-            $model->imagen = Yii::$app->security->generateRandomString().".{$ext}";
-            $path =  Yii::$app->basePath . '/web/img/producto/'. $model->imagen;
+            // process uploaded image file instance
+            $image = $model->uploadImage();
+            //$image = UploadedFile::getInstance( $model, 'file' );
+            //$ext = end((explode(".", $image->name)));
+            //$model->imagen = Yii::$app->security->generateRandomString().".{$ext}";
+            //$path =  Yii::$app->basePath . '/web/img/producto/'. $model->imagen;
 
             if($model->save()){
-                $image->saveAs($path);
+                // upload only if valid uploaded file instance found
+                if ($image !== false) {
+                    $path = $model->getImageFile();
+                    $image->saveAs($path);
+                }
                 return $this->redirect(['view', 'id'=>$model->codigo]);
             } else {
                 Yii::$app->getSession()->setFlash('error',  $model->getErrors() );
@@ -112,7 +118,6 @@ class ProductoController extends Controller
             }
 
         } else {
-            Yii::$app->getSession()->setFlash('error', $model->getErrors() );
             return $this->render('create', [
                 'model' => $model,
             ]);
@@ -131,18 +136,23 @@ class ProductoController extends Controller
         $this->layout = 'administracion';
         $model = $this->findModel($id);
         $model->usuarioMod = Yii::$app->user->getId();
-        if ( $model->load(Yii::$app->request->post()) ) {
-            
-            $image = UploadedFile::getInstance( $model, 'file' );
-            if(!empty($image)){
-                $path =  Url::base()."/img/producto/". $model->imagen;
-            }
+        // datos viejos
+        $oldFile = $model->getImageFile();
+        $oldImage = $model->imagen;
 
+        if ( $model->load(Yii::$app->request->post()) ) {
+            // process uploaded image file instance
+            $image = $model->uploadImage();
+            // revert back if no valid file instance uploaded
+            if ($image === false) {
+                $model->imagen = $oldImage;
+            }
             if($model->save()){
-                if(!empty($image)){
+                if ($image !== false && unlink($oldFile)) { // delete old and overwrite
+                    $path = $model->getImageFile();
                     $image->saveAs($path);
-                    return $this->redirect(['view', 'id'=>$model->codigo]);
                 }
+                return $this->redirect(['view', 'id'=>$model->codigo]);
             } else {
                 $model->imagen = Url::base()."/img/producto/". $model->imagen;
                 return $this->render('update', [

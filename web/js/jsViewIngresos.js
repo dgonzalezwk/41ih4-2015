@@ -34,22 +34,23 @@ function validarCierres ( sUrl , sFecha ) {
 	}
 }
 function controlarSubmit ( event ) {
-	  $.ajax({
-		    type:'POST',
-		    url: $(this).attr('action') ,
-		    data:$( this ).serialize(),
-		    success: function(data)
-		    {
-		    	var errores = $(data).find('.has-error').length;
-		    	if ( errores > 0 ) {
-		    		$('#modal').find('#modalContent').html(data);
-		    		$( "#modalContent form" ).submit(controlarSubmit);
-		    	} else {
-		    		$(document).html(data);
-		    	} 
-		        
-		    }
-		});
-	  event.preventDefault();
+	$('#modalContent #btn-save').attr( 'disabled' , 'disabled' );
+  	$.ajax({
+	    type:'POST',
+	    url: $(this).attr('action') ,
+	    data:$( this ).serialize(),
+	    success: function(data)
+	    {
+	    	var errores = $(data).find('.has-error').length;
+	    	if ( errores > 0 ) {
+	    		$('#modal').find('#modalContent').html(data);
+	    		$( "#modalContent form" ).submit(controlarSubmit);
+	    	} else {
+	    		$(document).html(data);
+	    	} 
+	        
+	    }
+	});
+  	event.preventDefault();
 }
 $( "#modalContent form" ).submit(controlarSubmit);

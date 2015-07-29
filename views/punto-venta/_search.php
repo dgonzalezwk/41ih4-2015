@@ -14,28 +14,24 @@ use yii\widgets\ActiveForm;
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
-
-    <?= $form->field($model, 'codigo') ?>
-
-    <?= $form->field($model, 'telefono') ?>
-
-    <?= $form->field($model, 'extension') ?>
-
-    <?= $form->field($model, 'ciudad') ?>
-
-    <?= $form->field($model, 'barrio') ?>
-
-    <?php // echo $form->field($model, 'direccion') ?>
-
-    <?php // echo $form->field($model, 'local') ?>
-
-    <?php // echo $form->field($model, 'estado')->checkbox() ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+    <div class="col-lg-2">
+        <?= $form->field($model, 'telefono')->label(false) ?>
     </div>
-
+    <div class="col-lg-2">
+        <?= $form->field($model, 'extension')->label(false) ?>
+    </div>
+    <div class="col-lg-2">
+        <?= $form->field($model, 'ciudad')->label(false) ?>
+    </div>
+    <div class="col-lg-2">
+        <?= $form->field($model, 'barrio')->label(false) ?>
+    </div>
+    <div class="col-lg-4">
+        <div class="form-group">
+            <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+            <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        </div>
+    </div>
     <?php ActiveForm::end(); ?>
 
 </div>

@@ -22,13 +22,15 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'file')->widget(FileInput::classname(), [
                     'options'=>[
                         'multiple' => false ,
+                        'accept'=>'image/*'
                     ],
                     'pluginOptions' => [
                         'initialPreview'=> $model->isNewRecord ? [] : [ Html::img( $model->imagen , [ "class" => "col-lg-12" ] ), ],
                         'showUpload' => false,
                         'browseLabel' => '',
                         'removeLabel' => '',
-                        'mainClass' => 'input-group-sm'
+                        'mainClass' => 'input-group-sm',
+                        'allowedFileExtensions'=>['jpg','gif','png'],
                     ],
                 ]);
             ?>

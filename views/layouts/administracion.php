@@ -39,8 +39,9 @@ AppAsset::register($this);
                     <?php endforeach ?>
                 </ul>
             </div>
-            <a href="<?=Yii::$app->urlManager->createUrl(['gasto/index'])?>" class="btn btn-default">Gastos</a>
+            <a href="<?=Yii::$app->urlManager->createUrl(['punto-venta/index'])?>" class="btn btn-default">punto de venta</a>
             <a href="<?=Yii::$app->urlManager->createUrl(['usuario/index'])?>" class="btn btn-default">Usuarios</a>
+            <a href="<?=Yii::$app->urlManager->createUrl(['gasto/index'])?>" class="btn btn-default">Gastos</a>
             <a href="<?=Yii::$app->urlManager->createUrl(['ingreso/index'])?>" class="btn btn-default">Ingresos</a>
         </div>
     </div>

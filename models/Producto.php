@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "producto".
@@ -132,5 +133,77 @@ class Producto extends \yii\db\ActiveRecord
     public function getUsuariomod()
     {
         return $this->hasOne(Usuario::className(), ['codigo' => 'usuariomod']);
+    }
+
+    /**
+     * fetch stored image file name with complete path 
+     * @return string
+     */
+    public function getImageFile() 
+    {
+        return isset($this->imagen) ? Yii::$app->basePath . '/web/img/producto/'. $this->imagen : null;
+    }
+
+    /**
+     * fetch stored image url
+     * @return string
+     */
+    public function getImageUrl() 
+    {
+        // return a default image placeholder if your source avatar is not found
+        $imagen = isset($this->imagen) ? $this->imagen : 'default_product.jpg';
+        return Yii::$app->basePath . '/web/img/producto/'. $imagen;
+    }
+
+    /**
+    * Process upload of image
+    *
+    * @return mixed the uploaded image instance
+    */
+    public function uploadImage() {
+        // get the uploaded file instance. for multiple file uploads
+        // the following data will return an array (you may need to use
+        // getInstances method)
+        $image = UploadedFile::getInstance($this, 'file');
+ 
+        // if no image was uploaded abort the upload
+        if (empty($image)) {
+            return false;
+        }
+ 
+        // store the source file name
+        //$this->filename = $image->name;
+        $ext = end((explode(".", $image->name)));
+ 
+        // generate a unique file name
+        $this->imagen = Yii::$app->security->generateRandomString().".{$ext}";
+ 
+        // the uploaded image instance
+        return $image;
+    }
+ 
+    /**
+    * Process deletion of image
+    *
+    * @return boolean the status of deletion
+    */
+    public function deleteImage() {
+        $file = $this->getImageFile();
+ 
+        // check if file exists on server
+        if (empty($file) || !file_exists($file)) {
+            return false;
+        }
+ 
+        // check if uploaded file can be deleted on server
+        if (!unlink($file)) {
+            return false;
+        }
+ 
+        // if deletion successful, reset your file attributes
+        $this->imagen = null;
+        $this->file = null;
+ 
+        return true;
     }
 }

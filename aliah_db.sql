@@ -1,30 +1,11 @@
--- phpMyAdmin SQL Dump
--- version 4.1.4
--- http://www.phpmyadmin.net
---
--- Host: 127.0.0.1
--- Generation Time: Jul 09, 2015 at 04:11 AM
--- Server version: 5.6.15-log
--- PHP Version: 5.5.8
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
---
--- Database: `aliah`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `accion`
---
 
 CREATE TABLE IF NOT EXISTS `accion` (
   `codigo` int(11) NOT NULL AUTO_INCREMENT,
@@ -36,44 +17,6 @@ CREATE TABLE IF NOT EXISTS `accion` (
   KEY `modulo` (`modulo`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
 
---
--- Dumping data for table `accion`
---
-
-INSERT INTO `accion` (`codigo`, `accion`, `descripcion`, `modulo`, `key`) VALUES
-(3, 'Venta de productos', 'Esta acción corresponde a la autorización de venta en los diferentes punto de venta asignados', 2, 'PuntoVenta-sale-*'),
-(4, 'Creación de Punto de venta', 'Esta acción corresponde a la opción de creación de puntos de venta', 2, 'PuntoVenta-create-*'),
-(5, 'Busqueda de usuarios', '', 3, 'Usuario-view-*'),
-(6, 'Creacion de usuarios', '', 3, 'Usuario-create-*'),
-(7, 'Edicion de usuarios', '', 3, 'Usuario-update-*'),
-(8, 'Eliminacion de usuario', '', 3, 'Usuario-delete-*'),
-(9, 'Busqueda de roles', '', 3, 'Rol-view-*'),
-(10, 'Creacion de roles', '', 3, 'Rol-create-*'),
-(11, 'Edicion de roles', '', 3, 'Rol-update-*'),
-(12, 'Eliminacion de roles', '', 3, 'Rol-delete-*'),
-(13, 'Busqueda de puntos de venta', '', 2, 'PuntoVenta-view-*'),
-(14, 'Edicion de puntos de venta', '', 2, 'PuntoVenta-update-*'),
-(15, 'Eliminacion de puntos de venta', '', 2, 'PuntoVenta-delete-*'),
-(16, 'Busqueda de terminos', '', 4, 'Termino-view-*'),
-(17, 'Creacion de terminos', '', 4, 'Termino-create-*'),
-(18, 'Edicion de termnos', '', 4, 'Termino-update-*'),
-(19, 'Eliminacion de terminos', '', 4, 'Termino-delete-*'),
-(20, 'Autorizar gastos del punto de venta', 'esta accion es la que permite manejar la parte de autorización de gastos sobre los puntos de venta ligados al usuario', 2, 'Gasto-authorizeExpendit-*'),
-(21, 'registrar gastos', 'registrar gastos', 2, 'Gasto-create-*'),
-(22, 'Editar gastos', 'Editar gastos', 2, 'Gasto-update-*'),
-(23, 'Busqueda de gastos', 'Busqueda de gastos', 2, 'Gasto-view-*'),
-(24, 'Eliminar gastos', 'Eliminar gastos', 2, 'Gasto-delete-*'),
-(25, 'ver ingresos', 'esta accion corresponde a la vista de ingresos', 2, 'Ingreso-view-*'),
-(26, 'creacion de ingresos', 'registro de ingresos de un punto de venta', 2, 'Ingreso-create-*'),
-(27, 'edicion de ingresosos', 'edicion de ingresos de un punto de venta', 2, 'Ingreso-update-*'),
-(28, 'eliminacion de ingresos de un punto de venta', 'eliminacion de ingresos de puntos de venta', 2, 'Ingreso-delete-*');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `accion_usuario`
---
-
 CREATE TABLE IF NOT EXISTS `accion_usuario` (
   `codigo` int(11) NOT NULL AUTO_INCREMENT,
   `accion` int(11) NOT NULL,
@@ -83,53 +26,6 @@ CREATE TABLE IF NOT EXISTS `accion_usuario` (
   KEY `accion` (`accion`),
   KEY `usuario` (`usuario`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
-
---
--- Dumping data for table `accion_usuario`
---
-
-INSERT INTO `accion_usuario` (`codigo`, `accion`, `usuario`, `estado`) VALUES
-(1, 3, 3, 1),
-(2, 3, 5, 1),
-(3, 4, 5, 1),
-(4, 13, 5, 1),
-(5, 14, 5, 1),
-(6, 15, 5, 1),
-(7, 4, 3, 1),
-(8, 5, 3, 1),
-(9, 6, 3, 1),
-(10, 7, 3, 1),
-(11, 8, 3, 1),
-(12, 9, 3, 1),
-(13, 10, 3, 1),
-(14, 11, 3, 1),
-(15, 12, 3, 1),
-(16, 13, 3, 1),
-(17, 14, 3, 1),
-(18, 15, 3, 1),
-(19, 16, 3, 1),
-(20, 17, 3, 1),
-(21, 18, 3, 1),
-(22, 19, 3, 1),
-(23, 5, 5, 1),
-(24, 12, 5, 1),
-(25, 16, 5, 1),
-(26, 19, 5, 1),
-(27, 20, 3, 1),
-(28, 21, 3, 1),
-(29, 22, 3, 1),
-(30, 23, 3, 1),
-(31, 24, 3, 1),
-(32, 25, 3, 1),
-(33, 26, 3, 1),
-(34, 27, 3, 1),
-(35, 28, 3, 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `cliente`
---
 
 CREATE TABLE IF NOT EXISTS `cliente` (
   `codigo` int(11) NOT NULL AUTO_INCREMENT,
@@ -149,12 +45,6 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   KEY `sexo` (`sexo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `factura`
---
-
 CREATE TABLE IF NOT EXISTS `factura` (
   `codigo` int(11) NOT NULL AUTO_INCREMENT,
   `usuario` int(11) NOT NULL,
@@ -169,12 +59,6 @@ CREATE TABLE IF NOT EXISTS `factura` (
   KEY `cliente` (`cliente`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `factura_ganadora`
---
-
 CREATE TABLE IF NOT EXISTS `factura_ganadora` (
   `codigo` int(11) NOT NULL AUTO_INCREMENT,
   `sorteo` int(11) NOT NULL,
@@ -185,12 +69,6 @@ CREATE TABLE IF NOT EXISTS `factura_ganadora` (
   KEY `factura` (`factura`),
   KEY `sorteo` (`sorteo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `gasto`
---
 
 CREATE TABLE IF NOT EXISTS `gasto` (
   `codigo` int(11) NOT NULL AUTO_INCREMENT,
@@ -217,19 +95,6 @@ CREATE TABLE IF NOT EXISTS `gasto` (
   KEY `estado` (`estado`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
---
--- Dumping data for table `gasto`
---
-
-INSERT INTO `gasto` (`codigo`, `fecha`, `monto`, `usuario`, `descripcion`, `tipo_gasto`, `punto_venta`, `usuario_registro`, `fecha_registro`, `usuario_actualizacion`, `fecha_actualizacion`, `usuario_autorizador`, `fecha_autorizacion`, `estado`) VALUES
-(3, '2015-06-23', '200000', 3, 'gasto 1', 74, 15, 3, '2015-06-29 18:14:44', 3, '2015-07-04 22:19:04', 3, NULL, 76);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `horario`
---
-
 CREATE TABLE IF NOT EXISTS `horario` (
   `codigo` int(11) NOT NULL AUTO_INCREMENT,
   `horario_apertura` time NOT NULL,
@@ -241,60 +106,36 @@ CREATE TABLE IF NOT EXISTS `horario` (
   KEY `punto_venta` (`punto_venta`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
---
--- Dumping data for table `horario`
---
-
-INSERT INTO `horario` (`codigo`, `horario_apertura`, `hora_cierre`, `hora_max_cierre`, `dia`, `punto_venta`) VALUES
-(1, '08:00:00', '18:00:00', '18:00:00', 0, 18),
-(2, '08:00:00', '18:00:00', '18:00:00', 1, 18),
-(3, '08:00:00', '18:00:00', '18:00:00', 2, 18),
-(4, '08:00:00', '18:00:00', '18:00:00', 3, 18),
-(5, '08:00:00', '18:00:00', '18:00:00', 4, 18),
-(6, '08:00:00', '18:00:00', '18:00:00', 5, 18),
-(7, '08:00:00', '18:00:00', '18:00:00', 6, 18);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ingreso`
---
-
 CREATE TABLE IF NOT EXISTS `ingreso` (
   `codigo` int(11) NOT NULL AUTO_INCREMENT,
   `fecha_cierre_caja` date NOT NULL,
   `fecha_llegada` date NOT NULL,
-  `cantidad` varchar(12) NOT NULL,
+  `cantidad` int(11) NOT NULL,
   `corresponde` bit(1) NOT NULL,
+  `igualado` tinyint(1) DEFAULT NULL,
   `usuario_pago` int(11) NOT NULL,
-  `usuario_autorizador` int(11) NOT NULL,
-  `igualado` bit(1) NOT NULL,
-  `suma_anexada` varchar(12) NOT NULL,
+  `suma_anexada` int(11) NOT NULL,
   `descripcion` varchar(250) NOT NULL,
   `punto_venta` int(11) NOT NULL,
   `origen` int(11) NOT NULL,
   `destino` int(11) NOT NULL,
-  `cantidad_esperada` varchar(12) NOT NULL,
+  `cantidad_esperada` int(11) NOT NULL,
   `tipo_ingreso` int(11) NOT NULL,
   `estado` int(11) NOT NULL,
+  `usuario_autorizador` int(11) DEFAULT NULL,
   `usuario_registro` int(11) NOT NULL,
   `fecha_registro` date NOT NULL,
   `usuario_actualizacion` int(11) NOT NULL,
   `fecha_actualizacion` date NOT NULL,
   PRIMARY KEY (`codigo`),
-  KEY `usuario_autorizador` (`usuario_autorizador`),
   KEY `usuario_pago` (`usuario_pago`),
   KEY `usuario_registro` (`usuario_registro`),
   KEY `usuario_actualizacion` (`usuario_actualizacion`),
   KEY `origen` (`origen`),
-  KEY `destino` (`destino`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `inventario`
---
+  KEY `destino` (`destino`),
+  KEY `tipo_ingreso` (`tipo_ingreso`),
+  KEY `estado` (`estado`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 CREATE TABLE IF NOT EXISTS `inventario` (
   `codigo` int(11) NOT NULL AUTO_INCREMENT,
@@ -305,12 +146,6 @@ CREATE TABLE IF NOT EXISTS `inventario` (
   KEY `usuario_registro` (`usuario_registro`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `item_factura`
---
-
 CREATE TABLE IF NOT EXISTS `item_factura` (
   `codigo` int(11) NOT NULL AUTO_INCREMENT,
   `factura` int(11) NOT NULL,
@@ -320,12 +155,6 @@ CREATE TABLE IF NOT EXISTS `item_factura` (
   KEY `factura` (`factura`),
   KEY `producto` (`producto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `item_inventario`
---
 
 CREATE TABLE IF NOT EXISTS `item_inventario` (
   `codigo` int(11) NOT NULL AUTO_INCREMENT,
@@ -339,12 +168,6 @@ CREATE TABLE IF NOT EXISTS `item_inventario` (
   KEY `lote` (`lote`),
   KEY `inventario` (`inventario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `lote`
---
 
 CREATE TABLE IF NOT EXISTS `lote` (
   `codigo` int(11) NOT NULL AUTO_INCREMENT,
@@ -372,12 +195,6 @@ CREATE TABLE IF NOT EXISTS `lote` (
   KEY `color` (`color`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `modulo`
---
-
 CREATE TABLE IF NOT EXISTS `modulo` (
   `codigo` int(11) NOT NULL AUTO_INCREMENT,
   `modulo` varchar(30) NOT NULL,
@@ -385,21 +202,6 @@ CREATE TABLE IF NOT EXISTS `modulo` (
   `estado` tinyint(1) NOT NULL,
   PRIMARY KEY (`codigo`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
-
---
--- Dumping data for table `modulo`
---
-
-INSERT INTO `modulo` (`codigo`, `modulo`, `controladores`, `estado`) VALUES
-(2, 'Puntos De venta', 'PuntoVentaController', 1),
-(3, 'Usuarios', 'RolController', 1),
-(4, 'Categorias', 'TeminoController', 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `producto`
---
 
 CREATE TABLE IF NOT EXISTS `producto` (
   `codigo` int(11) NOT NULL AUTO_INCREMENT,
@@ -418,20 +220,6 @@ CREATE TABLE IF NOT EXISTS `producto` (
   KEY `usuariomod` (`usuarioMod`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
---
--- Dumping data for table `producto`
---
-
-INSERT INTO `producto` (`codigo`, `nombre`, `descripcion`, `estado`, `categoria`, `imagen`, `fechaCreate`, `fechaMod`, `usuarioMod`, `usuarioCreate`) VALUES
-(7, 'pringuinos', 'consequat. Duis ute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 7, 6, 'PJb3Gkh_52KlkoF4tIijvGf0dh2RIO92.jpg', '2015-05-24 17:26:38', '2015-05-24 17:26:38', 3, 3),
-(8, 'desiertos', 'esta es la imagen para los desiertos', 7, 6, 'HUfoAXY71m3MCPvAarxc9OJxXzZL_VU1.jpg', '2015-05-27 00:40:42', '2015-05-27 00:40:42', 3, 3);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `punto_venta`
---
-
 CREATE TABLE IF NOT EXISTS `punto_venta` (
   `codigo` int(11) NOT NULL AUTO_INCREMENT,
   `Whatsapp` int(11) DEFAULT NULL,
@@ -447,42 +235,12 @@ CREATE TABLE IF NOT EXISTS `punto_venta` (
   PRIMARY KEY (`codigo`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
 
---
--- Dumping data for table `punto_venta`
---
-
-INSERT INTO `punto_venta` (`codigo`, `Whatsapp`, `telefono`, `extension`, `pais`, `ciudad`, `barrio`, `direccion`, `lugar`, `local`, `estado`) VALUES
-(12, 316825001, 0, '', 'Colombia', 'Bogota', 'San Victorino', 'calle 10 # 9A - 18', 'Edificio Ecuador', '102', 0),
-(15, 123456890, 123456, '345', 'Colombia', 'Bogota', 'elenita', 'cra 12 # 55 a 23', 'edificio 22', '123', 1),
-(18, 212321, 2345325, '23452345', 'sdfasd', 'adsfsa', 'sdafasd', 'asdfasd', 'asdfdsaf', 'asdff', 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `rol`
---
-
 CREATE TABLE IF NOT EXISTS `rol` (
   `codigo` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(40) NOT NULL,
   `estado` tinyint(1) NOT NULL,
   PRIMARY KEY (`codigo`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
-
---
--- Dumping data for table `rol`
---
-
-INSERT INTO `rol` (`codigo`, `nombre`, `estado`) VALUES
-(1, 'Administrador', 1),
-(2, 'Administrador de punto de venta', 1),
-(3, 'Vendedor', 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `sorteo`
---
 
 CREATE TABLE IF NOT EXISTS `sorteo` (
   `codigo` int(11) NOT NULL AUTO_INCREMENT,
@@ -492,12 +250,6 @@ CREATE TABLE IF NOT EXISTS `sorteo` (
   PRIMARY KEY (`codigo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `termino`
---
-
 CREATE TABLE IF NOT EXISTS `termino` (
   `codigo` int(11) NOT NULL AUTO_INCREMENT,
   `termino` varchar(30) NOT NULL,
@@ -506,11 +258,136 @@ CREATE TABLE IF NOT EXISTS `termino` (
   `descripcion` varchar(250) NOT NULL,
   `estado` tinyint(1) NOT NULL,
   PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=79 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=82 ;
 
---
--- Dumping data for table `termino`
---
+CREATE TABLE IF NOT EXISTS `tipo_cliente` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `tipo` varchar(10) NOT NULL,
+  `cantidad_compras` mediumint(9) NOT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `usuario` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `identificacion` int(11) NOT NULL,
+  `nombre` varchar(30) NOT NULL,
+  `apellido` varchar(30) NOT NULL,
+  `telefono` int(11) NOT NULL,
+  `email` varchar(30) NOT NULL,
+  `fecha_nacimiento` date NOT NULL,
+  `sexo` int(11) NOT NULL,
+  `usuario` varchar(30) NOT NULL,
+  `contrasena` varchar(30) NOT NULL,
+  `rol` int(11) NOT NULL,
+  `estado` int(11) NOT NULL,
+  PRIMARY KEY (`codigo`),
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `usuario` (`usuario`),
+  KEY `rol` (`rol`),
+  KEY `sexo` (`sexo`),
+  KEY `estado` (`estado`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+CREATE TABLE IF NOT EXISTS `usuario_punto_venta` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `usuario` int(11) NOT NULL,
+  `punto_venta` int(11) NOT NULL,
+  `estado` tinyint(1) NOT NULL,
+  PRIMARY KEY (`codigo`),
+  KEY `usuario` (`usuario`,`punto_venta`),
+  KEY `punto_venta` (`punto_venta`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+
+
+ALTER TABLE `accion`
+  ADD CONSTRAINT `accion_ibfk_1` FOREIGN KEY (`modulo`) REFERENCES `modulo` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `accion_usuario`
+  ADD CONSTRAINT `accion_usuario_ibfk_1` FOREIGN KEY (`accion`) REFERENCES `accion` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `accion_usuario_ibfk_2` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `cliente`
+  ADD CONSTRAINT `cliente_ibfk_1` FOREIGN KEY (`tipo`) REFERENCES `tipo_cliente` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cliente_ibfk_2` FOREIGN KEY (`sexo`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `factura`
+  ADD CONSTRAINT `factura_ibfk_1` FOREIGN KEY (`metodo_pago`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `factura_ibfk_2` FOREIGN KEY (`punto_venta`) REFERENCES `punto_venta` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `factura_ibfk_3` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `factura_ibfk_4` FOREIGN KEY (`cliente`) REFERENCES `cliente` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `factura_ganadora`
+  ADD CONSTRAINT `factura_ganadora_ibfk_1` FOREIGN KEY (`estado`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `factura_ganadora_ibfk_2` FOREIGN KEY (`factura`) REFERENCES `factura` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `factura_ganadora_ibfk_3` FOREIGN KEY (`sorteo`) REFERENCES `sorteo` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `gasto`
+  ADD CONSTRAINT `gasto_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `gasto_ibfk_3` FOREIGN KEY (`tipo_gasto`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `gasto_ibfk_4` FOREIGN KEY (`punto_venta`) REFERENCES `punto_venta` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `gasto_ibfk_5` FOREIGN KEY (`usuario_registro`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `gasto_ibfk_6` FOREIGN KEY (`usuario_actualizacion`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `gasto_ibfk_7` FOREIGN KEY (`usuario_autorizador`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `gasto_ibfk_8` FOREIGN KEY (`estado`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `horario`
+  ADD CONSTRAINT `horario_ibfk_1` FOREIGN KEY (`punto_venta`) REFERENCES `punto_venta` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `ingreso`
+  ADD CONSTRAINT `ingreso_ibfk_2` FOREIGN KEY (`usuario_pago`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ingreso_ibfk_3` FOREIGN KEY (`usuario_registro`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ingreso_ibfk_4` FOREIGN KEY (`usuario_actualizacion`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ingreso_ibfk_5` FOREIGN KEY (`origen`) REFERENCES `punto_venta` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ingreso_ibfk_6` FOREIGN KEY (`destino`) REFERENCES `punto_venta` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ingreso_ibfk_7` FOREIGN KEY (`tipo_ingreso`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ingreso_ibfk_8` FOREIGN KEY (`estado`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `inventario`
+  ADD CONSTRAINT `inventario_ibfk_1` FOREIGN KEY (`usuario_registro`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `item_factura`
+  ADD CONSTRAINT `item_factura_ibfk_1` FOREIGN KEY (`factura`) REFERENCES `factura` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `item_factura_ibfk_2` FOREIGN KEY (`producto`) REFERENCES `lote` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `item_inventario`
+  ADD CONSTRAINT `item_inventario_ibfk_1` FOREIGN KEY (`lote`) REFERENCES `lote` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `item_inventario_ibfk_2` FOREIGN KEY (`inventario`) REFERENCES `inventario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `lote`
+  ADD CONSTRAINT `lote_ibfk_1` FOREIGN KEY (`tipo`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `lote_ibfk_2` FOREIGN KEY (`estado`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `lote_ibfk_3` FOREIGN KEY (`origen`) REFERENCES `punto_venta` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `lote_ibfk_4` FOREIGN KEY (`destino`) REFERENCES `punto_venta` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `lote_ibfk_5` FOREIGN KEY (`producto`) REFERENCES `producto` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `lote_ibfk_8` FOREIGN KEY (`color`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `lote_ibfk_9` FOREIGN KEY (`talla`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `producto`
+  ADD CONSTRAINT `producto_ibfk_1` FOREIGN KEY (`estado`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `producto_ibfk_2` FOREIGN KEY (`categoria`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `producto_ibfk_3` FOREIGN KEY (`usuariomod`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `usuario`
+  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`rol`) REFERENCES `rol` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `usuario_ibfk_2` FOREIGN KEY (`sexo`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `usuario_ibfk_3` FOREIGN KEY (`estado`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `usuario_punto_venta`
+  ADD CONSTRAINT `usuario_punto_venta_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `usuario_punto_venta_ibfk_2` FOREIGN KEY (`punto_venta`) REFERENCES `punto_venta` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
 INSERT INTO `termino` (`codigo`, `termino`, `key`, `categoria`, `descripcion`, `estado`) VALUES
 (1, 'Masculino', 1, 'sexo', 'este termino corresponde a la categoria sexo al sexo masculino', 1),
@@ -589,217 +466,127 @@ INSERT INTO `termino` (`codigo`, `termino`, `key`, `categoria`, `descripcion`, `
 (74, 'Gastos de envio', 1, 'Tipos De Gastos', 'Gasto de envió', 1),
 (75, 'Por Autorizar', 1, 'Estado De Gasto', 'este es el estado del gasto por autorizar', 1),
 (76, 'Autorizado', 2, 'Estado De Gasto', 'estado autorizado de los gastos generados en el punto de venta', 1),
-(77, 'Comun', 1, 'Estados De Ingresos', 'este estado corresponde a un ingreso comun el cual puede generarse en cualquier momento', 1),
-(78, 'Cierre de caja', 2, 'Estados De Ingresos', 'este estado corresponde a las ganancias en un día que se generan en un punto de venta.', 1);
+(77, 'Comun', 1, 'Tipo De Ingresos', 'este estado corresponde a un ingreso comun el cual puede generarse en cualquier momento', 1),
+(78, 'Cierre de caja', 2, 'Tipo De Ingresos', 'este estado corresponde a las ganancias en un día que se generan en un punto de venta.', 1),
+(79, 'Correcto', 1, 'Estado De Ingresos', 'este es el estado que se asigna a el ingreso en caso que la cantidad de entrada concuerde con la cantidad ingresada', 1),
+(80, 'Menor', 2, 'Estado De Ingresos', 'este es el estado que se asigna a el ingreso en caso que la cantidad de entrada sea menor a la cantidad ingresada', 1),
+(81, 'Mayor', 3, 'Estado De Ingresos', 'este es el estado que se asigna a el ingreso en caso que la cantidad de entrada  sea mayor a la cantidad ingresada', 1),
+(82, 'autorizado', 4, 'Estado De Ingresos', 'este es el estado que se asigna a el ingreso en caso de que este se autorice, despues de esto no se podra editar', 1);
 
--- --------------------------------------------------------
+INSERT INTO `modulo` (`codigo`, `modulo`, `controladores`, `estado`) VALUES
+(2, 'Puntos De venta', 'PuntoVentaController', 1),
+(3, 'Usuarios', 'RolController', 1),
+(4, 'Categorias', 'TeminoController', 1);
 
---
--- Table structure for table `tipo_cliente`
---
+INSERT INTO `accion` (`codigo`, `accion`, `descripcion`, `modulo`, `key`) VALUES
+(3, 'Venta de productos', 'Esta acción corresponde a la autorización de venta en los diferentes punto de venta asignados', 2, 'PuntoVenta-sale-*'),
+(4, 'Creación de Punto de venta', 'Esta acción corresponde a la opción de creación de puntos de venta', 2, 'PuntoVenta-create-*'),
+(5, 'Busqueda de usuarios', '', 3, 'Usuario-view-*'),
+(6, 'Creacion de usuarios', '', 3, 'Usuario-create-*'),
+(7, 'Edicion de usuarios', '', 3, 'Usuario-update-*'),
+(8, 'Eliminacion de usuario', '', 3, 'Usuario-delete-*'),
+(9, 'Busqueda de roles', '', 3, 'Rol-view-*'),
+(10, 'Creacion de roles', '', 3, 'Rol-create-*'),
+(11, 'Edicion de roles', '', 3, 'Rol-update-*'),
+(12, 'Eliminacion de roles', '', 3, 'Rol-delete-*'),
+(13, 'Busqueda de puntos de venta', '', 2, 'PuntoVenta-view-*'),
+(14, 'Edicion de puntos de venta', '', 2, 'PuntoVenta-update-*'),
+(15, 'Eliminacion de puntos de venta', '', 2, 'PuntoVenta-delete-*'),
+(16, 'Busqueda de terminos', '', 4, 'Termino-view-*'),
+(17, 'Creacion de terminos', '', 4, 'Termino-create-*'),
+(18, 'Edicion de termnos', '', 4, 'Termino-update-*'),
+(19, 'Eliminacion de terminos', '', 4, 'Termino-delete-*'),
+(20, 'Autorizar gastos del punto de venta', 'esta accion es la que permite manejar la parte de autorización de gastos sobre los puntos de venta ligados al usuario', 2, 'Gasto-authorizeExpendit-*'),
+(21, 'registrar gastos', 'registrar gastos', 2, 'Gasto-create-*'),
+(22, 'Editar gastos', 'Editar gastos', 2, 'Gasto-update-*'),
+(23, 'Busqueda de gastos', 'Busqueda de gastos', 2, 'Gasto-view-*'),
+(24, 'Eliminar gastos', 'Eliminar gastos', 2, 'Gasto-delete-*'),
+(25, 'ver ingresos', 'esta accion corresponde a la vista de ingresos', 2, 'Ingreso-view-*'),
+(26, 'creacion de ingresos', 'registro de ingresos de un punto de venta', 2, 'Ingreso-create-*'),
+(27, 'edicion de ingresosos', 'edicion de ingresos de un punto de venta', 2, 'Ingreso-update-*'),
+(28, 'eliminacion de ingresos de un punto de venta', 'eliminacion de ingresos de puntos de venta', 2, 'Ingreso-delete-*');
 
-CREATE TABLE IF NOT EXISTS `tipo_cliente` (
-  `codigo` int(11) NOT NULL AUTO_INCREMENT,
-  `tipo` varchar(10) NOT NULL,
-  `cantidad_compras` mediumint(9) NOT NULL,
-  PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+INSERT INTO `punto_venta` (`codigo`, `Whatsapp`, `telefono`, `extension`, `pais`, `ciudad`, `barrio`, `direccion`, `lugar`, `local`, `estado`) VALUES
+(12, 316825001, 0, '', 'Colombia', 'Bogota', 'San Victorino', 'calle 10 # 9A - 18', 'Edificio Ecuador', '102', 1),
+(15, 123456890, 123456, '345', 'Colombia', 'Bogota', 'elenita', 'cra 12 # 55 a 23', 'edificio 22', '123', 1),
+(18, 212321, 2345325, '23452345', 'sdfasd', 'adsfsa', 'sdafasd', 'asdfasd', 'asdfdsaf', 'asdff', 1);
 
--- --------------------------------------------------------
-
---
--- Table structure for table `usuario`
---
-
-CREATE TABLE IF NOT EXISTS `usuario` (
-  `codigo` int(11) NOT NULL AUTO_INCREMENT,
-  `identificacion` int(11) NOT NULL,
-  `nombre` varchar(30) NOT NULL,
-  `apellido` varchar(30) NOT NULL,
-  `telefono` int(11) NOT NULL,
-  `email` varchar(30) NOT NULL,
-  `fecha_nacimiento` date NOT NULL,
-  `sexo` int(11) NOT NULL,
-  `usuario` varchar(30) NOT NULL,
-  `contrasena` varchar(30) NOT NULL,
-  `rol` int(11) NOT NULL,
-  `estado` int(11) NOT NULL,
-  PRIMARY KEY (`codigo`),
-  UNIQUE KEY `email` (`email`),
-  UNIQUE KEY `usuario` (`usuario`),
-  KEY `rol` (`rol`),
-  KEY `sexo` (`sexo`),
-  KEY `estado` (`estado`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
-
---
--- Dumping data for table `usuario`
---
+INSERT INTO `rol` (`codigo`, `nombre`, `estado`) VALUES
+(1, 'Administrador', 1),
+(2, 'Administrador de punto de venta', 1),
+(3, 'Vendedor', 1);
 
 INSERT INTO `usuario` (`codigo`, `identificacion`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `sexo`, `usuario`, `contrasena`, `rol`, `estado`) VALUES
-(3, 1029384756, 'Super', 'Usuario', 0, 'superadmin@aliah.com', '1995-12-16', 1, 'aliah', 'MTIzNDU2Nzg5MA==', 1, 3),
+(3, 1029384756, 'Super', 'Usuario', 0, 'superadmin@aliah.com', '1995-09-16', 1, 'aliah', 'MTIzNDU2Nzg5MA==', 1, 5),
 (5, 1234567890, 'diego fernando', 'gonzalez velandia', 6938335, 'diego.gonzalez@gmail.com', '1998-06-13', 1, 'diego.gonzalez', 'TVRJek5EVT0=', 1, 3);
 
--- --------------------------------------------------------
-
---
--- Table structure for table `usuario_punto_venta`
---
-
-CREATE TABLE IF NOT EXISTS `usuario_punto_venta` (
-  `codigo` int(11) NOT NULL AUTO_INCREMENT,
-  `usuario` int(11) NOT NULL,
-  `punto_venta` int(11) NOT NULL,
-  `estado` tinyint(1) NOT NULL,
-  PRIMARY KEY (`codigo`),
-  KEY `usuario` (`usuario`,`punto_venta`),
-  KEY `punto_venta` (`punto_venta`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
-
---
--- Dumping data for table `usuario_punto_venta`
---
-
 INSERT INTO `usuario_punto_venta` (`codigo`, `usuario`, `punto_venta`, `estado`) VALUES
-(1, 5, 15, 1),
-(2, 5, 15, 1),
-(7, 5, 15, 1),
 (8, 5, 15, 1),
-(9, 3, 15, 1),
-(10, 3, 18, 1),
-(11, 3, 15, 1),
-(12, 3, 18, 1),
-(13, 3, 15, 1),
-(14, 3, 18, 1),
 (15, 3, 15, 1),
 (16, 3, 18, 1),
-(17, 3, 15, 1),
-(18, 3, 18, 1);
+(26, 3, 12, 1);
 
---
--- Constraints for dumped tables
---
+INSERT INTO `accion_usuario` (`codigo`, `accion`, `usuario`, `estado`) VALUES
+(1, 3, 3, 0),
+(2, 3, 5, 1),
+(3, 4, 5, 1),
+(4, 13, 5, 1),
+(5, 14, 5, 1),
+(6, 15, 5, 1),
+(7, 4, 3, 1),
+(8, 5, 3, 1),
+(9, 6, 3, 1),
+(10, 7, 3, 1),
+(11, 8, 3, 1),
+(12, 9, 3, 1),
+(13, 10, 3, 1),
+(14, 11, 3, 1),
+(15, 12, 3, 1),
+(16, 13, 3, 1),
+(17, 14, 3, 1),
+(18, 15, 3, 1),
+(19, 16, 3, 1),
+(20, 17, 3, 1),
+(21, 18, 3, 1),
+(22, 19, 3, 1),
+(23, 5, 5, 1),
+(24, 12, 5, 1),
+(25, 16, 5, 1),
+(26, 19, 5, 1),
+(27, 20, 3, 1),
+(28, 21, 3, 1),
+(29, 22, 3, 1),
+(30, 23, 3, 1),
+(31, 24, 3, 1),
+(32, 25, 3, 1),
+(33, 26, 3, 1),
+(34, 27, 3, 1),
+(35, 28, 3, 1);
 
---
--- Constraints for table `accion`
---
-ALTER TABLE `accion`
-  ADD CONSTRAINT `accion_ibfk_1` FOREIGN KEY (`modulo`) REFERENCES `modulo` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+INSERT INTO `gasto` (`codigo`, `fecha`, `monto`, `usuario`, `descripcion`, `tipo_gasto`, `punto_venta`, `usuario_registro`, `fecha_registro`, `usuario_actualizacion`, `fecha_actualizacion`, `usuario_autorizador`, `fecha_autorizacion`, `estado`) VALUES
+(3, '2015-06-23', '200000', 3, 'gasto 1', 74, 15, 3, '2015-06-29 18:14:44', 3, '2015-07-28 22:31:04', 3, NULL, 76);
 
---
--- Constraints for table `accion_usuario`
---
-ALTER TABLE `accion_usuario`
-  ADD CONSTRAINT `accion_usuario_ibfk_1` FOREIGN KEY (`accion`) REFERENCES `accion` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `accion_usuario_ibfk_2` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+INSERT INTO `horario` (`codigo`, `horario_apertura`, `hora_cierre`, `hora_max_cierre`, `dia`, `punto_venta`) VALUES
+(1, '08:00:00', '18:00:00', '18:00:00', 0, 18),
+(2, '08:00:00', '18:00:00', '18:00:00', 1, 18),
+(3, '08:00:00', '18:00:00', '18:00:00', 2, 18),
+(4, '08:00:00', '18:00:00', '18:00:00', 3, 18),
+(5, '08:00:00', '18:00:00', '18:00:00', 4, 18),
+(6, '08:00:00', '18:00:00', '18:00:00', 5, 18),
+(7, '08:00:00', '18:00:00', '18:00:00', 6, 18);
 
---
--- Constraints for table `cliente`
---
-ALTER TABLE `cliente`
-  ADD CONSTRAINT `cliente_ibfk_1` FOREIGN KEY (`tipo`) REFERENCES `tipo_cliente` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `cliente_ibfk_2` FOREIGN KEY (`sexo`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+INSERT INTO `producto` (`codigo`, `nombre`, `descripcion`, `estado`, `categoria`, `imagen`, `fechaCreate`, `fechaMod`, `usuarioMod`, `usuarioCreate`) VALUES
+(7, 'pringuinos', 'consequat. Duis ute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 7, 6, 'dQWf-qFj17GAA7ZhQ-tZ4KjeGRzccrP4.jpg', '2015-05-24 17:26:38', '2015-05-24 17:26:38', 3, 3),
+(8, 'desiertos', 'consequat. Duis ute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 7, 6, 'HUfoAXY71m3MCPvAarxc9OJxXzZL_VU1.jpg', '2015-05-27 00:40:42', '2015-05-27 00:40:42', 3, 3),
+(9, 'data', 'consequat. Duis ute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 7, 63, '4hHbFoMyqv03UGH_tw3gjRda6ZbHn9lI.jpg', '2015-07-28 21:03:29', '2015-07-28 21:03:29', 3, 3);
 
---
--- Constraints for table `factura`
---
-ALTER TABLE `factura`
-  ADD CONSTRAINT `factura_ibfk_1` FOREIGN KEY (`metodo_pago`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `factura_ibfk_2` FOREIGN KEY (`punto_venta`) REFERENCES `punto_venta` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `factura_ibfk_3` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `factura_ibfk_4` FOREIGN KEY (`cliente`) REFERENCES `cliente` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints for table `factura_ganadora`
---
-ALTER TABLE `factura_ganadora`
-  ADD CONSTRAINT `factura_ganadora_ibfk_1` FOREIGN KEY (`estado`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `factura_ganadora_ibfk_2` FOREIGN KEY (`factura`) REFERENCES `factura` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `factura_ganadora_ibfk_3` FOREIGN KEY (`sorteo`) REFERENCES `sorteo` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+INSERT INTO `ingreso` (`codigo`, `fecha_cierre_caja`, `fecha_llegada`, `cantidad`, `corresponde`, `igualado`, `usuario_pago`, `suma_anexada`, `descripcion`, `punto_venta`, `origen`, `destino`, `cantidad_esperada`, `tipo_ingreso`, `estado`, `usuario_autorizador`, `usuario_registro`, `fecha_registro`, `usuario_actualizacion`, `fecha_actualizacion`) VALUES
+(2, '2015-07-14', '2015-07-14', 50000, b'1', 1, 5, 0, 'dsfasd', 18, 12, 18, 50000, 77, 79, 3, 3, '2015-07-14', 3, '2015-07-28'),
+(3, '2015-07-14', '2015-07-14', 50000, b'1', NULL, 5, 0, 'safasdf', 18, 12, 18, 50000, 77, 82, 3, 3, '2015-07-14', 3, '2015-07-28'),
+(4, '2015-07-14', '2015-07-14', 50000, b'1', NULL, 5, 0, 'asfsdf', 18, 12, 18, 50000, 77, 82, 3, 3, '2015-07-14', 3, '2015-07-28'),
+(7, '2015-07-21', '2015-07-28', 700000, b'1', 1, 5, 100000, 'sgljkasdhglahsdjkgha', 18, 12, 18, 600000, 77, 81, 3, 3, '0000-00-00', 3, '2015-07-28');
 
---
--- Constraints for table `gasto`
---
-ALTER TABLE `gasto`
-  ADD CONSTRAINT `gasto_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `gasto_ibfk_3` FOREIGN KEY (`tipo_gasto`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `gasto_ibfk_4` FOREIGN KEY (`punto_venta`) REFERENCES `punto_venta` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `gasto_ibfk_5` FOREIGN KEY (`usuario_registro`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `gasto_ibfk_6` FOREIGN KEY (`usuario_actualizacion`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `gasto_ibfk_7` FOREIGN KEY (`usuario_autorizador`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `gasto_ibfk_8` FOREIGN KEY (`estado`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `horario`
---
-ALTER TABLE `horario`
-  ADD CONSTRAINT `horario_ibfk_1` FOREIGN KEY (`punto_venta`) REFERENCES `punto_venta` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `ingreso`
---
-ALTER TABLE `ingreso`
-  ADD CONSTRAINT `ingreso_ibfk_1` FOREIGN KEY (`usuario_autorizador`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ingreso_ibfk_2` FOREIGN KEY (`usuario_pago`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ingreso_ibfk_3` FOREIGN KEY (`usuario_registro`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ingreso_ibfk_4` FOREIGN KEY (`usuario_actualizacion`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ingreso_ibfk_5` FOREIGN KEY (`origen`) REFERENCES `punto_venta` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ingreso_ibfk_6` FOREIGN KEY (`destino`) REFERENCES `punto_venta` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `inventario`
---
-ALTER TABLE `inventario`
-  ADD CONSTRAINT `inventario_ibfk_1` FOREIGN KEY (`usuario_registro`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `item_factura`
---
-ALTER TABLE `item_factura`
-  ADD CONSTRAINT `item_factura_ibfk_1` FOREIGN KEY (`factura`) REFERENCES `factura` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `item_factura_ibfk_2` FOREIGN KEY (`producto`) REFERENCES `producto` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `item_inventario`
---
-ALTER TABLE `item_inventario`
-  ADD CONSTRAINT `item_inventario_ibfk_1` FOREIGN KEY (`lote`) REFERENCES `lote` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `item_inventario_ibfk_2` FOREIGN KEY (`inventario`) REFERENCES `inventario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `lote`
---
-ALTER TABLE `lote`
-  ADD CONSTRAINT `lote_ibfk_1` FOREIGN KEY (`tipo`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `lote_ibfk_2` FOREIGN KEY (`estado`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `lote_ibfk_3` FOREIGN KEY (`origen`) REFERENCES `punto_venta` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `lote_ibfk_4` FOREIGN KEY (`destino`) REFERENCES `punto_venta` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `lote_ibfk_5` FOREIGN KEY (`producto`) REFERENCES `producto` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `lote_ibfk_8` FOREIGN KEY (`color`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `lote_ibfk_9` FOREIGN KEY (`talla`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `producto`
---
-ALTER TABLE `producto`
-  ADD CONSTRAINT `producto_ibfk_1` FOREIGN KEY (`estado`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `producto_ibfk_2` FOREIGN KEY (`categoria`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `producto_ibfk_3` FOREIGN KEY (`usuariomod`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `usuario`
---
-ALTER TABLE `usuario`
-  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`rol`) REFERENCES `rol` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `usuario_ibfk_2` FOREIGN KEY (`sexo`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `usuario_ibfk_3` FOREIGN KEY (`estado`) REFERENCES `termino` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `usuario_punto_venta`
---
-ALTER TABLE `usuario_punto_venta`
-  ADD CONSTRAINT `usuario_punto_venta_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `usuario_punto_venta_ibfk_2` FOREIGN KEY (`punto_venta`) REFERENCES `punto_venta` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

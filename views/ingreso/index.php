@@ -22,27 +22,68 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         #'filterModel' => $searchModel,
+        'rowOptions' => function( $model ){
+            if ( $model->estado0->key == 1 ) {
+                return [ 'class' => 'success' ];
+            } else if ( $model->estado0->key == 2 ){
+                return [ 'class' => 'danger' ];
+            } else if ( $model->estado0->key == 3 ){
+                return [ 'class' => 'warning' ];
+            } else if ( $model->estado0->key == 4 ){
+                return [ 'class' => '' ];
+            }
+        },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'codigo',
-            'fecha_cierre_caja',
-            'fecha_llegada',
+            [
+                'attribute' => 'fecha_cierre_caja',
+                'format' => ['date', 'php:'.\Yii::$app->params['formatViewDate']]
+            ],
+            [
+                'attribute' => 'fecha_llegada',
+                'format' => ['date', 'php:'.\Yii::$app->params['formatViewDate']]
+            ],
             'cantidad',
-            'corresponde:boolean',
-            // 'usuario_pago',
-            // 'igualado:boolean',
-            // 'suma_anexada',
-            // 'descripcion',
-            // 'punto_venta',
-            // 'origen',
-            // 'destino',
-            // 'usuario_registro',
-            // 'fecha_registro',
-            // 'usuario_actualizacion',
-            // 'fecha_actualizacion',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            'origen',
+            [
+                'attribute' => 'estado',
+                'value' => 'estado0.termino',
+            ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'contentOptions'=>['class'=>'text text-center'],
+                'template' => '{view}&nbsp;{update}&nbsp;&nbsp;{authorize}&nbsp;{not-authorize}',
+                'buttons' => [
+                    'update' => function ($url, $model) {
+                        if($model->estado0->key == 4){
+                            return '';
+                        } else {
+                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                'title' => $url,
+                            ]);
+                        }
+                    },
+                    'authorize' => function ($url, $model) {
+                        if($model->estado0->key == 4){
+                            return '';
+                        } else {
+                            return Html::a('<span class="glyphicon glyphicon-ok"></span>', $url, [
+                                'title' => Yii::t('app', 'Authorize'),
+                            ]);
+                        }
+                    },
+                    'not-authorize' => function ($url, $model) {
+                        if($model->estado0->key == 4){
+                            return Html::a('<span class="glyphicon glyphicon-remove"></span>', $url, [
+                                        'title' => Yii::t('app', 'NotAuthorize'),
+                            ]);
+                        } else {
+                            return '';
+                        }
+                    },
+                ],
+            ],
         ],
     ]); ?>
 

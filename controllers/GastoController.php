@@ -168,7 +168,7 @@ class GastoController extends Controller
     public function actionAuthorize( $id )
     {
         $model = $this->findModel($id);
-        if ( $model->usuario_autorizador = Yii::$app->user->identity->codigo ) {
+        if ( $model->usuario_autorizador == Yii::$app->user->identity->codigo ) {
           $model->estado = TerminoSearch::estadoGastoAutorizado()->codigo;
           if ( $model->save() ) {
             AppHandlingErrors::setFlash( 'success' , 'El gasto a sido autorizado' );
@@ -186,17 +186,17 @@ class GastoController extends Controller
     public function actionNotAuthorize( $id )
     {
         $model = $this->findModel($id);
-        if ( $model->usuario_autorizador = Yii::$app->user->identity->codigo ) {
+        if ( $model->usuario_autorizador == Yii::$app->user->identity->codigo ) {
           $model->estado = TerminoSearch::estadoGastoPorAutorizar()->codigo;
           if ( $model->save() ) {
-            AppHandlingErrors::setFlash( 'success' , 'El gasto a sido autorizado' );
+            AppHandlingErrors::setFlash( 'success' , 'El gasto a sido desautorizado' );
             return $this->redirect(['index']);
           } else {
-            AppHandlingErrors::setFlash( 'danger' , 'El gasto no se ha podido autorizar' );
+            AppHandlingErrors::setFlash( 'danger' , 'El gasto no se ha podido desautorizar' );
             return $this->redirect(['index']);
           }
         } else {
-          AppHandlingErrors::setFlash( 'danger' , 'Usted no puede autorizar este gasto' );
+          AppHandlingErrors::setFlash( 'danger' , 'Usted no puede desautorizar este gasto' );
           return $this->redirect(['index']);
         }
     }

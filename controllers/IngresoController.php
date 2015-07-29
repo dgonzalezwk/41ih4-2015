@@ -102,11 +102,14 @@ class IngresoController extends Controller
         $model = new Ingreso();
         if ( $model->load( Yii::$app->request->post() ) ) {
 
+            $stringDate = $model->fecha_cierre_caja ;
+            $model->fecha_cierre_caja = AppDate::stringToDate( $model->fecha_cierre_caja , null );
+            $model->fecha_llegada = AppDate::date();
+            
+
             $model->punto_venta = Yii::$app->user->identity->getPuntoVentaSelected()->punto_venta;
             $model->destino = Yii::$app->user->identity->getPuntoVentaSelected()->punto_venta;
             $model->usuario_registro = Yii::$app->user->identity->codigo;
-            $model->fecha_salida = $model->fecha_cierre_caja;
-            $model->fecha_llegada = AppDate::date();
 
             $model->corresponde = 0;
             $model->igualado = 0;
@@ -131,6 +134,10 @@ class IngresoController extends Controller
             if ( $model->save() ){
                 return $this->redirect([ 'view' , 'id' => $model->codigo ]);
             } else {
+
+                $model->fecha_cierre_caja = $stringDate;
+                
+                AppHandlingErrors::setFlash( 'danger' , AppHandlingErrors::getStringErrorModel( $model->getErrors() ) );
                 return $this->renderAjax('create', [ 'model' => $model ] );
             }
         } else {
@@ -149,12 +156,13 @@ class IngresoController extends Controller
         $model = $this->findModel($id);
 
         if ( $model->load( Yii::$app->request->post() ) ) {
+           
+            $stringDate = $model->fecha_cierre_caja ;
+            $model->fecha_cierre_caja = AppDate::stringToDate( $model->fecha_cierre_caja , null );
+            
 
-            $model->punto_venta = Yii::$app->user->identity->getPuntoVentaSelected()->punto_venta;
-            $model->destino = Yii::$app->user->identity->getPuntoVentaSelected()->punto_venta;
-            $model->usuario_registro = Yii::$app->user->identity->codigo;
-            $model->fecha_salida = $model->fecha_cierre_caja;
-            $model->fecha_llegada = AppDate::date();
+            $model->usuario_actualizacion = Yii::$app->user->identity->codigo;
+            $model->fecha_actualizacion = AppDate::date();
 
             $model->corresponde = 0;
             $model->igualado = 0;
@@ -179,12 +187,15 @@ class IngresoController extends Controller
             if ( $model->save() ){
                 return $this->redirect([ 'view' , 'id' => $model->codigo ]);
             } else {
-                return $this->renderAjax('create', [ 'model' => $model ] );
+                $model->fecha_cierre_caja = $stringDate;
+                
+                AppHandlingErrors::setFlash( 'danger' , AppHandlingErrors::getStringErrorModel( $model->getErrors() ) );
+                return $this->renderAjax('update', [ 'model' => $model ] );
             }
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            $model->fecha_cierre_caja = AppDate::stringToDate( $model->fecha_cierre_caja , Yii::$app->params['formatViewDate'] );
+            
+            return $this->renderAjax('update', ['model' => $model]);
         }
     }
 
@@ -245,6 +256,53 @@ class IngresoController extends Controller
           }
         } else {
           return [ "success" => false ];
+        }
+    }
+
+    public function actionAuthorize( $id )
+    {
+        $model = $this->findModel($id);
+        if ( $model->usuario_autorizador == Yii::$app->user->identity->codigo ) {
+          $model->estado = TerminoSearch::estadoIngresoAutorizado()->codigo;
+          if ( $model->save() ) {
+            AppHandlingErrors::setFlash( 'success' , 'El ingreso a sido autorizado' );
+            return $this->redirect(['index']);
+          } else {
+            AppHandlingErrors::setFlash( 'danger' , 'El ingreso no se ha podido autorizar' );
+            return $this->redirect(['index']);
+          }
+        } else {
+          AppHandlingErrors::setFlash( 'danger' , 'Usted no puede autorizar este ingreso' );
+          return $this->redirect(['index']);
+        }
+    }
+
+    public function actionNotAuthorize( $id )
+    {
+        $model = $this->findModel($id);
+        if ( $model->usuario_autorizador == Yii::$app->user->identity->codigo ) {
+          
+            $intCantidad = intval( $model->cantidad );
+            $intCantidad_esperada = intval( $model->cantidad_esperada );
+              
+            if ( $intCantidad == $intCantidad_esperada ) {
+                $model->estado = TerminoSearch::estadoIngresoCorrecto()->codigo;
+            } else if ( $intCantidad > $intCantidad_esperada ) {
+                $model->estado = TerminoSearch::estadoIngresoMayor()->codigo;
+            } else if ( $intCantidad < $intCantidad_esperada ) {
+                $model->estado = TerminoSearch::estadoIngresoMenor()->codigo;
+            }
+
+            if ( $model->save() ) {
+                AppHandlingErrors::setFlash( 'success' , 'El ingreso a sido desautorizado' );
+                return $this->redirect(['index']);
+            } else {
+                AppHandlingErrors::setFlash( 'danger' , 'El ingreso no se ha podido desautorizar' );
+                return $this->redirect(['index']);
+            }
+        } else {
+          AppHandlingErrors::setFlash( 'danger' , 'Usted no puede desautorizado este ingreso' );
+          return $this->redirect(['index']);
         }
     }
 }
