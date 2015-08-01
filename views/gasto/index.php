@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'class' => 'yii\grid\ActionColumn',
                         'contentOptions'=>['class'=>'text text-center'],
-                        'template' => '{view}&nbsp;{update}&nbsp;{authorize}&nbsp;{not-authorize}',
+                        'template' => '{view} {update} {authorize} {not-authorize}',
                         'buttons' => [
                             'update' => function ($url, $model) {
                                 if($model->estado0->key == 1){

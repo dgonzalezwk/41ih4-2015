@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'class' => 'yii\grid\ActionColumn',
                     'contentOptions'=>['class'=>'text text-center'],
-                    'template' => '{view}&nbsp;{update}&nbsp;{hablilitar}&nbsp;{desabilitar}',
+                    'template' => '{view} {update} {hablilitar} {desabilitar}',
                     'buttons' => [
                             'hablilitar' => function ($url, $model) {
                                 if($model->estado == 0){
