@@ -24,14 +24,30 @@ AppAsset::register($this);
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#menu-toggle" id="menu-toggle" >
-                    <i class="glyphicon glyphicon-menu-hamburger"></i>
-                </a>
-                <a class="navbar-brand" href="#">Aliah </a>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li role="separator" class="divider"></li>
+                    <li>
+                        <a class="navbar-brand" href="#">Aliah </a>
+                    </li>
+                    <li>
+                        <a class="navbar-brand" href="#menu-toggle" id="menu-toggle" >
+                            <i class="glyphicon glyphicon-menu-hamburger"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav pull-right">
+                    <li>
+                        <p class="navbar-text ">Signed in as Mark Otto</p>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-th-list"></i> <span class="caret"></span></a>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="#"><i class="glyphicon glyphicon-user"></i> Mi Perfil</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#"><i class="glyphicon glyphicon-remove"></i> Cerrar sesion</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>

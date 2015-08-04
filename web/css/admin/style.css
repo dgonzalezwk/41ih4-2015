@@ -7,8 +7,12 @@ h1, .h1, h2, .h2, h3, .h3{
   margin-top: 15px;
 }
 .breadcrumb{
-	margin-top: -20px !important;
+	margin-top: -10px !important;
 	margin-bottom: 0px !important;
+}
+.container-fluid > .navbar-header{
+	width: 144px;
+	border-right: 1px solid #9d9d9d;
 }
 .modal-header{
 	border-bottom: none !important;
@@ -21,4 +25,7 @@ h1, .h1, h2, .h2, h3, .h3{
 }
 .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td{
 	border: none !important;
+}
+#wrapper{
+    border-top: 1px solid #9d9d9d;
 }
