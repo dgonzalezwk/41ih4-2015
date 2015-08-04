@@ -1,13 +1,3 @@
-.table-bordered {
-  border: 0px solid #ddd !important;
-}
-.table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td{
-	border: none !important;
-}
-.breadcrumb{
-	margin-top: 20px !important;
-	margin-bottom: 0px !important;
-}
 h1, .h1, h2, .h2, h3, .h3{
 	margin-top: 10px !important;
   	margin-bottom: 10px !important;
@@ -16,6 +6,19 @@ h1, .h1, h2, .h2, h3, .h3{
   margin-bottom: 15px;
   margin-top: 15px;
 }
+.breadcrumb{
+	margin-top: -20px !important;
+	margin-bottom: 0px !important;
+}
 .modal-header{
 	border-bottom: none !important;
+}
+.navbar {
+    margin-bottom: 0px !important;
+}
+.table-bordered {
+  border: 0px solid #ddd !important;
+}
+.table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td{
+	border: none !important;
 }

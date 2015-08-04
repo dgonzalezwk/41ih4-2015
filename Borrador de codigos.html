@@ -1,15 +1,15 @@
-<script type="text/javascript">
-	jQuery('#ingreso-fecha_cierre_caja').parent().kvDatepicker(kvDatepicker_cb24ea58);
-	jQuery('#ingreso-fecha_cierre_caja').parent().on('show', function(e) {  });
-	jQuery('#ingreso-fecha_cierre_caja').parent().on('hide', function(e) {  });
-	jQuery('#ingreso-fecha_cierre_caja').parent().on('clearDate', function(e) {  });
-	jQuery('#ingreso-fecha_cierre_caja').parent().on('changeDate', function(e) {
-	                        var sFecha = $( '#ingreso-fecha_cierre_caja' ).val();
-	                        var sUrl = '/41ih4-2015/web/ingreso/validar-cierre';
-	                        validarCierres( sUrl , sFecha );
-	                    });
-	jQuery('#ingreso-fecha_cierre_caja').parent().on('changeYear', function(e) {  });
-	jQuery('#ingreso-fecha_cierre_caja').parent().on('changeMonth', function(e) {  });
-
-	jQuery('#w0').yiiActiveForm([{"id":"ingreso-tipo_ingreso","name":"tipo_ingreso","container":".field-ingreso-tipo_ingreso","input":"#ingreso-tipo_ingreso","validate":function (attribute, value, messages, deferred, $form) {yii.validation.required(value, messages, {"message":"Tipo Ingreso no puede estar vacío."});yii.validation.number(value, messages, {"pattern":/^\s*[+-]?\d+\s*$/,"message":"Tipo Ingreso debe ser un número entero.","skipOnEmpty":1});}},{"id":"ingreso-fecha_cierre_caja","name":"fecha_cierre_caja","container":".field-ingreso-fecha_cierre_caja","input":"#ingreso-fecha_cierre_caja","validate":function (attribute, value, messages, deferred, $form) {yii.validation.required(value, messages, {"message":"Fecha de salida no puede estar vacío."});}},{"id":"ingreso-usuario_autorizador","name":"usuario_autorizador","container":".field-ingreso-usuario_autorizador","input":"#ingreso-usuario_autorizador","validate":function (attribute, value, messages, deferred, $form) {yii.validation.required(value, messages, {"message":"Usuario Autorizador no puede estar vacío."});yii.validation.number(value, messages, {"pattern":/^\s*[+-]?\d+\s*$/,"message":"Usuario Autorizador debe ser un número entero.","skipOnEmpty":1});}},{"id":"ingreso-origen","name":"origen","container":".field-ingreso-origen","input":"#ingreso-origen","validate":function (attribute, value, messages, deferred, $form) {yii.validation.required(value, messages, {"message":"Origen no puede estar vacío."});yii.validation.number(value, messages, {"pattern":/^\s*[+-]?\d+\s*$/,"message":"Origen debe ser un número entero.","skipOnEmpty":1});}},{"id":"ingreso-usuario_pago","name":"usuario_pago","container":".field-ingreso-usuario_pago","input":"#ingreso-usuario_pago","validate":function (attribute, value, messages, deferred, $form) {yii.validation.required(value, messages, {"message":"Usuario que entrega no puede estar vacío."});yii.validation.number(value, messages, {"pattern":/^\s*[+-]?\d+\s*$/,"message":"Usuario que entrega debe ser un número entero.","skipOnEmpty":1});}},{"id":"ingreso-cantidad","name":"cantidad","container":".field-ingreso-cantidad","input":"#ingreso-cantidad","validate":function (attribute, value, messages, deferred, $form) {yii.validation.required(value, messages, {"message":"Cantidad no puede estar vacío."});yii.validation.number(value, messages, {"pattern":/^\s*[+-]?\d+\s*$/,"message":"Cantidad debe ser un número entero.","skipOnEmpty":1});}},{"id":"ingreso-descripcion","name":"descripcion","container":".field-ingreso-descripcion","input":"#ingreso-descripcion","validate":function (attribute, value, messages, deferred, $form) {yii.validation.required(value, messages, {"message":"Descripcion no puede estar vacío."});yii.validation.string(value, messages, {"message":"Descripcion debe ser una cadena de caracteres.","max":250,"tooLong":"Descripcion debería contener como máximo 250 letras.","skipOnEmpty":1});}},{"id":"ingreso-cantidad_esperada","name":"cantidad_esperada","container":".field-ingreso-cantidad_esperada","input":"#ingreso-cantidad_esperada","validate":function (attribute, value, messages, deferred, $form) {yii.validation.required(value, messages, {"message":"Cantidad Esperada no puede estar vacío."});yii.validation.number(value, messages, {"pattern":/^\s*[+-]?\d+\s*$/,"message":"Cantidad Esperada debe ser un número entero.","skipOnEmpty":1});}}], []);
-</script>
+<div class="btn-group" role="group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        puntos de venta
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        <?php foreach ( Yii::$app->user->identity->usuarioPuntoVentas as $key => $usuarioPuntoVenta): ?>
+            <?php if ( Yii::$app->request->cookies->getValue('puntoVentaSelected', null) != null && Yii::$app->request->cookies->getValue('puntoVentaSelected', null) == $key ): ?>
+                <li><a class="btn-primary active" href="<?= Url::toRoute( [ 'usuario/cambiar-punto-venta','index' => $key ] ) ?>"><?= $usuarioPuntoVenta->puntoVenta->ciudad." - ".$usuarioPuntoVenta->puntoVenta->barrio." - ".$usuarioPuntoVenta->puntoVenta->direccion ?></a></li>
+            <?php else: ?>
+                <li><a href="<?= Url::toRoute( [ 'usuario/cambiar-punto-venta','index' => $key ] ) ?>"><?= $usuarioPuntoVenta->puntoVenta->ciudad." - ".$usuarioPuntoVenta->puntoVenta->barrio." - ".$usuarioPuntoVenta->puntoVenta->direccion ?></a></li>
+            <?php endif ?>
+        <?php endforeach ?>
+    </ul>
+</div>

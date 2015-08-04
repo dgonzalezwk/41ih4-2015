@@ -21,49 +21,31 @@ AppAsset::register($this);
 </head>
 <body>
 <?php $this->beginBody() ?>
-
-<div class="btn-group" role="group">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        puntos de venta
-        <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu">
-        <?php foreach ( Yii::$app->user->identity->usuarioPuntoVentas as $key => $usuarioPuntoVenta): ?>
-            <?php if ( Yii::$app->request->cookies->getValue('puntoVentaSelected', null) != null && Yii::$app->request->cookies->getValue('puntoVentaSelected', null) == $key ): ?>
-                <li><a class="btn-primary active" href="<?= Url::toRoute( [ 'usuario/cambiar-punto-venta','index' => $key ] ) ?>"><?= $usuarioPuntoVenta->puntoVenta->ciudad." - ".$usuarioPuntoVenta->puntoVenta->barrio." - ".$usuarioPuntoVenta->puntoVenta->direccion ?></a></li>
-            <?php else: ?>
-                <li><a href="<?= Url::toRoute( [ 'usuario/cambiar-punto-venta','index' => $key ] ) ?>"><?= $usuarioPuntoVenta->puntoVenta->ciudad." - ".$usuarioPuntoVenta->puntoVenta->barrio." - ".$usuarioPuntoVenta->puntoVenta->direccion ?></a></li>
-            <?php endif ?>
-        <?php endforeach ?>
-    </ul>
-</div>
-
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#menu-toggle" id="menu-toggle" >
+                    <i class="glyphicon glyphicon-menu-hamburger"></i>
+                </a>
+                <a class="navbar-brand" href="#">Aliah </a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li role="separator" class="divider"></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div id="wrapper">
     <!-- Sidebar -->
     <?php if ( !Yii::$app->user->isGuest ): ?>
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                    <a href="#">
-                        Aliah <a href="#menu-toggle" id="menu-toggle" > < </a>
-                    </a>
-                </li>
-                <li>
-                    <a href="<?=Yii::$app->urlManager->createUrl(['punto-venta/index'])?>">punto de venta</a>
-                </li>
-                <li>
-                    <a href="<?=Yii::$app->urlManager->createUrl(['usuario/index'])?>">Usuarios</a>
-                </li>
-                <li>
-                    <a href="<?=Yii::$app->urlManager->createUrl(['gasto/index'])?>">Gastos</a>
-                </li>
-                <li>
-                    <a href="<?=Yii::$app->urlManager->createUrl(['ingreso/index'])?>">Ingresos</a>
-                </li>
-                <li>
-                    <a href="#">Dashboard</a>
-                </li>
-                
+                <li><a href="<?=Yii::$app->urlManager->createUrl(['punto-venta/index'])?>">punto de venta</a></li>
+                <li><a href="<?=Yii::$app->urlManager->createUrl(['usuario/index'])?>">Usuarios</a></li>
+                <li><a href="<?=Yii::$app->urlManager->createUrl(['gasto/index'])?>">Gastos</a></li>
+                <li><a href="<?=Yii::$app->urlManager->createUrl(['ingreso/index'])?>">Ingresos</a></li>
+                <li><a href="#">Dashboard</a></li>
             </ul>
         </div>
     <?php endif ?>
