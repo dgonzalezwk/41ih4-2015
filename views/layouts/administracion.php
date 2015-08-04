@@ -38,7 +38,10 @@ AppAsset::register($this);
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav pull-right">
                     <li>
-                        <p class="navbar-text ">Signed in as Mark Otto</p>
+                        <p class="navbar-text ">Hola <?= Yii::$app->user->identity->getNombre() ?></p>
+                    </li>
+                    <li>
+                        <a href="#"><i class="glyphicon glyphicon-th"></i></a>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-th-list"></i> <span class="caret"></span></a>
