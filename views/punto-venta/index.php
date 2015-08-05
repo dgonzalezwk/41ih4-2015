@@ -12,8 +12,15 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="punto-venta-index">
     <h1><?= Html::encode($this->title) ?></h1>
-    <div class="row">
-        <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+    <p>
+        <a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class="glyphicon glyphicon-menu-down"></i>&nbsp;&nbsp;filtrar por...</a> &nbsp; <?= Html::a('Crear punto de venta', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <div class="well">
+            <div class="row">
+                <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+            </div>
+        </div>
     </div>
     <?php Pjax::begin()?>
         <?= GridView::widget([
@@ -21,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             #'filterModel' => $searchModel,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
-                'ciudad',
+                'ciudad', 
                 'barrio',
                 'direccion',
                 //'codigo',     
@@ -62,8 +69,5 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ],
         ]); ?>
-        <p>
-            <?= Html::a('Crear punto de venta', ['create'], ['class' => 'btn btn-success']) ?>
-        </p>
     <?php Pjax::end();?>
 </div>

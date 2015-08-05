@@ -21,7 +21,7 @@ AppAsset::register($this);
 </head>
 <body>
 <?php $this->beginBody() ?>
-    <nav class="navbar navbar-inverse">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
                 <ul class="nav navbar-nav">
@@ -36,6 +36,13 @@ AppAsset::register($this);
                 </ul>
             </div>
             <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <?= Breadcrumbs::widget([
+                            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                        ]) ?>
+                    </li>
+                </ul>
                 <ul class="nav navbar-nav pull-right">
                     <li>
                         <p class="navbar-text ">Hola <?= Yii::$app->user->identity->getNombre() ?></p>
@@ -74,11 +81,6 @@ AppAsset::register($this);
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="row">
-                            <?= Breadcrumbs::widget([
-                                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                            ]) ?>
-                        </div>
                         <div class="row text text-center">
                             <div id="alerts" class="col-lg-offset-3 col-lg-6">
                                 <?php foreach ( Yii::$app->session->getAllFlashes() as $key => $message ): ?>

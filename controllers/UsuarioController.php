@@ -362,6 +362,7 @@ class UsuarioController extends Controller
             $cookies->add($cookie);
             return $this->goBack();
         } else {
+            $this->layout = 'login';
             return $this->render('login', [
                 'model' => $model,
             ]);
