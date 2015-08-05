@@ -25,15 +25,17 @@
 }
 
 #sidebar-wrapper {
+    margin-top: 50px;
     z-index: 1000;
     position: fixed;
-    left: 160px;
+    left: 159px;
     width: 0;
     height: 100%;
     margin-left: -160px;
     overflow-y: auto;
     background: #222;
-    border-color: #222;
+    border-top: 1px solid #9d9d9d;
+    
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;

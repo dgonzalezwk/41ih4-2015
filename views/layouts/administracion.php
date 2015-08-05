@@ -48,14 +48,14 @@ AppAsset::register($this);
                         <p class="navbar-text ">Hola <?= Yii::$app->user->identity->getNombre() ?></p>
                     </li>
                     <li>
-                        <a href="#"><i class="glyphicon glyphicon-th"></i></a>
+                        <a href="#"><i class="glyphicon glyphicon-shopping-cart"></i></a>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-th-list"></i> <span class="caret"></span></a>
                         <ul class="dropdown-menu pull-right">
                             <li><a href="#"><i class="glyphicon glyphicon-user"></i> Mi Perfil</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="#"><i class="glyphicon glyphicon-remove"></i> Cerrar sesion</a></li>
+                            <li><a href="<?=Yii::$app->urlManager->createUrl(['usuario/logout'])?>"><i class="glyphicon glyphicon-remove"></i> Cerrar sesion</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -71,7 +71,6 @@ AppAsset::register($this);
                 <li><a href="<?=Yii::$app->urlManager->createUrl(['usuario/index'])?>">Usuarios</a></li>
                 <li><a href="<?=Yii::$app->urlManager->createUrl(['gasto/index'])?>">Gastos</a></li>
                 <li><a href="<?=Yii::$app->urlManager->createUrl(['ingreso/index'])?>">Ingresos</a></li>
-                <li><a href="#">Dashboard</a></li>
             </ul>
         </div>
     <?php endif ?>

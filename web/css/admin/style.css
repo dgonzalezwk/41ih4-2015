@@ -22,30 +22,45 @@ h1, .h1, h2, .h2, h3, .h3{
 	color: #fff !important;
 }
 .container-fluid > .navbar-header{
-	width: 144px;
+	width: 145px;
 	border-right: 1px solid #9d9d9d;
 }
+#main-content{
+  margin-top: 30px;
+}
 .modal-header{
-	border-bottom: none !important;
+  border-bottom: none !important;
 }
 .navbar {
     margin-bottom: 0px !important;
+}
+.summary{
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.table > thead > tr > th > a{
+  color: #000;
 }
 .table-bordered {
   border: 0px solid #ddd !important;
 }
 .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td{
-	border: none !important;
+  border: none !important;
+}
+.title-window{
+  margin-bottom: 10px;
+  border-bottom: 1px solid #9d9d9d;
+}
+.vcenter .btn{
+  margin-top: 15px;
 }
 #wrapper{
-    border-top: 1px solid #9d9d9d;
+  border-top: 1px solid #9d9d9d;
 }
 @media (min-width: 768px) {
-    .nav .breadcrumb {
-        float: left;
-        margin: 7px 10px;
-    }
-}
-#main-content{
-  margin-top: 30px;
+  .nav .breadcrumb {
+      float: left;
+      margin: 7px 10px;
+  }
 }

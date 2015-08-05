@@ -11,10 +11,17 @@ $this->title = 'Puntos De Venta';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="punto-venta-index">
-    <h1><?= Html::encode($this->title) ?></h1>
-    <p>
-        <a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class="glyphicon glyphicon-menu-down"></i>&nbsp;&nbsp;filtrar por...</a> &nbsp; <?= Html::a('Crear punto de venta', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <div class="row title-window">
+        <div class="col-lg-6">
+            <h1><?= Html::encode($this->title) ?></h1>
+        </div>
+        <div class="col-lg-6 text text-right vcenter">
+            <a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                <i class="glyphicon glyphicon-search"></i>&nbsp;Filtrar por...
+            </a>
+            <?= Html::a('<i class="glyphicon glyphicon-plus"></i> Nuevo punto de venta', ['create'], ['class' => 'btn btn-success']) ?>
+        </div>
+    </div>
     <div class="collapse" id="collapseExample">
         <div class="well">
             <div class="row">
