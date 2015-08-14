@@ -14,6 +14,7 @@ AppAsset::register($this);
 	<meta charset="<?= Yii::$app->charset ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="<?= Url::base()?>/css/admin/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="<?= Url::base()?>/css/admin/multi-step.css" rel="stylesheet" type="text/css" media="all" />
     <link href="<?= Url::base()?>/css/admin/simple-sidebar.css" rel="stylesheet" type="text/css" media="all" />
 	<?= Html::csrfMetaTags() ?>
 	<title><?= Html::encode($this->title) ?></title>
@@ -48,6 +49,9 @@ AppAsset::register($this);
                         <p class="navbar-text ">Hola <?= Yii::$app->user->identity->getNombre() ?></p>
                     </li>
                     <li>
+                        <a href="<?=Yii::$app->urlManager->createUrl(['inventario/index'])?>"><i class="glyphicon glyphicon-th"></i></a>
+                    </li>
+                    <li>
                         <a href="#"><i class="glyphicon glyphicon-shopping-cart"></i></a>
                     </li>
                     <li class="dropdown">
@@ -80,14 +84,14 @@ AppAsset::register($this);
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="row text text-center">
-                            <div id="alerts" class="col-lg-offset-3 col-lg-6">
-                                <?php foreach ( Yii::$app->session->getAllFlashes() as $key => $message ): ?>
-                                    <div class="alert alert-<?= $key ?>" role="alert"><?= $message ?></div>
-                                <?php endforeach ?>
-                            </div>
-                        </div>
                         <div class="row" id="main-content">
+                            <div class="row text text-center">
+                                <div id="alerts" class="col-lg-offset-3 col-lg-6">
+                                    <?php foreach ( Yii::$app->session->getAllFlashes() as $key => $message ): ?>
+                                        <div class="alert alert-<?= $key ?>" role="alert"><?= $message ?></div>
+                                    <?php endforeach ?>
+                                </div>
+                            </div>
                             <?= $content ?>
                         </div>
                         <?php 

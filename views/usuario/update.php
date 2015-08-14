@@ -11,6 +11,14 @@ $this->params['breadcrumbs'][] = ['label' => $model->nombre . " " . $model->apel
 $this->params['breadcrumbs'][] = 'Editar';
 ?>
 <div class="usuario-update">
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?= $this->render('_form', [ 'model' => $model , 'modulos'=> $modulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] ) ?>
+	<div class="row title-window">
+        <div class="col-lg-6">
+            <h1><?= Html::encode($this->title) ?></h1>
+        </div>
+        <div class="col-lg-6 text text-right vcenter">
+        </div>
+    </div>
+    <div class="row">
+    	<?= $this->render('_form', [ 'model' => $model , 'modulos'=> $modulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] ) ?>
+	</div>
 </div>

@@ -17,7 +17,6 @@ use yii\widgets\Pjax;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 <div class="usuario-form">
-    <div class="row">
     <?php Pjax::begin(); ?>
         <?php $form = ActiveForm::begin([ 'id' => 'form-usuario' , 'options' => ['data-pjax' => true ] ]); ?>
             <div class="col-lg-6">
@@ -48,7 +47,6 @@ use yii\widgets\Pjax;
                 </div>
             </div>
             <div class="col-lg-6">
-                <div class="row">
                     <h2>Permisos</h2>
                     <?php $itemsCollapse = []; ?>
                     <?php if ( isset($modulos) && is_array($modulos) ): ?>
@@ -56,7 +54,7 @@ use yii\widgets\Pjax;
                             <?php if ( is_array($modulo) ): ?>
                                 <?php $temp = []; ?>
                                 <?php $temp['label'] = 'Permisos sobre '.$key; ?>
-                                <?php $temp['content'] = Html::checkboxList( 'permisos' , $modulo['seleccionados'] , ArrayHelper::map( $modulo['permisos'] , 'codigo' , 'accion' ) , [ 'itemOptions' => [ 'labelOptions' => [ 'class' => 'col-lg-6' ] ] ] ); ?>
+                                <?php $temp['content'] = Html::checkboxList( 'permisos' , $modulo['seleccionados'] , ArrayHelper::map( $modulo['permisos'] , 'codigo' , 'accion' ) , [ 'itemOptions' => [ 'labelOptions' => [ 'class' => 'col-lg-12' ] ] ] ); ?>
                                 <?php array_push( $itemsCollapse , $temp );?>
                             <?php endif ?>
 
@@ -67,17 +65,14 @@ use yii\widgets\Pjax;
                             'items' => $itemsCollapse,
                         ]);
                     ?>
-                </div>
-                <div class="row">
                     <h2>Asignado a:</h2>
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <?= Html::checkboxList( 'puntos_venta_asignados' , $puntosVentaSeleccionados , ArrayHelper::map( PuntoVentaSearch::all() , 'codigo' ,  function ( $puntoVenta ) { return $puntoVenta->lugar . ' ' . $puntoVenta->direccion; } ) , [ 'itemOptions' => [ 'labelOptions' => [ 'class' => 'col-lg-6' ] ] ] ) ?>
                         </div>
                     </div>
-                </div>
+                
             </div>
         <?php ActiveForm::end(); ?>
     <?php Pjax::end(); ?>
-    </div>
 </div>

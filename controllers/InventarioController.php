@@ -3,17 +3,24 @@
 namespace app\controllers;
 
 use Yii;
+use app\assets\AppAccessRule;
+use app\assets\AppDate;
+use app\assets\AppHandlingErrors;
 use app\models\Inventario;
 use app\models\InventarioSearch;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * InventarioController implements the CRUD actions for Inventario model.
  */
 class InventarioController extends Controller
 {
+    public $layout = 'administracion';
+    public $modelModulo;
+
     public function behaviors()
     {
         return [
@@ -23,7 +30,51 @@ class InventarioController extends Controller
                     'delete' => ['post'],
                 ],
             ],
+            #'access' => [
+               #'class' => AccessControl::className(),
+               #'ruleConfig' => [
+                   #'class' => AppAccessRule::className(),
+               #],
+               #'only' => [ 'index','view','create','update','delete','login','logout' ],
+               #'rules' => [
+                   #[
+                       #'actions' => [ 'login','logout' ],
+                       #'allow' => true,
+                       #'roles' => ['@'],
+                   #],
+                   #[
+                       #'actions' => [ 'index','view' ],
+                       #'allow' => true,
+                       #'roles' => ["inventario-view-*"],
+                   #],
+                   #[
+                       #'actions' => [ 'create' ],
+                       #'allow' => true,
+                       #'roles' => ["inventario-create-*"],
+                   #],
+                   #[
+                       #'actions' => [ 'update' ],
+                       #'allow' => true,
+                       #'roles' => ["inventario-update-*"],
+                   #],
+                   #[
+                       #'actions' => [ 'delete' ],
+                       #'allow' => true,
+                       #'roles' => ["inventario-delete-*"],
+                   #],
+               #],
+            #],
         ];
+    }
+
+    public function beforeAction($action) 
+    {
+        $this->enableCsrfValidation = false;
+        if (parent::beforeAction($action)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

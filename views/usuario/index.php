@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                 <i class="glyphicon glyphicon-search"></i>&nbsp;Filtrar por...
             </a>
-            <?= Html::button('<i class="glyphicon glyphicon-plus"></i> Nuevo Usuario', [ 'value' => Url::to( [ 'usuario/create' ]) ,  'class' => 'btn btn-success' , 'id' => 'modalButton' ]) ?>
+            <?= Html::button('<i class="glyphicon glyphicon-plus"></i> Nuevo Usuario', [ 'value' => Url::to( [ 'usuario/create' ]) ,  'class' => 'btn btn-success modalButton']) ?>
         </div>
     </div>
     <div class="collapse" id="collapseExample">

@@ -3,8 +3,8 @@
 namespace app\controllers;
 
 use Yii;
-use app\assets\AppDate;
 use app\assets\AppAccessRule;
+use app\assets\AppDate;
 use app\assets\AppHandlingErrors;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -309,7 +309,7 @@ class UsuarioController extends Controller
                     AppHandlingErrors::setFlash( 'danger' , AppHandlingErrors::getStringErrorModel( $model->getErrors() ) );
                     $model->fecha_nacimiento = $stringDate;
                     $model->contrasena = base64_decode( $model->contrasena );
-                    return $this->render('update', ['model' => $model, 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
+                    return $this->renderAjax('update', ['model' => $model, 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
                 }
             } catch (Exception $e) {
 
@@ -319,14 +319,14 @@ class UsuarioController extends Controller
                 $transaction->rollBack();
                 $model->fecha_nacimiento = $stringDate;
                 $model->contrasena = base64_decode($model->contrasena);
-                return $this->render('update', ['model' => $model, 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
+                return $this->renderAjax('update', ['model' => $model, 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
             }
         } else {
 
             $model->fecha_nacimiento = AppDate::stringToDate( $model->fecha_nacimiento , Yii::$app->params['formatViewDate'] );
             $model->contrasena = base64_decode( $model->contrasena );
             $arrayModulos = $this->arregloAccionesModulo( $permisos );
-            return $this->render('update', ['model' => $model, 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
+            return $this->renderAjax('update', ['model' => $model, 'modulos' => $arrayModulos , 'puntosVentaSeleccionados' => $puntosVentaSeleccionados ] );
         }
     }
 
