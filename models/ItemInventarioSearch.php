@@ -18,8 +18,8 @@ class ItemInventarioSearch extends ItemInventario
     public function rules()
     {
         return [
-            [['codigo', 'lote', 'inventario', 'cantidad_actual', 'cantidad_reportada'], 'integer'],
-            [['cooresponde', 'igualado'], 'boolean'],
+            [['codigo', 'producto', 'color', 'talla', 'cantidad_esperada', 'cantidad_defectuasa', 'cantidad_entregada', 'cantidad_actual', 'estado'], 'integer'],
+            [['precio_unidad', 'precio_mayor'], 'number'],
         ];
     }
 
@@ -57,12 +57,16 @@ class ItemInventarioSearch extends ItemInventario
 
         $query->andFilterWhere([
             'codigo' => $this->codigo,
-            'lote' => $this->lote,
-            'inventario' => $this->inventario,
+            'producto' => $this->producto,
+            'color' => $this->color,
+            'talla' => $this->talla,
+            'cantidad_esperada' => $this->cantidad_esperada,
+            'cantidad_defectuasa' => $this->cantidad_defectuasa,
+            'cantidad_entregada' => $this->cantidad_entregada,
             'cantidad_actual' => $this->cantidad_actual,
-            'cantidad_reportada' => $this->cantidad_reportada,
-            'cooresponde' => $this->cooresponde,
-            'igualado' => $this->igualado,
+            'precio_unidad' => $this->precio_unidad,
+            'precio_mayor' => $this->precio_mayor,
+            'estado' => $this->estado,
         ]);
 
         return $dataProvider;

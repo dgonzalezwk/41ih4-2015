@@ -18,8 +18,8 @@ class InventarioSearch extends Inventario
     public function rules()
     {
         return [
-            [['codigo', 'usuario_registro'], 'integer'],
-            [['fecha', 'fecha_registro'], 'safe'],
+            [['codigo', 'punto_venta', 'origen', 'estado', 'usuario_registro', 'usuario_actualizador'], 'integer'],
+            [['fecha', 'fecha_registro', 'fecha_actualizacion'], 'safe'],
         ];
     }
 
@@ -58,8 +58,13 @@ class InventarioSearch extends Inventario
         $query->andFilterWhere([
             'codigo' => $this->codigo,
             'fecha' => $this->fecha,
+            'punto_venta' => $this->punto_venta,
+            'origen' => $this->origen,
+            'estado' => $this->estado,
             'usuario_registro' => $this->usuario_registro,
             'fecha_registro' => $this->fecha_registro,
+            'usuario_actualizador' => $this->usuario_actualizador,
+            'fecha_actualizacion' => $this->fecha_actualizacion,
         ]);
 
         return $dataProvider;

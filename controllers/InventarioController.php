@@ -3,15 +3,15 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\Inventario;
+use app\models\InventarioSearch;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use app\assets\AppAccessRule;
 use app\assets\AppDate;
 use app\assets\AppHandlingErrors;
-use app\models\Inventario;
-use app\models\InventarioSearch;
-use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
+use yii\filters\AccessControl;
 
 /**
  * InventarioController implements the CRUD actions for Inventario model.
@@ -20,7 +20,7 @@ class InventarioController extends Controller
 {
     public $layout = 'administracion';
     public $modelModulo;
-
+    
     public function behaviors()
     {
         return [
@@ -35,46 +35,31 @@ class InventarioController extends Controller
                #'ruleConfig' => [
                    #'class' => AppAccessRule::className(),
                #],
-               #'only' => [ 'index','view','create','update','delete','login','logout' ],
+               #'only' => [ 'index','view','create','update','delete' ],
                #'rules' => [
-                   #[
-                       #'actions' => [ 'login','logout' ],
-                       #'allow' => true,
-                       #'roles' => ['@'],
-                   #],
                    #[
                        #'actions' => [ 'index','view' ],
                        #'allow' => true,
-                       #'roles' => ["inventario-view-*"],
+                       #'roles' => ["Gasto-view-*"],
                    #],
                    #[
                        #'actions' => [ 'create' ],
                        #'allow' => true,
-                       #'roles' => ["inventario-create-*"],
+                       #'roles' => ["Gasto-create-*"],
                    #],
                    #[
                        #'actions' => [ 'update' ],
                        #'allow' => true,
-                       #'roles' => ["inventario-update-*"],
+                       #'roles' => ["Gasto-update-*"],
                    #],
                    #[
                        #'actions' => [ 'delete' ],
                        #'allow' => true,
-                       #'roles' => ["inventario-delete-*"],
+                       #'roles' => ["Gasto-delete-*"],
                    #],
                #],
             #],
         ];
-    }
-
-    public function beforeAction($action) 
-    {
-        $this->enableCsrfValidation = false;
-        if (parent::beforeAction($action)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     /**

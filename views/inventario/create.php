@@ -25,22 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	        </div>
 	    </div>
 		<!-- fieldsets -->
-		<fieldset>
-			<!--<label class="fs-title">Create your account</label>
-			<label class="fs-subtitle">This is step 1</label>/-->
-		    <div class="row">
-		    	<?= $this->render('_form', [ 'model' => $model ] ) ?>
-		    </div>
-			<button type="button" class="next btn btn-success">Siguiente <i class="glyphicon glyphicon-chevron-right"></i> </button>
-		</fieldset>
-		<fieldset>
-			<button type="button" class="previous btn btn-danger"><i class="glyphicon glyphicon-chevron-left"></i> Anterior</button>
-			<button type="button" class="next btn btn-success">Siguiente <i class="glyphicon glyphicon-chevron-right"></i> </button>
-		</fieldset>
-		<fieldset>
-			<button type="button" class="previous btn btn-danger"><i class="glyphicon glyphicon-chevron-left"></i> Anterior</button>
-			<button type="submit" class="submit btn btn-success"><i class="glyphicon glyphicon-saved"></i> Submit</button>
-		</fieldset>
+		<?= $this->render('_form', [ 'model' => $model ] ) ?>
 	</div>
 </div>
 <?= $this->registerJsFile('@web/js/jquery.easing.compatibility.js', ['depends' => [ \yii\web\JqueryAsset::className() ] ] ); ?>

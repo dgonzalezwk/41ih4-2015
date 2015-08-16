@@ -17,17 +17,25 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'codigo') ?>
 
-    <?= $form->field($model, 'lote') ?>
+    <?= $form->field($model, 'producto') ?>
 
-    <?= $form->field($model, 'inventario') ?>
+    <?= $form->field($model, 'color') ?>
 
-    <?= $form->field($model, 'cantidad_actual') ?>
+    <?= $form->field($model, 'talla') ?>
 
-    <?= $form->field($model, 'cantidad_reportada') ?>
+    <?= $form->field($model, 'cantidad_esperada') ?>
 
-    <?php // echo $form->field($model, 'cooresponde')->checkbox() ?>
+    <?php // echo $form->field($model, 'cantidad_defectuasa') ?>
 
-    <?php // echo $form->field($model, 'igualado')->checkbox() ?>
+    <?php // echo $form->field($model, 'cantidad_entregada') ?>
+
+    <?php // echo $form->field($model, 'cantidad_actual') ?>
+
+    <?php // echo $form->field($model, 'precio_unidad') ?>
+
+    <?php // echo $form->field($model, 'precio_mayor') ?>
+
+    <?php // echo $form->field($model, 'estado') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

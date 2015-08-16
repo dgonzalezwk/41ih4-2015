@@ -29,12 +29,16 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'codigo',
-            'lote',
-            'inventario',
+            'producto',
+            'color',
+            'talla',
+            'cantidad_esperada',
+            'cantidad_defectuasa',
+            'cantidad_entregada',
             'cantidad_actual',
-            'cantidad_reportada',
-            'cooresponde:boolean',
-            'igualado:boolean',
+            'precio_unidad',
+            'precio_mayor',
+            'estado',
         ],
     ]) ?>
 

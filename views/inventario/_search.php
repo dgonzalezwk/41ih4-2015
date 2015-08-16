@@ -19,9 +19,19 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'fecha') ?>
 
-    <?= $form->field($model, 'usuario_registro') ?>
+    <?= $form->field($model, 'punto_venta') ?>
 
-    <?= $form->field($model, 'fecha_registro') ?>
+    <?= $form->field($model, 'origen') ?>
+
+    <?= $form->field($model, 'estado') ?>
+
+    <?php // echo $form->field($model, 'usuario_registro') ?>
+
+    <?php // echo $form->field($model, 'fecha_registro') ?>
+
+    <?php // echo $form->field($model, 'usuario_actualizador') ?>
+
+    <?php // echo $form->field($model, 'fecha_actualizacion') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

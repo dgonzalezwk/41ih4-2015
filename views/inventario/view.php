@@ -30,8 +30,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'codigo',
             'fecha',
+            'punto_venta',
+            'origen',
+            'estado',
             'usuario_registro',
             'fecha_registro',
+            'usuario_actualizador',
+            'fecha_actualizacion',
         ],
     ]) ?>
 
