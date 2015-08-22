@@ -12,6 +12,7 @@ use Yii;
  * @property integer $color
  * @property integer $talla
  * @property integer $tipo
+ * @property integer $detalle
  * @property integer $cantidad_esperada
  * @property integer $cantidad_defectuasa
  * @property integer $cantidad_entregada
@@ -26,6 +27,7 @@ use Yii;
  * @property Termino $talla0
  * @property Termino $estado0
  * @property Termino $tipo0
+ * @property Termino $detalle0
  */
 class ItemInventario extends \yii\db\ActiveRecord
 {
@@ -43,9 +45,10 @@ class ItemInventario extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['producto', 'color', 'talla', 'tipo', 'cantidad_esperada', 'cantidad_defectuasa', 'cantidad_entregada', 'cantidad_actual', 'precio_unidad', 'precio_mayor', 'estado'], 'required'],
-            [['producto', 'color', 'talla', 'tipo', 'cantidad_esperada', 'cantidad_defectuasa', 'cantidad_entregada', 'cantidad_actual', 'estado'], 'integer'],
-            [['precio_unidad', 'precio_mayor'], 'number']
+            [['producto', 'color', 'talla', 'tipo', 'detalle', 'cantidad_esperada', 'cantidad_defectuasa', 'cantidad_entregada', 'cantidad_actual', 'precio_unidad', 'precio_mayor', 'estado'], 'required'],
+            [['producto', 'color', 'talla', 'tipo', 'detalle', 'cantidad_esperada', 'cantidad_defectuasa', 'cantidad_entregada', 'cantidad_actual', 'estado'], 'integer'],
+            [['producto', 'cantidad_esperada', 'cantidad_entregada', 'cantidad_actual'], 'integer' , 'min' => 1 ],
+            [['precio_unidad', 'precio_mayor'], 'number', 'min' => 1]
         ];
     }
 
@@ -60,6 +63,7 @@ class ItemInventario extends \yii\db\ActiveRecord
             'color' => 'Color',
             'talla' => 'Talla',
             'tipo' => 'Tipo',
+            'detalle' => 'Detalle',
             'cantidad_esperada' => 'Cantidad Esperada',
             'cantidad_defectuasa' => 'Cantidad Defectuasa',
             'cantidad_entregada' => 'Cantidad Entregada',
@@ -116,5 +120,13 @@ class ItemInventario extends \yii\db\ActiveRecord
     public function getTipo0()
     {
         return $this->hasOne(Termino::className(), ['codigo' => 'tipo']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDetalle0()
+    {
+        return $this->hasOne(Termino::className(), ['codigo' => 'detalle']);
     }
 }

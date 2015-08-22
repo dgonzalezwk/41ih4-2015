@@ -7,6 +7,7 @@ use app\assets\AppDate;
 use app\assets\AppAccessRule;
 use app\models\Producto;
 use app\models\ProductoSearch;
+use app\models\TerminoSearch;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
@@ -197,4 +198,48 @@ class ProductoController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionViewAll()
+    {
+        
+        $code = Yii::$app->request->post( 'code' , null );
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if ( $code == null ) {
+            return [ 'success' => false ];
+        } else if( strlen( $code ) < 14 ){
+            return [ 'success' => false , 'mensajeError' => 'codigo de barras no valido.' ];
+        } else {
+
+            $producto = substr( $code , 11 , 3 );
+            $model = $this->findModel( $producto );
+            if ( $model != null ) {
+                
+                $talla = substr( $code , 4 , 2 );
+                $color = substr( $code , 6 , 2 );
+                $categoria = substr( $code , 8 , 2 );
+                $detalle = substr( $code , 10 , 1 );
+
+                $arrayData = [
+                    'talla' => TerminoSearch::searchTallaProductoByKey( intval( $talla ) )->codigo ,
+                    'color' => TerminoSearch::searchColorProductoByKey( intval( $color ) )->codigo ,
+                    'tipo' => TerminoSearch::searchCategoriaProductoByKey( intval( $categoria ) )->codigo ,
+                    'detalle' => TerminoSearch::searchDetalleProductoByKey( intval( $detalle ) )->codigo ,
+                    'producto' => [
+                        'codigo' => $model->codigo,
+                        'nombre' => $model->nombre,
+                        'descripcion' => $model->descripcion,
+                        'estado' => $model->estado0->termino,
+                        'categoria' => $model->categoria,
+                        'imagen' => $model->getImageUrl(),
+                        'cantidadActual' => 1
+                    ],
+                ];
+
+                return [ 'success' => true , 'datos' => $arrayData ];
+            } else {
+                return [ 'success' => false , 'mensajeError' => 'producto no encontrado.' ];
+            }
+        }
+    }
+
 }

@@ -4,7 +4,9 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Inventario;
+use app\models\ItemInventario;
 use app\models\InventarioSearch;
+use app\models\TerminoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use app\assets\AppAccessRule;
@@ -97,6 +99,14 @@ class InventarioController extends Controller
     public function actionCreate()
     {
         $model = new Inventario();
+        $model->fecha = AppDate::stringToDate( AppDate::date() , Yii::$app->params['formatViewDate'] ); ;
+        $model->punto_venta = Yii::$app->user->identity->getPuntoVentaSelected()->punto_venta;
+        $model->origen = Yii::$app->user->identity->getPuntoVentaSelected()->punto_venta;
+
+        $session = Yii::$app->session;
+        $model = $session->get( 'dataInventory' , $model );
+
+        $model->codigoBarras = '';
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->codigo]);
@@ -153,5 +163,75 @@ class InventarioController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionAddItem()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $model = new Inventario();
+        $item = new ItemInventario();
+        if ( $model->load( Yii::$app->request->post() ) && $item->load( Yii::$app->request->post() ) ){
+            
+            $model->usuario_registro = Yii::$app->user->identity->codigo ;
+            $model->fecha_registro = AppDate::stringToDate( AppDate::date() , Yii::$app->params['formatViewDate'] ) ;
+            $model->estado = TerminoSearch::estadoInventarioActivo()->codigo;
+            
+            if ( $item->cantidad_esperada == $item->cantidad_entregada && $item->cantidad_defectuasa == 0 ){
+                $item->estado = TerminoSearch::estadoItemInventarioCompleto()->codigo;
+            } else if( $item->cantidad_esperada == $item->cantidad_entregada && $item->cantidad_defectuasa > 0 ) {
+                $item->estado = TerminoSearch::estadoItemInventarioDefectos()->codigo;
+            } else if( $item->cantidad_esperada != $item->cantidad_entregada ) {
+                $item->estado = TerminoSearch::estadoItemInventarioIncompleto()->codigo;
+            }
+
+        	if ( $model->validate() ){
+                if( $item->validate() ) {
+                    
+                    $session = Yii::$app->session;
+        			if ( !$session->isActive ){ $session->open(); }
+
+                    $dataInventory = $session->get( 'dataInventory' , $model );
+                    $listItems = $session->get( 'listInventory' , [] );
+                    $key = $item->producto . "" .$item->color . "" .$item->talla . "" .$item->tipo . "" .$item->detalle;
+
+                    if ( array_key_exists ( $key , $listItems ) ) {
+                        $itemOldd = $listItems[$key];
+                        $item->cantidad_esperada += $itemOldd->cantidad_esperada;
+                        $item->cantidad_defectuasa += $itemOldd->cantidad_defectuasa;
+                        $item->cantidad_entregada += $itemOldd->cantidad_entregada;
+                        $listItems[$key] = $item ;
+                    } else {
+                        $listItems[$key] = $item ;
+                    }
+
+                    $session->set( 'dataInventory' , $dataInventory );
+                	$session->set( 'listInventory' , $listItems );
+
+                	return [ 'success' => true ];
+                } else {
+                    return [ 'success' => false ];
+                }
+            } else {
+                return [ 'success' => false ];
+            }
+	    } else {
+	    	return [ 'success' => false ];
+	    }
+    }
+    
+    public function actionRemoveItem()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $indice = Yii::$app->request->post( 'id' , null );
+        if ( $indice != null ){
+            $session = Yii::$app->session;
+            if ( !$session->isActive ){ $session->open(); }
+            $listItems = $session->get( 'listInventory' , [] );
+            if ( array_key_exists ( $indice , $listItems ) ) {
+                unset( $listItems[ $indice ] );
+                $session->set( 'listInventory' , $listItems );
+            }
+        }
+        return [ 'success' => true ];
     }
 }

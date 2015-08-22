@@ -55,6 +55,13 @@ h1, .h1, h2, .h2, h3, .h3{
   margin-bottom: 10px;
   border-bottom: 1px solid #9d9d9d;
 }
+.title-item-list{
+  border-bottom: 1px solid #9d9d9d;
+}
+.item-list{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
 .vcenter .btn{
   margin-top: 15px;
 }

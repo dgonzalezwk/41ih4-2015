@@ -40,7 +40,7 @@ class Inventario extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fecha', 'punto_venta', 'origen', 'estado', 'usuario_registro', 'fecha_registro', 'usuario_actualizador', 'fecha_actualizacion'], 'required'],
+            [['codigoBarras','fecha', 'punto_venta', 'origen', 'estado', 'usuario_registro', 'fecha_registro'], 'required'],
             [['fecha', 'fecha_registro', 'fecha_actualizacion'], 'safe'],
             [['punto_venta', 'origen', 'estado', 'usuario_registro', 'usuario_actualizador'], 'integer']
         ];

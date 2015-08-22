@@ -85,6 +85,18 @@ class TerminoSearch extends Termino
     {
         return Termino::find()->where(['categoria'=>'Categoria De Producto','estado'=>1])->all();
     }
+    public static function searchColoresProducto()
+    {
+        return Termino::find()->where(['categoria'=>'Color','estado'=>1])->all();
+    }
+    public static function searchDetallesProducto()
+    {
+        return Termino::find()->where(['categoria'=>'Detalle de producto','estado'=>1])->all();
+    }
+    public static function searchTallasProducto()
+    {
+        return Termino::find()->where(['categoria'=>'Talla','estado'=>1])->all();
+    }
     public static function searchEstadosProducto()
     {
         return Termino::find()->where(['categoria'=>'Estados De Producto','estado'=>1])->all();
@@ -136,6 +148,43 @@ class TerminoSearch extends Termino
     public static function estadoIngresoAutorizado()
     {
         return Termino::find()->where(['categoria'=>'Estado De Ingresos', 'key'=>4 ,'estado'=>1])->one();
+    }
+    public static function estadoItemInventarioCompleto()
+    {
+        return Termino::find()->where(['categoria'=>'Estado De Item Inventario', 'key'=>1 ,'estado'=>1])->one();
+    }
+    public static function estadoItemInventarioDefectos()
+    {
+        return Termino::find()->where(['categoria'=>'Estado De Item Inventario', 'key'=>2 ,'estado'=>1])->one();
+    }
+    public static function estadoItemInventarioIncompleto()
+    {
+        return Termino::find()->where(['categoria'=>'Estado De Item Inventario', 'key'=>3 ,'estado'=>1])->one();
+    }
+    public static function estadoInventarioActivo()
+    {
+        return Termino::find()->where(['categoria'=>'Estado De Inventario', 'key'=>1 ,'estado'=>1])->one();
+    }
+    public static function estadoInventarioNoActivo()
+    {
+        return Termino::find()->where(['categoria'=>'Estado De Inventario', 'key'=>1 ,'estado'=>1])->one();
+    }
+
+    public static function searchCategoriaProductoByKey( $key )
+    {
+        return Termino::find()->where(['categoria'=>'Categoria De Producto','estado'=>1,'key'=> $key ])->one();
+    }
+    public static function searchColorProductoByKey( $key )
+    {
+        return Termino::find()->where(['categoria'=>'Color','estado'=>1,'key'=> $key ])->one();
+    }
+    public static function searchDetalleProductoByKey( $key )
+    {
+        return Termino::find()->where(['categoria'=>'Detalle de producto','estado'=>1,'key'=> $key ])->one();
+    }
+    public static function searchTallaProductoByKey( $key )
+    {
+        return Termino::find()->where(['categoria'=>'Talla','estado'=>1,'key'=> $key ])->one();
     }
 
 }

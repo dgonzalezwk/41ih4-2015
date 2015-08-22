@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\web\UploadedFile;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "producto".
@@ -152,7 +153,7 @@ class Producto extends \yii\db\ActiveRecord
     {
         // return a default image placeholder if your source avatar is not found
         $imagen = isset($this->imagen) ? $this->imagen : 'default_product.jpg';
-        return Yii::$app->basePath . '/web/img/producto/'. $imagen;
+        return Url::to('@web/img/producto/'). $imagen;
     }
 
     /**
