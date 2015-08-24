@@ -4,6 +4,7 @@ $(
 			var dataUrl = $( this ).attr( 'data-url' );
 			var code = $( this ).val();
 			if( code != "" && dataUrl != "" ){
+				$('iteminventario-codigo_barras').val(code);
 				$.ajax({
 				    type:'POST',
 				    url: dataUrl ,
@@ -58,7 +59,7 @@ function addItem ( idForm , element , event ) {
 	$.ajax({
 	    type:'POST',
 	    url: href ,
-	    dataType: "json",
+	    dataType: "html",
 	    data: $( idForm ).serialize() + "" + $( "#item-inventario-form" ).serialize() ,
 	    success: function(data)
 	    {
@@ -176,25 +177,24 @@ function addItem ( idForm , element , event ) {
 						)
 					)
 				);
-			}
-			
-			$('#iteminventario-talla').val( '' );
-			$('#iteminventario-color').val( '' );
-			$('#iteminventario-tipo').val( '' );
-			$('#iteminventario-detalle').val( '' );
-			$('#iteminventario-cantidad_esperada').val( '' );
-			$('#iteminventario-cantidad_defectuasa').val( '' );
-			$('#iteminventario-cantidad_entregada').val( '' );
-			$('#iteminventario-precio_unidad-disp').val( '' );
-			$('#iteminventario-precio_mayor-disp').val( '' );
-			$('#iteminventario-producto').val( '' );
-			$('#inventario-codigobarras').val( '' );
-			$('#img-producto').removeAttr( 'src' );
-			$('#nombre-producto').text( '' );
-			$('#codigo-producto').text('');
-			$('#estado-producto').text('');
-			$('#descripcion-producto').text('');
 
+				$('#iteminventario-talla').val( '' );
+				$('#iteminventario-color').val( '' );
+				$('#iteminventario-tipo').val( '' );
+				$('#iteminventario-detalle').val( '' );
+				$('#iteminventario-cantidad_esperada').val( '' );
+				$('#iteminventario-cantidad_defectuasa').val( '' );
+				$('#iteminventario-cantidad_entregada').val( '' );
+				$('#iteminventario-precio_unidad-disp').val( '' );
+				$('#iteminventario-precio_mayor-disp').val( '' );
+				$('#iteminventario-producto').val( '' );
+				$('#inventario-codigobarras').val( '' );
+				$('#img-producto').removeAttr( 'src' );
+				$('#nombre-producto').text( '' );
+				$('#codigo-producto').text('');
+				$('#estado-producto').text('');
+				$('#descripcion-producto').text('');
+			}
 	    	element.find( 'i' ).attr( 'class' , oldClass );
 			element.removeAttr('disabled');
 	    }

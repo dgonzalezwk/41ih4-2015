@@ -167,7 +167,7 @@ class InventarioController extends Controller
 
     public function actionAddItem()
     {
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
         $model = new Inventario();
         $item = new ItemInventario();
         if ( $model->load( Yii::$app->request->post() ) && $item->load( Yii::$app->request->post() ) ){
