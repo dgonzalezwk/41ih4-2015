@@ -22,6 +22,7 @@ use Yii;
  * @property Termino $estado0
  * @property Usuario $usuarioRegistro
  * @property Usuario $usuarioActualizador
+ * @property ItemInventario[] $itemInventarios
  */
 class Inventario extends \yii\db\ActiveRecord
 {
@@ -103,5 +104,13 @@ class Inventario extends \yii\db\ActiveRecord
     public function getUsuarioActualizador()
     {
         return $this->hasOne(Usuario::className(), ['codigo' => 'usuario_actualizador']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getItemInventarios()
+    {
+        return $this->hasMany(ItemInventario::className(), ['inventario' => 'codigo']);
     }
 }

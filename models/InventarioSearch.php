@@ -69,4 +69,9 @@ class InventarioSearch extends Inventario
 
         return $dataProvider;
     }
+
+    public static function searchInventariosActivos()
+    {
+        return Inventario::find()->where(['estado'=> TerminoSearch::estadoInventarioActivo()->codigo ])->all();
+    }
 }

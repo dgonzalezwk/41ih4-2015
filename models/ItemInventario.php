@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "item_inventario".
  *
  * @property integer $codigo
+ * @property integer $inventario
  * @property integer $producto
  * @property integer $color
  * @property integer $talla
@@ -20,6 +21,7 @@ use Yii;
  * @property string $precio_unidad
  * @property string $precio_mayor
  * @property integer $estado
+ * @property string $codigo_barras
  *
  * @property ItemFactura[] $itemFacturas
  * @property Producto $producto0
@@ -28,6 +30,7 @@ use Yii;
  * @property Termino $estado0
  * @property Termino $tipo0
  * @property Termino $detalle0
+ * @property Inventario $inventario0
  */
 class ItemInventario extends \yii\db\ActiveRecord
 {
@@ -45,10 +48,11 @@ class ItemInventario extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['producto', 'color', 'talla', 'tipo', 'detalle', 'cantidad_esperada', 'cantidad_defectuasa', 'cantidad_entregada', 'cantidad_actual', 'precio_unidad', 'precio_mayor', 'estado'], 'required'],
-            [['producto', 'color', 'talla', 'tipo', 'detalle', 'cantidad_esperada', 'cantidad_defectuasa', 'cantidad_entregada', 'cantidad_actual', 'estado'], 'integer'],
-            [['producto', 'cantidad_esperada', 'cantidad_entregada', 'cantidad_actual'], 'integer' , 'min' => 1 ],
-            [['precio_unidad', 'precio_mayor'], 'number', 'min' => 1]
+            [[ 'producto', 'color', 'talla', 'tipo', 'detalle', 'cantidad_esperada', 'cantidad_defectuasa', 'cantidad_entregada', 'cantidad_actual', 'precio_unidad', 'precio_mayor', 'estado', 'codigo_barras'], 'required'],
+            [['inventario', 'producto', 'color', 'talla', 'tipo', 'detalle', 'cantidad_esperada', 'cantidad_defectuasa', 'cantidad_entregada', 'cantidad_actual', 'estado'], 'integer'],
+            [['producto', 'cantidad_esperada', 'cantidad_entregada'], 'integer' , 'min' => 1 ],
+            [['precio_unidad', 'precio_mayor'], 'number', 'min' => 1],
+            [['codigo_barras'], 'string', 'max' => 14]
         ];
     }
 
@@ -59,6 +63,7 @@ class ItemInventario extends \yii\db\ActiveRecord
     {
         return [
             'codigo' => 'Codigo',
+            'inventario' => 'Inventario',
             'producto' => 'Producto',
             'color' => 'Color',
             'talla' => 'Talla',
@@ -71,6 +76,7 @@ class ItemInventario extends \yii\db\ActiveRecord
             'precio_unidad' => 'Precio Unidad',
             'precio_mayor' => 'Precio Mayor',
             'estado' => 'Estado',
+            'codigo_barras' => 'Codigo Barras',
         ];
     }
 
@@ -128,5 +134,13 @@ class ItemInventario extends \yii\db\ActiveRecord
     public function getDetalle0()
     {
         return $this->hasOne(Termino::className(), ['codigo' => 'detalle']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getInventario0()
+    {
+        return $this->hasOne(Inventario::className(), ['codigo' => 'inventario']);
     }
 }

@@ -123,6 +123,7 @@ $("#menu-toggle").click(function(e) {
     $("#wrapper").toggleClass("toggled");
 });
 </script>
+<script src="<?= Url::base()?>/js/bootbox.min.js" type="text/javascript"></script>
 </body>
 </html>
 <?php $this->endPage() ?>

@@ -218,7 +218,7 @@ class ProductoController extends Controller
                 $color = substr( $code , 6 , 2 );
                 $categoria = substr( $code , 8 , 2 );
                 $detalle = substr( $code , 10 , 1 );
-
+                $cantidadActual = ProductoSearch::cantidadActual( $producto , $color , $talla , $categoria , $detalle );
                 $arrayData = [
                     'talla' => TerminoSearch::searchTallaProductoByKey( intval( $talla ) )->codigo ,
                     'color' => TerminoSearch::searchColorProductoByKey( intval( $color ) )->codigo ,
@@ -231,7 +231,7 @@ class ProductoController extends Controller
                         'estado' => $model->estado0->termino,
                         'categoria' => $model->categoria,
                         'imagen' => $model->getImageUrl(),
-                        'cantidadActual' => 1
+                        'cantidadActual' => $cantidadActual
                     ],
                 ];
 

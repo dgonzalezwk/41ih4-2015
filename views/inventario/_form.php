@@ -15,9 +15,7 @@ use yii\widgets\Pjax;
 /* @var $model app\models\Inventario */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-<fieldset>
-    <!--<label class="fs-title">Create your account</label>
-    <label class="fs-subtitle">This is step 1</label>/-->
+<fieldset id="formulario">
     <?php $form = ActiveForm::begin([
         'id' => 'inventario-form',
         'action' => Url::to(['add-item']),
@@ -99,80 +97,20 @@ use yii\widgets\Pjax;
         <?= $this->render( '//item-inventario/_form' , [ 'model' => new ItemInventario() ] ); ?>
     </div>
     <br />
-    <?= Html::a('<i class="glyphicon glyphicon-plus"></i> Agregar', ['add-item'], ['class' => 'btn btn-primary add-item', 'onclick' => "addItem( '#inventario-form' , $(this) , event )" ]) ?>
+    <?= Html::a('<i class="glyphicon glyphicon-pencil"></i> Editar', ['edit-item'], ['class' => 'btn btn-warning edit-item hidden', 'onclick' => "addItem( $(this) , event )" ]) ?>
+    <?= Html::a('<i class="glyphicon glyphicon-plus"></i> Agregar', ['add-item'], ['class' => 'btn btn-primary add-item', 'onclick' => "addItem( $(this) , event )" ]) ?>
     <button type="button" class="next btn btn-success">Siguiente <i class="glyphicon glyphicon-chevron-right"></i> </button>
 </fieldset>
 <fieldset id="lista">
-    <?php $listInventory = Yii::$app->session->get( 'listInventory' , [] ); ?>
-    <?php foreach ($listInventory as $key => $listInventoryItem): ?>
-        <div class="row item-list" id="<?= $key ?>" >
-            <div class="col-lg-3">
-                <img src="<?= $listInventoryItem->getProducto0()->one()->getImageUrl() ?>" class="img-rounded img-responsive" >
-            </div>
-            <div class="col-lg-9">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="row title-item-list">
-                            <div class="col-lg-6 text text-left">
-                                <h3><?= $listInventoryItem->getProducto0()->one()->nombre ?></h3>
-                            </div>
-                            <div class="col-lg-6 text text-right">
-                                <p>
-                                    <?= Html::a('<i class="glyphicon glyphicon-pencil"></i>', [''], ['class' => 'btn btn-warning', 'onclick' => "" ]) ?>
-                                    <?= Html::a('<i class="glyphicon glyphicon-remove"></i>', ['remove-item'], ['class' => 'btn btn-danger' , 'data-id' => $key , 'onclick' => "removeItem( $(this) , event )" ]) ?>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <label>Codigo&nbsp;</label>
-                        <p><?= $listInventoryItem->producto ?></p>
-                    </div>
-                    <div class="col-lg-3">
-                        <label>Talla&nbsp;</label>
-                        <p><?= $listInventoryItem->getTalla0()->one()->termino ?></p>
-                    </div>
-                    <div class="col-lg-3">
-                        <label>Color&nbsp;</label>
-                        <p><?= $listInventoryItem->getColor0()->one()->termino ?></p>
-                    </div>
-                    <div class="col-lg-3">
-                        <label>Tipo&nbsp;</label>
-                        <p><?= $listInventoryItem->getTipo0()->one()->termino ?></p>
-                    </div>
-                    <div class="col-lg-3">
-                        <label>Detalle&nbsp;</label>
-                        <p><?= $listInventoryItem->getDetalle0()->one()->termino ?></p>
-                    </div>
-                    <div class="col-lg-3">
-                        <label>Cantidad Esperada&nbsp;</label>
-                        <p><?= $listInventoryItem->cantidad_esperada ?></p>
-                    </div>
-                    <div class="col-lg-3">
-                        <label>Cantidad Defectuasa&nbsp;</label>
-                        <p><?= $listInventoryItem->cantidad_defectuasa ?></p>
-                    </div>
-                    <div class="col-lg-3">
-                        <label>Cantidad Entregada&nbsp;</label>
-                        <p><?= $listInventoryItem->cantidad_entregada ?></p>
-                    </div>
-                    <div class="col-lg-3">
-                        <label>Precio Unidad&nbsp;</label>
-                        <p><?= $listInventoryItem->precio_unidad ?></p>
-                    </div>
-                    <div class="col-lg-3">
-                        <label>Precio Mayor&nbsp;</label>
-                        <p><?= $listInventoryItem->precio_mayor ?></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <?php endforeach ?>
+    <?= $this->render( '_list' , [ 'listInventory' => $listInventory ] ); ?>
     <button type="button" class="previous btn btn-danger"><i class="glyphicon glyphicon-chevron-left"></i> Anterior</button>
     <button type="button" class="next btn btn-success">Siguiente <i class="glyphicon glyphicon-chevron-right"></i> </button>
 </fieldset>
-<fieldset class="cosolidado">
+<fieldset id="consolidado">
+    <div class="row">
+        <?= $this->render( '_table' , [ 'listInventory' => $listInventory ] ); ?>
+    </div>
     <button type="button" class="previous btn btn-danger"><i class="glyphicon glyphicon-chevron-left"></i> Anterior</button>
-    <button type="submit" class="submit btn btn-success"><i class="glyphicon glyphicon-saved"></i> Submit</button>
+    <?= Html::a('<i class="glyphicon glyphicon-saved"></i> Submit', $model->isNewRecord ? ['create' , 'guardar' => true ] :  ['update' , 'guardar' => true , 'id' => $model->codigo ] , ['class' => 'submit btn btn-success', 'onclick' => "save( $(this) , event )" ]) ?>
 </fieldset>
 <?= $this->registerJsFile('@web/js/jsInventarios.js', ['depends' => [ \yii\web\JqueryAsset::className() ] ] ); ?>
