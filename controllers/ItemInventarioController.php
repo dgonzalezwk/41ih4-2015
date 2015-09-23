@@ -60,14 +60,60 @@ class ItemInventarioController extends Controller
      */
     public function actionCreate()
     {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $model = new ItemInventario();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->codigo]);
+        if($itemDeLista->precio_unidad != $item->precio_unidad || $itemDeLista->precio_mayor != $item->precio_mayor){
+            if ( !array_key_exists ( $key+"_old" , $listItems ) ) {
+                $itemDeLista->estado = TerminoSearch::estadoItemInventarioRemplazado()->codigo;
+                $itemDeLista->cantidad_actual = 0;
+                $listItems[ $key+"_old" ] = $itemDeLista ;
+                $newItem = new ItemInventario() ;
+                $newItem->load( [ "ItemInventario" => [
+                    "inventario" => $item->inventario,
+                    "producto" => $item->producto,
+                    "color" => $item->color,
+                    "talla" => $item->talla,
+                    "tipo" => $item->tipo,
+                    "detalle" => $item->detalle,
+                    "cantidad_esperada" => $item->cantidad_esperada,
+                    "cantidad_defectuasa" => $item->cantidad_defectuasa,
+                    "cantidad_entregada" => $item->cantidad_entregada,
+                    "cantidad_actual" => $item->cantidad_actual,
+                    "precio_unidad" => $item->precio_unidad,
+                    "precio_mayor" => $item->precio_mayor,
+                    "estado" => $item->estado,
+                    "codigo_barras" => $item->codigo_barras,
+                ] ] );
+                $listItems[ $key ] = $newItem ;
+            } else {
+                $listItems[$key] = $item ;
+            }
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            $itemDeLista->cantidad_esperada = $item->cantidad_esperada; 
+            $itemDeLista->cantidad_defectuasa = $item->cantidad_defectuasa; 
+            $itemDeLista->cantidad_entregada = $item->cantidad_entregada; 
+            $itemDeLista->cantidad_actual = $item->cantidad_actual; 
+            $listItems[$key] = $itemDeLista ;
+        }
+
+        if ( $model->load( Yii::$app->request->post() ) ) {
+            
+            if ( $model->cantidad_esperada == $model->cantidad_entregada && $model->cantidad_defectuasa == 0 ){
+                $model->estado = TerminoSearch::estadoItemInventarioCompleto()->codigo;
+            } else if( $model->cantidad_esperada == $model->cantidad_entregada && $model->cantidad_defectuasa > 0 ) {
+                $model->estado = TerminoSearch::estadoItemInventarioDefectos()->codigo;
+            } else if( $model->cantidad_esperada != $model->cantidad_entregada ) {
+                $model->estado = TerminoSearch::estadoItemInventarioIncompleto()->codigo;
+            }
+            
+            if ( $model->save() ) {
+                return [ 'success' => true , 'datos' => [ 'codeBar' => $model->codigo_barras , 'cantidad_esperada' => $model->cantidad_esperada , 'cantidad_defectuasa' => $model->cantidad_defectuasa , 'cantidad_entregada' => $model->cantidad_entregada , 'precio_unidad' => $model->precio_unidad , 'precio_mayor' => $model->precio_mayor ] ];
+            } else {
+                return [ 'success' => false ];
+            }
+        } else {
+            return [ 'success' => false ];
         }
     }
 
@@ -79,14 +125,12 @@ class ItemInventarioController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $model = $this->findModel( $id );
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->codigo]);
+            return [ 'success' => true , 'datos' => [ 'codigo' => $model->codigo , 'codeBar' => $model->codigo_barras , 'cantidad_esperada' => $model->cantidad_esperada , 'cantidad_defectuasa' => $model->cantidad_defectuasa , 'cantidad_entregada' => $model->cantidad_entregada , 'precio_unidad' => $model->precio_unidad , 'precio_mayor' => $model->precio_mayor ] ];
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            return [ 'success' => false ];
         }
     }
 
@@ -98,8 +142,8 @@ class ItemInventarioController extends Controller
      */
     public function actionDelete($id)
     {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $this->findModel($id)->delete();
-
         return $this->redirect(['index']);
     }
 

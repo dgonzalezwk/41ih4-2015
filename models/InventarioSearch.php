@@ -74,4 +74,14 @@ class InventarioSearch extends Inventario
     {
         return Inventario::find()->where(['estado'=> TerminoSearch::estadoInventarioActivo()->codigo ])->all();
     }
+
+    public static function searchInventariosNoActivos()
+    {
+        return Inventario::find()->where(['estado'=> TerminoSearch::estadoInventarioNoActivo()->codigo ])->all();
+    }
+
+    public static function searchInventarioBorrador()
+    {
+        return Inventario::find()->where(['estado'=> TerminoSearch::estadoInventarioBorrador()->codigo ])->one();
+    }
 }

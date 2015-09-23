@@ -94,7 +94,7 @@ use yii\widgets\Pjax;
         </div>
     <?php ActiveForm::end(); ?>
     <div class="row">
-        <?= $this->render( '//item-inventario/_form' , [ 'model' => new ItemInventario() ] ); ?>
+        <?= $this->render( '//item-inventario/_form' , [ 'model' => $itemModel ] ); ?>
     </div>
     <br />
     <?= Html::a('<i class="glyphicon glyphicon-pencil"></i> Editar', ['edit-item'], ['class' => 'btn btn-warning edit-item hidden', 'onclick' => "addItem( $(this) , event )" ]) ?>

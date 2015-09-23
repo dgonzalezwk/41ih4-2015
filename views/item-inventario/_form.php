@@ -92,6 +92,7 @@ use kartik\money\MaskMoney;
                                 ]
                             ]) ?>
                         </div>
+                        <?= $form->field($model , 'inventario')->hiddenInput()->label(false); ?>
                         <?= $form->field($model , 'producto')->hiddenInput()->label(false); ?>
                         <?= $form->field($model, 'cantidad_actual')->hiddenInput()->label(false) ?>
                         <?= $form->field($model, 'codigo_barras')->hiddenInput()->label(false) ?>

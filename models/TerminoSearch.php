@@ -169,9 +169,13 @@ class TerminoSearch extends Termino
     {
         return Termino::find()->where(['categoria'=>'Estado De Inventario', 'key'=>1 ,'estado'=>1])->one();
     }
+    public static function estadoInventarioBorrador()
+    {
+        return Termino::find()->where(['categoria'=>'Estado De Inventario', 'key'=>3 ,'estado'=>1])->one();
+    }
     public static function estadoInventarioNoActivo()
     {
-        return Termino::find()->where(['categoria'=>'Estado De Inventario', 'key'=>1 ,'estado'=>1])->one();
+        return Termino::find()->where(['categoria'=>'Estado De Inventario', 'key'=>2 ,'estado'=>1])->one();
     }
 
     public static function searchCategoriaProductoByKey( $key )

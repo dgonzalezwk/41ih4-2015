@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = 'Update';
 	        </div>
 	    </div>
 		<!-- fieldsets -->
-		<?= $this->render('_form', [ 'model' => $model , 'listInventory' => $listInventory ] ) ?>
+		<?= $this->render('_form', [ 'model' => $model , 'itemModel' => $itemModel , 'listInventory' => $listInventory ] ) ?>
 	</div>
 </div>
 <?= $this->registerJsFile('@web/js/jquery.easing.compatibility.js', ['depends' => [ \yii\web\JqueryAsset::className() ] ] ); ?>
