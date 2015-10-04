@@ -3,9 +3,13 @@
 use yii\helpers\Html;
 
 ?>
-
-<?php foreach ($listInventory as $key => $listInventoryItem): ?>
-    <div class="row item-list <?= $key ?>">
+<?php if ( count( $listInventory ) == 0 ): ?>
+<div class="col-lg-12 text text-center">
+        <p>El inventario no tiene productos actualmente.</p>
+    </div>
+<?php endif ?>
+<?php foreach ($listInventory as $listInventoryItem): ?>
+    <div class="row item-list <?= $listInventoryItem->codigo ?>">
         <div class="col-lg-3">
             <img src="<?= $listInventoryItem->getProducto0()->one()->getImageUrl() ?>" class="img-rounded img-responsive" >
         </div>
@@ -18,8 +22,8 @@ use yii\helpers\Html;
                         </div>
                         <div class="col-lg-6 text text-right">
                             <p>
-                                <?= Html::a('<i class="glyphicon glyphicon-pencil"></i>', ['selected-item'], ['class' => 'btn btn-warning', 'data-id' => $key ,'onclick' => "selectedItemList( $(this) , event );" ]) ?>
-                                <?= Html::a('<i class="glyphicon glyphicon-remove"></i>', ['remove-item'], ['class' => 'btn btn-danger' , 'data-id' => $key , 'onclick' => "removeItem( $(this) , event )" ]) ?>
+                                <?= Html::a('<i class="glyphicon glyphicon-pencil"></i>', ['item-inventario/view' , 'id' => $listInventoryItem->codigo ], ['class' => 'btn btn-warning' ,'onclick' => "selectedItemList( $(this) , event );" ]) ?>
+                                <?= Html::a('<i class="glyphicon glyphicon-remove"></i>', ['item-inventario/delete', 'id' => $listInventoryItem->codigo], ['class' => 'btn btn-danger'  , 'onclick' => "removeItem( $(this) , event )" ]) ?>
                             </p>
                         </div>
                     </div>

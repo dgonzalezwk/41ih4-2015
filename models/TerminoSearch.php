@@ -165,6 +165,10 @@ class TerminoSearch extends Termino
     {
         return Termino::find()->where(['categoria'=>'Estado de item Inventario', 'key'=>4 ,'estado'=>1])->one();
     }
+    public static function estadoItemInventarioEliminado()
+    {
+        return Termino::find()->where(['categoria'=>'Estado de item Inventario', 'key'=>5 ,'estado'=>1])->one();
+    }
     public static function estadoInventarioActivo()
     {
         return Termino::find()->where(['categoria'=>'Estado De Inventario', 'key'=>1 ,'estado'=>1])->one();

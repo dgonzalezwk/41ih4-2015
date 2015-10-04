@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
+use app\models\InventarioSearch;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\InventarioSearch */
@@ -34,18 +35,63 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         #'filterModel' => $searchModel,
+        'rowOptions' => function( $model ){
+            if ( $model->estado0->key == 1 ) {
+                return [ 'class' => 'success' ];
+            } else if ( $model->estado0->key == 2 ){
+                return [ 'class' => 'danger' ];
+            } else if ( $model->estado0->key == 3 ){
+                return [ 'class' => 'info' ];
+            }
+        },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
                 'codigo',
                 'fecha',
-                'punto_venta',
-                'origen',
-                'estado',
-                'usuario_registro',
+                [
+                    'attribute' => 'estado',
+                    'value' => 'estado0.termino',
+                ],
                 'fecha_registro',
-                'usuario_actualizador',
-                'fecha_actualizacion',
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'contentOptions'=>['class'=>'text text-center'],
+                'template' => '{view} {update} {delete}',
+                'buttons' => [
+                    'update' => function ($url, $model) {
+                        if( $model->estado0->key == 2){
+                            return '';
+                        } else {
+                            $borrador = InventarioSearch::searchInventarioBorrador();
+                            if ( $borrador != null ) {
+                                if ( $borrador->codigo == $model->codigo ) {
+                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                        'title' => $url,
+                                    ]);
+                                }
+                                return '';
+                            } else {
+                                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                    'title' => $url,
+                                ]);
+                            }
+                        }
+                    },
+                    'delete' => function ($url, $model) {
+                        if( $model->estado0->key == 3){
+                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                                'title' => $url,
+                                'data' => [
+                                    'confirm' => 'Esta seguro que desea eliminar el borrador?',
+                                    'method' => 'post',
+                                ],
+                            ]);
+                        } else {
+                            return '';
+                        }
+                    }
+                ],
+            ],
         ],
     ]); ?>
 

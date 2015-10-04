@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<div id="msform">
 		<div class="row title-window">
 	        <div class="col-lg-4 text text-left">
-	            <h1><?= Html::encode($this->title) ?></h1>
+	            <h2><?= Html::encode($this->title) ?></h2>
 	        </div>
 	        <div class="col-lg-8 text text-right vcenter">
 				<!-- progressbar -->

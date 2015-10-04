@@ -71,4 +71,20 @@ class ItemInventarioSearch extends ItemInventario
 
         return $dataProvider;
     }
+
+    public static function isExist( $producto , $color , $talla , $tipo , $detalle , $inventario ){
+        
+        $item = ItemInventario::find()->where([ 'producto' => $producto ,'color' => $color , 'talla' => $talla, 'tipo' => $tipo ,'detalle' => $detalle , 'inventario' => $inventario ])->andWhere( ['NOT IN', 'estado', [ TerminoSearch::estadoItemInventarioRemplazado()->codigo , TerminoSearch::estadoItemInventarioEliminado()->codigo ] ] )->one();
+        if ( $item != null ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public static function obtenerItem( $producto , $color , $talla , $tipo , $detalle , $inventario ){
+        return ItemInventario::find()->where([ 'producto' => $producto ,'color' => $color , 'talla' => $talla, 'tipo' => $tipo ,'detalle' => $detalle , 'inventario' => $inventario ])->andWhere( ['NOT IN', 'estado', [ TerminoSearch::estadoItemInventarioRemplazado()->codigo , TerminoSearch::estadoItemInventarioEliminado()->codigo ] ] )->one();
+    }
+    public static function obtenerItems( $producto , $color , $talla , $tipo , $detalle , $inventario ){
+        return ItemInventario::find()->where([ 'producto' => $producto ,'color' => $color , 'talla' => $talla, 'tipo' => $tipo ,'detalle' => $detalle , 'inventario' => $inventario ])->all();
+    }
 }

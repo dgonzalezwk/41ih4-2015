@@ -1,3 +1,7 @@
+var urlBase="/41ih4-2015/web/item-inventario/";
+var urlView = urlBase+'view?id=';
+var urlDelete = urlBase+'delete?id=';
+
 function controlarSubmit ( event ) {
   	event.preventDefault();
 }
@@ -15,6 +19,7 @@ function limpiar(){
 	$('#iteminventario-precio_mayor').val( '' );
 	$('#iteminventario-producto').val( '' );
 	$('#inventario-codigobarras').val( '' );
+	$('#iteminventario-codigo').val( '' );
 	$('#img-producto').removeAttr( 'src' );
 	$('#nombre-producto').text( '' );
 	$('#codigo-producto').text('');
@@ -33,15 +38,7 @@ function addTable( key , cantidad_esperada , cantidad_defectuasa , cantidad_entr
 			$('<td></td>').append( $('#inventario-codigobarras').val() )
 		).append( 
 			$('<td></td>').append( $('#nombre-producto').text() )
-		)/*.append( 
-			$('<td></td>').append( talla.split( ' - ' )[1] )
 		).append( 
-			$('<td></td>').append( $('#iteminventario-color option:selected').html() )
-		).append( 
-			$('<td></td>').append( $('#iteminventario-tipo option:selected').html() )
-		).append( 
-			$('<td></td>').append( $('#iteminventario-detalle option:selected').html() )
-		)*/.append( 
 			$('<td></td>').append( cantidad_esperada )
 		).append( 
 			$('<td></td>').append( cantidad_defectuasa )
@@ -57,11 +54,11 @@ function addTable( key , cantidad_esperada , cantidad_defectuasa , cantidad_entr
 			$('<td></td>').append( '$' + ( parseInt(precio_mayor) * ( parseInt(cantidad_entregada) - parseInt(cantidad_defectuasa) ) ) )
 		).append( 
 			$('<td></td>').append( 
-				$('<a href="/41ih4-2015/web/inventario/selected-item" data-id="' + key + '"></a>').
+				$('<a href="' + urlView + key + '"></a>').
 					attr( 'onclick' , "selectedItemTable( $(this) , event );" ).
 					append($('<span class="glyphicon glyphicon-pencil"></span>'))
 			).append( 
-				$('<a href="/41ih4-2015/web/inventario/remove-item" data-id="' + key + '"></a>').
+				$('<a href="' + urlDelete + key + '"></a>').
 					attr( 'onclick' , "removeItem( $(this) , event );" ).
 					append($('<span class="glyphicon glyphicon-remove"></span>'))
 			)
@@ -91,9 +88,9 @@ function addList( key , cantidad_esperada , cantidad_defectuasa , cantidad_entre
 						).append(
 							$('<div class="col-lg-6 text text-right"></div>').append(
 								$('<p></p>').append( 
-									$('<a href="/41ih4-2015/web/inventario/selected-item" data-id="' + key + '" class="btn btn-warning" onclick="selectedItemList( $(this) , event )" role="button"><i class="glyphicon glyphicon-pencil"></i></a>')
+									$('<a href="' + urlView + key + '" class="btn btn-warning" onclick="selectedItemList( $(this) , event )" role="button"><i class="glyphicon glyphicon-pencil"></i></a>')
 								).append( 
-									$('<a href="/41ih4-2015/web/inventario/remove-item" data-id="' + key + '" class="btn btn-danger"  onclick="removeItem( $(this) , event )"   role="button"><i class="glyphicon glyphicon-remove"></i></a>')
+									$('<a href="' + urlDelete + key + '" class="btn btn-danger"  onclick="removeItem( $(this) , event )"   role="button"><i class="glyphicon glyphicon-remove"></i></a>')
 								) 
 							)
 						)
@@ -186,19 +183,21 @@ function addList( key , cantidad_esperada , cantidad_defectuasa , cantidad_entre
 function removeItem ( element , event ) {
 	bootbox.confirm("¿Esta seguro que desea eliminar este elemento?", function(result) {
 		if( result ){
-			var id = element.attr( 'data-id' );
+			
 			var dataUrl = element.attr( 'href' );
+			var partesUrl = dataUrl.split('=');
+			if($('#iteminventario-codigo').val() != partesUrl[2]){
+				limpiar();
+			} 
 			$.ajax({
 			    type:'POST',
 			    url: dataUrl ,
 			    dataType: "json",
-			    data: {
-			    	'id' : id
-			    },
 			    success: function(data)
 			    {
 			    	if( data.success == true ){
-			    		$('.' + id + '').remove();
+
+			    		$('.' + data.datos.codigo + '').remove();
 					}
 			    }
 			});
@@ -210,16 +209,11 @@ function selectedItem ( element , event ) {
 	
 	$( ".add-item" ).addClass( "hidden" );
 	$( ".edit-item" ).removeClass( "hidden" );
-
-	var id = element.attr( 'data-id' );
 	var dataUrl = element.attr( 'href' );
 	$.ajax({
 	    type:'POST',
 	    url: dataUrl ,
 	    dataType: "json",
-	    data: {
-	    	'id' : id
-	    },
 	    success: function(data)
 	    {
 	    	if( data.success == true ){
@@ -273,8 +267,7 @@ function selectedItemList( element , event ){
 	event.preventDefault();
 }
 function addItem ( element , event ) {
-		
-	$( '#inventario-form' ).trigger( 'submit' );
+	
 	$( "#item-inventario-form" ).trigger( 'submit' );
 
 	var href = element.attr( 'href' );
@@ -286,22 +279,22 @@ function addItem ( element , event ) {
 	    type:'POST',
 	    url: href ,
 	    dataType: "json",
-	    data: $( "#inventario-form" ).serialize() + "" + $( "#item-inventario-form" ).serialize() ,
+	    data: $( "#item-inventario-form" ).serialize() ,
 	    success: function(data)
 	    {
 			if( data.success == true ){
-				
-				var key = $('#iteminventario-producto').val() + "" + $('#iteminventario-color').val() + "" + $('#iteminventario-talla').val() + "" + $('#iteminventario-tipo').val() + "" + $('#iteminventario-detalle').val();
-				$('.' + key + '').remove();
-
 		    	var datos = data.datos;
+				var key = datos.codigo;
+		    	if( typeof datos.codigoRemove == "undefined" ){
+					$('.'+key).remove();
+		    	} else {
+		    		$('.'+datos.codigoRemove).remove();
+		    	}
 				addList( key , datos.cantidad_esperada , datos.cantidad_defectuasa , datos.cantidad_entregada , datos.precio_unidad , datos.precio_mayor );
 				addTable( key , datos.cantidad_esperada , datos.cantidad_defectuasa , datos.cantidad_entregada , datos.precio_unidad , datos.precio_mayor );
 				limpiar();
-
 				$('#formulario').find('.next').trigger('click');
 			}
-
 	    	element.find( 'i' ).attr( 'class' , oldClass );
 			element.removeAttr('disabled');
 	    }

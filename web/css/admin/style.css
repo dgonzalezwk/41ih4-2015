@@ -74,6 +74,15 @@ h1, .h1, h2, .h2, h3, .h3{
       margin: 7px 10px;
   }
 }
+.text-color-danger{
+  color: #a94442;
+}
+.text-color-info{
+  color: #31708f;
+}
+.text-color-success{
+  color: #3c763d;
+}
 .glyphicon-refresh-animate {
     -animation: spin .7s infinite linear;
     -webkit-animation: spin2 .7s infinite linear;

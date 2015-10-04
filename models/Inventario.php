@@ -111,6 +111,11 @@ class Inventario extends \yii\db\ActiveRecord
      */
     public function getItemInventarios()
     {
-        return $this->hasMany(ItemInventario::className(), ['inventario' => 'codigo']);
+        return $this->hasMany(ItemInventario::className(), ['inventario' => 'codigo'])->andWhere( ['NOT IN', 'estado', [ TerminoSearch::estadoItemInventarioRemplazado()->codigo , TerminoSearch::estadoItemInventarioEliminado()->codigo ] ] );
+    }
+
+    public function getAllItemInventarios()
+    {
+        return $this->hasMany(ItemInventario::className(), ['inventario' => 'codigo'])->orderBy('producto')->all();
     }
 }

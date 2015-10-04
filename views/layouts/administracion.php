@@ -49,7 +49,7 @@ AppAsset::register($this);
                         <p class="navbar-text ">Hola <?= Yii::$app->user->identity->getNombre() ?></p>
                     </li>
                     <li>
-                        <a href="<?=Yii::$app->urlManager->createUrl(['inventario/index'])?>"><i class="glyphicon glyphicon-th"></i></a>
+                        <a href="<?=Yii::$app->urlManager->createUrl(['inventario/index'])?>"><i class="glyphicon glyphicon-list-alt    "></i></a>
                     </li>
                     <li>
                         <a href="#"><i class="glyphicon glyphicon-shopping-cart"></i></a>

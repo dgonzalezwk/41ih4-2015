@@ -22,28 +22,31 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php echo $this->render('_search', ['model' => $searchModel]); ?>
         </div>
         <div class="row">
-            <?= ListView::widget([
-                'dataProvider' => $dataProvider,
-                'itemOptions' => ['class' => 'item'],
-                'summary' => Html::tag('div', '<b>{count} - {totalCount}</b> de <b>{end}</b> productos' , [ "class" => "text text-center" ]),
-                'itemView' => function ($model, $key, $index, $widget) {
-                    return #
-                        Html::tag('div',
+            <div class="col-lg-11">
+                
+                <?= ListView::widget([
+                    'dataProvider' => $dataProvider,
+                    'itemOptions' => ['class' => 'item'],
+                    'summary' => Html::tag('div', '<b>{count} - {totalCount}</b> de <b>{end}</b> productos' , [ "class" => "text text-center" ]),
+                    'itemView' => function ($model, $key, $index, $widget) {
+                        return #
                             Html::tag('div',
-                                Html::a( 
-                                    Html::tag('img', '', [ "class" => "img-responsive" , 'src' => Url::base() . '/img/producto/'. $model->imagen ]) 
-                                , [ 'view', 'id' => $model->codigo ] ).
                                 Html::tag('div',
-                                    Html::tag('span', $model->estado0->termino , ['class' => 'pull-right text-muted small']) .
-                                    Html::tag('h3', $model->nombre , [] ) .
-                                    Html::tag('p', $model->descripcion , [] ) .
-                                    Html::tag('p', Html::a( "Ver Detalles" , [ 'view', 'id' => $model->codigo ] , [ "class" => "btn btn-default" ] ) , [] ) 
-                                , [ "class" => "caption" ])
-                            , [ "class" => "thumbnail" ])
-                        , [ "class" => "col-lg-3 text text-center" ]);
-                    #;
-                },
-            ]) ?>
+                                    Html::a( 
+                                        Html::tag('img', '', [ "class" => "img-responsive" , 'src' => Url::base() . '/img/producto/'. $model->imagen ]) 
+                                    , [ 'view', 'id' => $model->codigo ] ).
+                                    Html::tag('div',
+                                        Html::tag('span', $model->estado0->termino , ['class' => 'pull-right text-muted small']) .
+                                        Html::tag('h3', $model->nombre , [] ) .
+                                        Html::tag('p', $model->descripcion , [] ) .
+                                        Html::tag('p', Html::a( "Ver Detalles" , [ 'view', 'id' => $model->codigo ] , [ "class" => "btn btn-default" ] ) , [] ) 
+                                    , [ "class" => "caption" ])
+                                , [ "class" => "thumbnail" ])
+                            , [ "class" => "col-lg-3 text text-center" ]);
+                        #;
+                    },
+                ]) ?>
+            </div>
         </div>
         <?php Pjax::end(); ?>
     </div>

@@ -8,6 +8,11 @@
 <?php $TotalPrecioUnidad = 0; ?>
 <?php $TotalPrecioMayor = 0; ?>
 
+<?php if ( count( $listInventory ) == 0 ): ?>
+<div class="col-lg-12 text text-center">
+        <p>El inventario no tiene productos actualmente.</p>
+    </div>
+<?php endif ?>
 <table class="table table-striped table-bordered">
 	<thead>
 		<tr>
@@ -28,8 +33,8 @@
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach ($listInventory as $key => $listInventoryItem): ?>
-			<tr class="<?= $key?>">
+		<?php foreach ($listInventory as $listInventoryItem): ?>
+			<tr class="<?= $listInventoryItem->codigo?>">
 				<td><?= $listInventoryItem->codigo_barras ?></td>
 				<td><?= $listInventoryItem->getProducto0()->one()->nombre ?></td>
 				<!--<td><?= $listInventoryItem->getTalla0()->one()->termino ?></td>
@@ -50,8 +55,8 @@
 				<td>$<?= $listInventoryItem->precio_mayor * ( $listInventoryItem->cantidad_entregada - $listInventoryItem->cantidad_defectuasa )?></td>
 					<?php $TotalPrecioMayor += $listInventoryItem->precio_mayor * ( $listInventoryItem->cantidad_entregada - $listInventoryItem->cantidad_defectuasa ); ?>
 				<td>
-					<?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['selected-item'], ['data-id' => $key ,'onclick' => "selectedItemTable( $(this) , event );" ]) ?>
-	                <?= Html::a('<span class="glyphicon glyphicon-remove"></span>', ['remove-item'], ['data-id' => $key , 'onclick' => "removeItem( $(this) , event );" ]) ?>
+					<?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['item-inventario/view' , 'id' => $listInventoryItem->codigo ], [ 'onclick' => "selectedItemTable( $(this) , event );" ]) ?>
+	                <?= Html::a('<span class="glyphicon glyphicon-remove"></span>', ['item-inventario/delete', 'id' => $listInventoryItem->codigo], [ 'onclick' => "removeItem( $(this) , event );" ]) ?>
 				</td>
 			</tr>
 		<?php endforeach ?>

@@ -97,8 +97,8 @@ use yii\widgets\Pjax;
         <?= $this->render( '//item-inventario/_form' , [ 'model' => $itemModel ] ); ?>
     </div>
     <br />
-    <?= Html::a('<i class="glyphicon glyphicon-pencil"></i> Editar', ['edit-item'], ['class' => 'btn btn-warning edit-item hidden', 'onclick' => "addItem( $(this) , event )" ]) ?>
-    <?= Html::a('<i class="glyphicon glyphicon-plus"></i> Agregar', ['add-item'], ['class' => 'btn btn-primary add-item', 'onclick' => "addItem( $(this) , event )" ]) ?>
+    <?= Html::a('<i class="glyphicon glyphicon-pencil"></i> Editar', ['item-inventario/update'], ['class' => 'btn btn-warning edit-item hidden', 'onclick' => "addItem( $(this) , event )" ]) ?>
+    <?= Html::a('<i class="glyphicon glyphicon-plus"></i> Agregar', ['item-inventario/create'], ['class' => 'btn btn-primary add-item', 'onclick' => "addItem( $(this) , event )" ]) ?>
     <button type="button" class="next btn btn-success">Siguiente <i class="glyphicon glyphicon-chevron-right"></i> </button>
 </fieldset>
 <fieldset id="lista">
@@ -111,6 +111,6 @@ use yii\widgets\Pjax;
         <?= $this->render( '_table' , [ 'listInventory' => $listInventory ] ); ?>
     </div>
     <button type="button" class="previous btn btn-danger"><i class="glyphicon glyphicon-chevron-left"></i> Anterior</button>
-    <?= Html::a('<i class="glyphicon glyphicon-saved"></i> Submit', $model->isNewRecord ? ['create' , 'guardar' => true ] :  ['update' , 'guardar' => true , 'id' => $model->codigo ] , ['class' => 'submit btn btn-success', 'onclick' => "save( $(this) , event )" ]) ?>
+    <?= Html::a('<i class="glyphicon glyphicon-saved"></i> Submit',  ['save' , 'id' => $model->codigo ] , ['class' => 'submit btn btn-success', 'onclick' => "save( $(this) , event )" ]) ?>
 </fieldset>
 <?= $this->registerJsFile('@web/js/jsInventarios.js', ['depends' => [ \yii\web\JqueryAsset::className() ] ] ); ?>

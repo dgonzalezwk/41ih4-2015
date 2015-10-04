@@ -14,10 +14,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ingreso-index">
     <div class="row title-window">
-        <div class="col-lg-6">
+        <div class="col-md-6">
             <h1><?= Html::encode($this->title) ?></h1>
         </div>
-        <div class="col-lg-6 text text-right vcenter">
+        <div class="col-md-6 text text-right vcenter">
             <a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                 <i class="glyphicon glyphicon-search"></i>&nbsp;Filtrar por...
             </a>

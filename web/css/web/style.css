@@ -104,7 +104,7 @@ nav a#pull {
 	padding: 4%;
 }
 .contact_left h3{
-	font-family: 'Kreon', serif;
+	
 	font-size: 24px;
 	color: rgba(0,0,0,1);
 	text-transform: capitalize;
@@ -398,9 +398,9 @@ div.button p.texto{
 }
 /*iconos sociales*/
 .social {
-	position: fixed; /* Hacemos que la posición en pantalla sea fija para que siempre se muestre en pantalla*/
-	left: -20px; /* Establecemos la barra en la izquierda */
-	top: 250px; /* Bajamos la barra 200px de arriba a abajo */
+	position: absolute; /* Hacemos que la posición en pantalla sea fija para que siempre se muestre en pantalla*/
+	left: -25px; /* Establecemos la barra en la izquierda */
+	top: 25px; /* Bajamos la barra 200px de arriba a abajo */
 	z-index: 2000; /* Utilizamos la propiedad z-index para que no se superponga algún otro elemento como sliders, galerías, etc */
 }
  

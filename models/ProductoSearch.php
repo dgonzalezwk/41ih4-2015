@@ -93,7 +93,7 @@ class ProductoSearch extends Producto
                 $itemInventario = null;
                 $code = 0 ;
                 foreach ( $items as $item ) {
-                    if( $item->inventario > $code ){
+                    if( $item->inventario > $code && $item->inventario0->Termino->key != 3 ){
                         $itemInventario = $item;  
                     }
                 }

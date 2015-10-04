@@ -97,9 +97,10 @@ class InventarioController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $model = $this->findModel($id);
+        $model->fecha = AppDate::stringToDate($model->fecha , Yii::$app->params['formatViewDate'] );
+        $model->fecha_registro = AppDate::stringToDate($model->fecha_registro , Yii::$app->params['formatViewDate'] );
+        return $this->render('view', [ 'model' => $model , 'items' => $model->getAllItemInventarios()]);
     }
 
     /**
@@ -115,17 +116,18 @@ class InventarioController extends Controller
         } else {
             
             $model = new Inventario();
-            $model->fecha = AppDate::stringToDate($model->fecha , null );
+            $model->fecha = AppDate::date();
             $model->punto_venta = Yii::$app->user->identity->getPuntoVentaSelected()->punto_venta;
             $model->origen = Yii::$app->user->identity->getPuntoVentaSelected()->punto_venta;
             $model->estado = TerminoSearch::estadoInventarioBorrador()->codigo;
             $model->usuario_registro = Yii::$app->user->identity->codigo;
-            $model->fecha_registro = AppDate::stringToDate($model->fecha , null );
+            $model->fecha_registro = AppDate::date();
+            $model->codigoBarras = "xxxxxxxxxxxxxx";
 
             if ( $model->save() ) {
                 return $this->redirect(['update', 'id' => $model->codigo  ]);
             } else {
-                AppHandlingErrors::setFlash( 'danger' , AppHandlingErrors::getStringErrorModel( $item->getErrors() ) );
+                AppHandlingErrors::setFlash( 'danger' , json_encode($model->getErrors()) );
                 return $this->redirect(['index']);
             }
 
@@ -144,7 +146,55 @@ class InventarioController extends Controller
         $model = $this->findModel($id);
         $itemModel = new ItemInventario();
         $itemModel->inventario = $model->codigo;
-        return $this->render('update', [ 'model' => $model , 'itemModel' => $itemModel , 'itemInventarios' => $model->itemInventarios ]);
+        $model->fecha = AppDate::stringToDate($model->fecha , Yii::$app->params['formatViewDate'] );
+        return $this->render('update', [ 'model' => $model , 'itemModel' => $itemModel , 'listInventory' => $model->itemInventarios ]);
+    }
+
+    public function actionSave($id)
+    {   
+        $model = $this->findModel($id);
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            if ( count( $model->itemInventarios ) > 0 ) {
+                $inventariosActivos = InventarioSearch::searchInventariosActivos();
+                foreach ( $inventariosActivos as $inventario) {
+                    if ( $inventario->codigo != $id) {
+                        $inventario->estado = TerminoSearch::estadoInventarioNoActivo()->codigo;
+                        $inventario->codigoBarras = 'xxxxxxxxxxxxxx';
+                        if ( !$inventario->save() ) {
+                            $transaction->rollBack();
+                            AppHandlingErrors::setFlash( 'danger' , 'No se logro guardar el inventario ' );
+                            $itemModel = new ItemInventario();
+                            $model->fecha = AppDate::stringToDate($model->fecha , Yii::$app->params['formatViewDate'] );
+                            return $this->render('update', [ 'model' => $model , 'itemModel' => $itemModel , 'listInventory' => $model->itemInventarios ]);
+                        }
+                    }
+                }
+                $model->estado = TerminoSearch::estadoInventarioActivo()->codigo;
+                $model->codigoBarras = 'xxxxxxxxxxxxxx';
+                if( $model->save() ){
+                    $transaction->commit();
+                    AppHandlingErrors::setFlash( 'success' , 'Inventario guardado correctamente.' );
+                    return $this->redirect(['index']);
+                } else {
+                    $transaction->rollBack();
+                    AppHandlingErrors::setFlash( 'danger' , 'No se logro guardar el inventario' );
+                    $itemModel = new ItemInventario();
+                    $model->fecha = AppDate::stringToDate($model->fecha , Yii::$app->params['formatViewDate'] );
+                    return $this->render('update', [ 'model' => $model , 'itemModel' => $itemModel , 'listInventory' => $model->itemInventarios ]);
+                }
+            
+            } else {
+                $transaction->rollBack();
+                AppHandlingErrors::setFlash( 'danger' , 'El inventario no tiene ningun producto en la lista' );
+                $itemModel = new ItemInventario();
+                $model->fecha = AppDate::stringToDate($model->fecha , Yii::$app->params['formatViewDate'] );
+                return $this->render('update', [ 'model' => $model , 'itemModel' => $itemModel , 'listInventory' => $model->itemInventarios ]);
+            }
+        
+        } catch (Exception $e) {
+            $transaction->rollBack();
+        }
     }
 
     /**
@@ -172,137 +222,6 @@ class InventarioController extends Controller
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
-        }
-    }
-
-    public function actionAddItem()
-    {
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $model = new Inventario();
-        $item = new ItemInventario();
-        if ( $model->load( Yii::$app->request->post() ) && $item->load( Yii::$app->request->post() ) ){
-            
-            $model->usuario_registro = Yii::$app->user->identity->codigo ;
-            $model->fecha_registro = AppDate::stringToDate( AppDate::date() , Yii::$app->params['formatViewDate'] ) ;
-            $model->estado = TerminoSearch::estadoInventarioActivo()->codigo;
-            
-            if ( $item->cantidad_esperada == $item->cantidad_entregada && $item->cantidad_defectuasa == 0 ){
-                $item->estado = TerminoSearch::estadoItemInventarioCompleto()->codigo;
-            } else if( $item->cantidad_esperada == $item->cantidad_entregada && $item->cantidad_defectuasa > 0 ) {
-                $item->estado = TerminoSearch::estadoItemInventarioDefectos()->codigo;
-            } else if( $item->cantidad_esperada != $item->cantidad_entregada ) {
-                $item->estado = TerminoSearch::estadoItemInventarioIncompleto()->codigo;
-            } else {
-                $item->estado = TerminoSearch::estadoItemInventarioIncompleto()->codigo;
-            }
-
-        	if ( $model->validate() ){
-                if( $item->validate() ) {
-                    
-                    $session = Yii::$app->session;
-        			if ( !$session->isActive ){ $session->open(); }
-
-                    $dataInventory = $session->get( 'dataInventory' , $model );
-                    $listItems = $session->get( 'listInventory' , [] );
-                    $key = $item->producto . "" .$item->color . "" .$item->talla . "" .$item->tipo . "" .$item->detalle;
-
-                    if ( array_key_exists ( $key , $listItems ) ) {
-                        $itemDeLista = $listItems[$key];
-                        if( !$itemDeLista->isNewRecord ){
-                            if($itemDeLista->precio_unidad != $item->precio_unidad || $itemDeLista->precio_mayor != $item->precio_mayor){
-                                if ( !array_key_exists ( $key+"_old" , $listItems ) ) {
-                                    $itemDeLista->estado = TerminoSearch::estadoItemInventarioRemplazado()->codigo;
-                                    $newItem = new ItemInventario() ;
-                                    $newItem->load( [ "ItemInventario" => [
-                                        "inventario" => $item->inventario,
-                                        "producto" => $item->producto,
-                                        "color" => $item->color,
-                                        "talla" => $item->talla,
-                                        "tipo" => $item->tipo,
-                                        "detalle" => $item->detalle,
-                                        "cantidad_esperada" => $item->cantidad_esperada + $itemDeLista->cantidad_esperada,
-                                        "cantidad_defectuasa" => $item->cantidad_defectuasa + $itemDeLista->cantidad_defectuasa,
-                                        "cantidad_entregada" => $item->cantidad_entregada + $itemDeLista->cantidad_entregada,
-                                        "cantidad_actual" => $item->cantidad_actual,
-                                        "precio_unidad" => $item->precio_unidad,
-                                        "precio_mayor" => $item->precio_mayor,
-                                        "estado" => $item->estado,
-                                        "codigo_barras" => $item->codigo_barras,
-                                    ] ] );
-                                    $itemDeLista->cantidad_actual = 0;
-                                    $listItems[ $key+"_old" ] = $itemDeLista ;
-                                    $listItems[ $key ] = $newItem ;
-                                } else {
-                                    $itemOldd = $listItems[$key];
-                                    $item->cantidad_esperada += $itemOldd->cantidad_esperada;
-                                    $item->cantidad_defectuasa += $itemOldd->cantidad_defectuasa;
-                                    $item->cantidad_entregada += $itemOldd->cantidad_entregada;
-                                    $listItems[$key] = $item ;
-                                }
-                            } else {
-                                $itemOldd = $listItems[$key];
-                                $item->cantidad_esperada += $itemOldd->cantidad_esperada;
-                                $item->cantidad_defectuasa += $itemOldd->cantidad_defectuasa;
-                                $item->cantidad_entregada += $itemOldd->cantidad_entregada;
-                                $listItems[$key] = $item ;
-                            }
-                        } else {
-                            $itemOldd = $listItems[$key];
-                            $item->cantidad_esperada += $itemOldd->cantidad_esperada;
-                            $item->cantidad_defectuasa += $itemOldd->cantidad_defectuasa;
-                            $item->cantidad_entregada += $itemOldd->cantidad_entregada;
-                            $listItems[$key] = $item ;
-                        }
-                    } else {
-                        $listItems[$key] = $item ;
-                    }
-
-
-                    $session->set( 'dataInventory' , $dataInventory );
-                	$session->set( 'listInventory' , $listItems );
-
-                	return [ 'success' => true , 'datos' => [ 'codeBar' => $item->codigo_barras , 'cantidad_esperada' => $item->cantidad_esperada , 'cantidad_defectuasa' => $item->cantidad_defectuasa , 'cantidad_entregada' => $item->cantidad_entregada , 'precio_unidad' => $item->precio_unidad , 'precio_mayor' => $item->precio_mayor ] ];
-                } else {
-                    return [ 'success' => false , 'mensaje' => $item->getErrors() ];
-                }
-            } else {
-                return [ 'success' => false , 'mensaje' => "2" ];
-            }
-	    } else {
-	    	return [ 'success' => false , 'mensaje' => "1" ];
-	    }
-    }
-    
-    public function actionRemoveItem()
-    {
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $indice = Yii::$app->request->post( 'id' , null );
-        if ( $indice != null ){
-            $session = Yii::$app->session;
-            if ( !$session->isActive ){ $session->open(); }
-            $listItems = $session->get( 'listInventory' , [] );
-            if ( array_key_exists ( $indice , $listItems ) ) {
-                unset( $listItems[ $indice ] );
-                $session->set( 'listInventory' , $listItems );
-            }
-        }
-        return [ 'success' => true ];
-    }
-    
-    public function actionSelectedItem(){
-
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $indice = Yii::$app->request->post( 'id' , null );
-        if ( $indice != null ){
-            $session = Yii::$app->session;
-            if ( !$session->isActive ){ $session->open(); }
-            $listItems = $session->get( 'listInventory' , [] );
-            if ( array_key_exists ( $indice , $listItems ) ) {
-                $item = $listItems[ $indice ];
-                return [ 'success' => true , 'datos' => [ 'codigo' => $item->codigo , 'codeBar' => $item->codigo_barras , 'cantidad_esperada' => $item->cantidad_esperada , 'cantidad_defectuasa' => $item->cantidad_defectuasa , 'cantidad_entregada' => $item->cantidad_entregada , 'precio_unidad' => $item->precio_unidad , 'precio_mayor' => $item->precio_mayor ] ];
-            } else {
-                return [ 'success' => false ];
-            }
         }
     }
 

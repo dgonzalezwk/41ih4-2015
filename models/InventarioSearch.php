@@ -84,4 +84,5 @@ class InventarioSearch extends Inventario
     {
         return Inventario::find()->where(['estado'=> TerminoSearch::estadoInventarioBorrador()->codigo ])->one();
     }
+
 }
