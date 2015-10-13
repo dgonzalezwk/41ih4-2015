@@ -198,5 +198,8 @@ class TerminoSearch extends Termino
     {
         return Termino::find()->where(['categoria'=>'Talla','estado'=>1,'key'=> $key ])->one();
     }
-
+    public static function searchCategoriaProductoActivo()
+    {
+        return Termino::find()->where([ 'categoria' => 'Estados De Producto' , 'estado' => 1 , 'key' => 1 ])->one();
+    }
 }

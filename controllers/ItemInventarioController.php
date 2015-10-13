@@ -63,7 +63,7 @@ class ItemInventarioController extends Controller
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $item = $this->findModel($id);
-        return [ 'success' => true , 'datos' => [ 'codigo' => $item->codigo , 'codeBar' => $item->codigo_barras , 'cantidad_esperada' => $item->cantidad_esperada , 'cantidad_defectuasa' => $item->cantidad_defectuasa , 'cantidad_entregada' => $item->cantidad_entregada , 'precio_unidad' => $item->precio_unidad , 'precio_mayor' => $item->precio_mayor ] ];
+        return [ 'success' => true , 'datos' => [ 'codigo' => $item->codigo , 'codeBar' => $item->codigo_barras , 'cantidad_esperada' => $item->cantidad_esperada , 'cantidad_defectuasa' => $item->cantidad_defectuasa , 'cantidad_entregada' => $item->cantidad_entregada , 'precio_unidad' => $item->precio_unidad , 'precio_mayor' => $item->precio_mayor , 'cantidad_actual' => $item->cantidad_actual ] ];
     }
 
     /**
@@ -87,10 +87,10 @@ class ItemInventarioController extends Controller
                     
                     $item->estado = TerminoSearch::estadoItemInventarioRemplazado()->codigo;
 
+                    $model->cantidad_actual += ( $model->cantidad_entregada -  $model->cantidad_defectuasa );
                     $model->cantidad_esperada += $item->cantidad_esperada;
                     $model->cantidad_defectuasa += $item->cantidad_defectuasa;
                     $model->cantidad_entregada += $item->cantidad_entregada;
-                    $model->cantidad_actual += ( $item->cantidad_entregada -  $item->cantidad_defectuasa );
 
                     $item->cantidad_actual = 0;
 
@@ -112,7 +112,7 @@ class ItemInventarioController extends Controller
                     $item->cantidad_esperada += $model->cantidad_esperada;
                     $item->cantidad_defectuasa += $model->cantidad_defectuasa;
                     $item->cantidad_entregada += $model->cantidad_entregada;
-                    $item->cantidad_actual += ( $model->cantidad_entregada -  $item->cantidad_defectuasa );
+                    $item->cantidad_actual += ( $model->cantidad_entregada - $model->cantidad_defectuasa );
 
                     if ( $item->cantidad_esperada == $item->cantidad_entregada && $item->cantidad_defectuasa == 0 ){
                         $item->estado = TerminoSearch::estadoItemInventarioCompleto()->codigo;
@@ -129,8 +129,15 @@ class ItemInventarioController extends Controller
                     }
                 }
             } else {
-                if ( $model->load(Yii::$app->request->post()) && $model->save() ) {
-                    return [ 'success' => true , 'datos' => [ 'codigo' => $model->codigo , 'codeBar' => $model->codigo_barras , 'cantidad_esperada' => $model->cantidad_esperada , 'cantidad_defectuasa' => $model->cantidad_defectuasa , 'cantidad_entregada' => $model->cantidad_entregada , 'precio_unidad' => $model->precio_unidad , 'precio_mayor' => $model->precio_mayor ] ];
+                if ( $model->load( Yii::$app->request->post() ) ){
+
+                    $model->cantidad_actual += ( $model->cantidad_entregada -  $model->cantidad_defectuasa );
+
+                    if( $model->save() ) {
+                        return [ 'success' => true , 'datos' => [ 'codigo' => $model->codigo , 'codeBar' => $model->codigo_barras , 'cantidad_esperada' => $model->cantidad_esperada , 'cantidad_defectuasa' => $model->cantidad_defectuasa , 'cantidad_entregada' => $model->cantidad_entregada , 'precio_unidad' => $model->precio_unidad , 'precio_mayor' => $model->precio_mayor ] ];
+                    } else {
+                        return [ 'success' => false ];   
+                    }
                 } else {
                     return [ 'success' => false ];
                 }
@@ -156,16 +163,41 @@ class ItemInventarioController extends Controller
             if( array_key_exists( 'codigo' , $valores ) ){
                 $codigo = $valores['codigo'];
                 $model = $this->findModel( $codigo );
+                $cantidad_esperada = $model->cantidad_esperada;
+                $cantidad_entregada = $model->cantidad_entregada;
+                $cantidad_defectuasa = $model->cantidad_defectuasa;
+                $cantidad_actual = $model->cantidad_actual;
                 if( $model != null ){
-                    if ( $model->cantidad_esperada == $model->cantidad_entregada && $model->cantidad_defectuasa == 0 ){
-                        $model->estado = TerminoSearch::estadoItemInventarioCompleto()->codigo;
-                    } else if( $model->cantidad_esperada == $model->cantidad_entregada && $model->cantidad_defectuasa > 0 ) {
-                        $model->estado = TerminoSearch::estadoItemInventarioDefectos()->codigo;
-                    } else if( $model->cantidad_esperada != $model->cantidad_entregada ) {
-                        $model->estado = TerminoSearch::estadoItemInventarioIncompleto()->codigo;
-                    }
-                    if( $model->save() ){
-                        return [ 'success' => true , 'datos' => [ 'codigo' => $model->codigo , 'codeBar' => $model->codigo_barras , 'cantidad_esperada' => $model->cantidad_esperada , 'cantidad_defectuasa' => $model->cantidad_defectuasa , 'cantidad_entregada' => $model->cantidad_entregada , 'precio_unidad' => $model->precio_unidad , 'precio_mayor' => $model->precio_mayor ] ];
+                    if ( $model->load( Yii::$app->request->post() ) ) {
+                        
+                        if ( $cantidad_entregada != $model->cantidad_entregada ) {
+                            if ( $cantidad_entregada < $model->cantidad_entregada ) {
+                                $model->cantidad_actual += ( $model->cantidad_entregada - $cantidad_entregada );
+                            } else {
+                                $model->cantidad_actual -= ( $cantidad_entregada - $model->cantidad_entregada );
+                            }
+                        }
+
+                        if ( $cantidad_defectuasa != $model->cantidad_defectuasa ) {
+                            if ( $cantidad_defectuasa < $model->cantidad_defectuasa ) {
+                                $model->cantidad_actual -= ( $model->cantidad_defectuasa - $cantidad_defectuasa );
+                            } else {
+                                $model->cantidad_actual += ( $cantidad_defectuasa - $model->cantidad_defectuasa );
+                            }
+                        }
+
+                        if ( $model->cantidad_esperada == $model->cantidad_entregada && $model->cantidad_defectuasa == 0 ){
+                            $model->estado = TerminoSearch::estadoItemInventarioCompleto()->codigo;
+                        } else if( $model->cantidad_esperada == $model->cantidad_entregada && $model->cantidad_defectuasa > 0 ) {
+                            $model->estado = TerminoSearch::estadoItemInventarioDefectos()->codigo;
+                        } else if( $model->cantidad_esperada != $model->cantidad_entregada ) {
+                            $model->estado = TerminoSearch::estadoItemInventarioIncompleto()->codigo;
+                        }
+                        if( $model->save() ){
+                            return [ 'success' => true , 'datos' => [ 'codigo' => $model->codigo , 'codeBar' => $model->codigo_barras , 'cantidad_esperada' => $model->cantidad_esperada , 'cantidad_defectuasa' => $model->cantidad_defectuasa , 'cantidad_entregada' => $model->cantidad_entregada , 'precio_unidad' => $model->precio_unidad , 'precio_mayor' => $model->precio_mayor ] ];
+                        } else {
+                            return [ 'success' => false ];
+                        }
                     } else {
                         return [ 'success' => false ];
                     }

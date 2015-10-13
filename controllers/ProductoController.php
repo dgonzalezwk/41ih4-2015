@@ -75,11 +75,9 @@ class ProductoController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView( $id )
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        return $this->render('view', [ 'model' => $this->findModel($id) , 'items' => ProductoSearch::obtenerTodo( $id ) ]);
     }
 
     /**
@@ -132,7 +130,7 @@ class ProductoController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate( $id )
     {
         $this->layout = 'administracion';
         $model = $this->findModel($id);
@@ -218,12 +216,16 @@ class ProductoController extends Controller
                 $color = substr( $code , 6 , 2 );
                 $categoria = substr( $code , 8 , 2 );
                 $detalle = substr( $code , 10 , 1 );
-                $cantidadActual = ProductoSearch::cantidadActual( $producto , $color , $talla , $categoria , $detalle );
+                $talla = TerminoSearch::searchTallaProductoByKey( intval( $talla ) )->codigo ;
+                $color = TerminoSearch::searchColorProductoByKey( intval( $color ) )->codigo ;
+                $categoria = TerminoSearch::searchCategoriaProductoByKey( intval( $categoria ) )->codigo ;
+                $detalle = TerminoSearch::searchDetalleProductoByKey( intval( $detalle ) )->codigo ;
+                $cantidadActual = ProductoSearch::cantidadActual( $model->codigo , $color , $talla , $categoria , $detalle );
                 $arrayData = [
-                    'talla' => TerminoSearch::searchTallaProductoByKey( intval( $talla ) )->codigo ,
-                    'color' => TerminoSearch::searchColorProductoByKey( intval( $color ) )->codigo ,
-                    'tipo' => TerminoSearch::searchCategoriaProductoByKey( intval( $categoria ) )->codigo ,
-                    'detalle' => TerminoSearch::searchDetalleProductoByKey( intval( $detalle ) )->codigo ,
+                    'talla' => $talla ,
+                    'color' => $color ,
+                    'tipo' => $categoria ,
+                    'detalle' => $detalle ,
                     'producto' => [
                         'codigo' => $model->codigo,
                         'nombre' => $model->nombre,

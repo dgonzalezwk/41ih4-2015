@@ -28,6 +28,7 @@ class AppHandlingErrors
                 $stringError .=  $error . ' - ';
             }
         }
+        return $stringError;
     }
 
     public static function setFlash( $stringType , $stringMenssage )

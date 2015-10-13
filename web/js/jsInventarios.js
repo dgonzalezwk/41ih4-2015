@@ -228,13 +228,11 @@ function selectedItem ( element , event ) {
 
 				$('#iteminventario-precio_unidad').val( datos.precio_unidad );
 				$('#iteminventario-precio_mayor').val( datos.precio_mayor );
-				$('#iteminventario-precio_unidad').trigger( 'change' );
-				$('#iteminventario-precio_mayor').trigger( 'change' );
 
 				$('#iteminventario-precio_unidad-disp').val( datos.precio_unidad + ",00" );
 				$('#iteminventario-precio_mayor-disp').val( datos.precio_mayor + ",00" );
-				$('#iteminventario-precio_unidad-disp').trigger( 'maskMoney' );
-				$('#iteminventario-precio_mayor-disp').trigger( 'maskMoney' );
+
+				$('#iteminventario-cantidad_actual').val( datos.cantidad_actual );
 			}
 	    }
 	});

@@ -52,7 +52,10 @@ AppAsset::register($this);
                         <a href="<?=Yii::$app->urlManager->createUrl(['inventario/index'])?>"><i class="glyphicon glyphicon-list-alt    "></i></a>
                     </li>
                     <li>
-                        <a href="#"><i class="glyphicon glyphicon-shopping-cart"></i></a>
+                        <a href="<?=Yii::$app->urlManager->createUrl(['factura/index'])?>"><i class="glyphicon glyphicon-shopping-cart"></i></a>
+                    </li>
+                    <li>
+                        <a href="<?=Yii::$app->urlManager->createUrl(['promocion/index'])?>"><i class="glyphicon glyphicon-usd"></i></a>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-th-list"></i> <span class="caret"></span></a>
@@ -75,6 +78,7 @@ AppAsset::register($this);
                 <li><a href="<?=Yii::$app->urlManager->createUrl(['usuario/index'])?>">Usuarios</a></li>
                 <li><a href="<?=Yii::$app->urlManager->createUrl(['gasto/index'])?>">Gastos</a></li>
                 <li><a href="<?=Yii::$app->urlManager->createUrl(['ingreso/index'])?>">Ingresos</a></li>
+                <li><a href="<?=Yii::$app->urlManager->createUrl(['producto/index'])?>">Productos</a></li>
             </ul>
         </div>
     <?php endif ?>

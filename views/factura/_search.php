@@ -9,29 +9,30 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="factura-search">
-
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'id' => 'search-factura',
     ]); ?>
-
-    <?= $form->field($model, 'codigo') ?>
-
-    <?= $form->field($model, 'usuario') ?>
-
-    <?= $form->field($model, 'cliente') ?>
-
-    <?= $form->field($model, 'punto_venta') ?>
-
-    <?= $form->field($model, 'fecha') ?>
-
-    <?php // echo $form->field($model, 'metodo_pago') ?>
-
+    <div class="col-lg-3">
+        <?= $form->field($model, 'codigo') ?>
+    </div>
+    <div class="col-lg-3">
+        <?= $form->field($model, 'usuario') ?>
+    </div>
+    <div class="col-lg-3">
+        <?= $form->field($model, 'cliente') ?>
+    </div>
+    <div class="col-lg-3">
+        <?= $form->field($model, 'punto_venta') ?>
+    </div>
+    <div class="col-lg-3">
+        <?= $form->field($model, 'fecha') ?>
+    </div>
+        <?php // echo $form->field($model, 'metodo_pago') ?>
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
     </div>
-
     <?php ActiveForm::end(); ?>
-
 </div>
